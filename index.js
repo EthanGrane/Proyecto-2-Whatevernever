@@ -1,49 +1,40 @@
-let lat = 0, lon = 0;
+friendsConnected = [
+    { name: "Adrian", lon: 41.4113279581609, lng: 2.02690062977777 },
+    { name: "Paul", lon: 40.4113279581609, lng: 2.02690062977777 },
+    { name: "Holden", lon: 39.4113279581609, lng: 2.02690062977777 },
+]
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
-window.onload = () => {
-    start();
-};
-
-async function start() {
-    await GetCoordinates();
-    ShowMap();
+window.onload = () => 
+{
+    InitializeMap({ lng: 41.4113279581609, lon: 2.02690062977777 });
 }
 
-function GetCoordinates() {
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                lat = position.coords.latitude;
-                lon = position.coords.longitude;
-                resolve(); // Resolvemos la promesa cuando las coordenadas se obtienen
-            },
-            (error) => {
-                console.error("Error al obtener la ubicación:", error);
-                reject(error); // Rechazamos la promesa si ocurre un error
-            }
-        );
-    });
-}
+function InitializeMap(currentPosition) 
+{
+    const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
 
-function ShowMap() {
-    const map = (window.map = new mapboxgl.Map({
+    // Render Map on div
+    const map = new mapboxgl.Map({
         container: 'map',
-        zoom: 16,
-        center: [lon, lat], // Ahora lat y lon tendrán los valores correctos
-        pitch: 0,
-        bearing: 0,
-        hash: true,
-        style: 'mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw',
-        projection: 'globe'
+        style: mapStyle,
+        projection: 'globe',
+        zoom: 5,
+        center: [currentPosition.lon, currentPosition.lng],
+    });
+
+    // Hide Controls
+    map.addControl(new mapboxgl.NavigationControl({
+        showCompass: false,
+        showZoom: false,
+        visualizePitch: false
     }));
 
-    const resetRotation = () => {
-        map.rotateTo(0, { duration: 0 });
-    };
+    // Disable some Intreaction Handles
+    map['dragRotate'].disable();
 
-    resetRotation();
+}
 
-    // map.touchZoomRotate.disableRotation();
-    // map.dragRotate.disable();
+function MapStart() {
+
 }
