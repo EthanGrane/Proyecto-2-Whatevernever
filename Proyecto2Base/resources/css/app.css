@@ -1,0 +1,28 @@
+:root {
+    --background1: #000000;
+    --background2: #212121;
+    --background3: #707070;
+    --text: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.boton1 {
+    background-color: var(--background2);
+    color: var(--text);
+}
+
+.boton1:hover {
+    background-color: var(--background3);
+}
+
+#menunavegacion {
+    position:sticky;
+
+    background-color: var(--background1);
+    display: flex;
+    justify-content: space-around;
+}
