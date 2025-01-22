@@ -37,3 +37,11 @@
     display: flex;
     justify-content: space-around;
 }
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 10%;
+    height: 90%;
+    width: 100%;
+}

@@ -1,9 +1,6 @@
 <template>
-    <div>
-        <h1>Home Page</h1>
-        <p>Welcome to the home page!</p>
-        <img src='/public/images/mono.webp'>
-    </div>
+    <div id="map"></div>
+
 </template>
 
 <script>
