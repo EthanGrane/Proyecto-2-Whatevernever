@@ -2,8 +2,9 @@
     <div>
         <router-view></router-view>
         <nav id="menunavegacion">
-            <router-link class="boton1" to="/">Home</router-link>
-            <router-link class="boton1" to="/about">About</router-link>
+            <router-link class="boton1" to="/perfil">Perfil</router-link>
+            <router-link class="boton1" to="/">Mapa</router-link>
+            <router-link class="boton1" to="/amigos">Amigos</router-link>
         </nav>
     </div>
 </template>
