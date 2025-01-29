@@ -24,6 +24,14 @@
     background-color: var(--background3);
 }
 
+.boton2 {
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 10px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
 #menunavegacion {
     position: fixed;
     bottom: 0;
@@ -42,6 +50,118 @@
     position: absolute;
     top: 0;
     bottom: 10%;
-    height: 90%;
+    height: 100%;
     width: 100%;
+    z-index: -1;
+}
+
+/*Inicio de session*/
+
+#fondoiniciosession * {
+    font-size: 110%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#fondoiniciosession div:first-child * {
+    font-size: 200%;
+    padding: 40px;
+    color: black;
+}
+
+#fondoiniciosession div:last-child{
+    background-color: black;
+    width: 100%;
+    padding: 30px;
+    height: 80vh;
+    gap: 10px;
+}
+
+#fondoiniciosession h2 {
+    font-size: 200%;
+}
+
+#fondoiniciosession input {
+    width: 18rem;
+    height: 5rem;
+    border-radius: 50px;
+    color: black;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+
+#fondoiniciosession input:last-child {
+    margin-top: 40px;
+}
+
+
+/*Pagina Perfil*/
+#fondoperfil div:first-child {
+    background-color: var(--background1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+#fondoperfil div:first-child img {
+    border-radius: 100%;
+    height: 6rem;
+    width: 6rem;
+}
+
+#informacionperfil {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+#botonmarcadoresperfil {
+    transition: 300ms;
+    padding: 1.5rem 1rem;
+    background-color: var(--background1);
+    position: absolute;
+    top: 50%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: var(--text);
+    z-index: 2;
+}
+
+#botonmarcadoresperfil.activo {
+    transition: 300ms;
+    transform: rotate(180deg);
+    animation: rotateSideButton 0.5s ease-in-out;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+@keyframes rotateSideButton {
+    0% { transform: rotate(0deg); }
+    50% {border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
+        border-top-left-radius: 20px;}
+    100% { transform: rotate(180deg); }
+}
+
+#menulateralperfil {
+    position: fixed;
+    left: -100%; /* Oculto fuera de la pantalla */
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: #f0f0f0;
+    transition: left 0.5s ease-in-out;
+}
+
+#menulateralperfil.activo {
+    left: 0; 
 }
