@@ -122,6 +122,7 @@
 }
 
 #botonmarcadoresperfil {
+    transition: 300ms;
     padding: 1.5rem 1rem;
     background-color: var(--background1);
     position: absolute;
@@ -129,4 +130,38 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     color: var(--text);
+    z-index: 2;
+}
+
+#botonmarcadoresperfil.activo {
+    transition: 300ms;
+    transform: rotate(180deg);
+    animation: rotateSideButton 0.5s ease-in-out;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+@keyframes rotateSideButton {
+    0% { transform: rotate(0deg); }
+    50% {border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-bottom-left-radius: 20px;
+        border-top-left-radius: 20px;}
+    100% { transform: rotate(180deg); }
+}
+
+#menulateralperfil {
+    position: fixed;
+    left: -100%; /* Oculto fuera de la pantalla */
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: #f0f0f0;
+    transition: left 0.5s ease-in-out;
+}
+
+#menulateralperfil.activo {
+    left: 0; 
 }
