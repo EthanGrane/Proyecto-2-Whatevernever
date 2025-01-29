@@ -21,7 +21,7 @@ function toggleMenuLateral() {
         </div>
         <button id="botonmarcadoresperfil" :class="{ activo: menuVisible}" @click="toggleMenuLateral">></button>
         <div id="menulateralperfil" :class="{ activo: menuVisible }">
-            <h1>Puta</h1>
+            <h2>Marcadores</h2>
         </div>
     </div>
 </template>
