@@ -1,19 +1,34 @@
-/.phpunit.cache
+# Dependencias de PHP y Node.js
+/vendor
 /node_modules
 /public/build
 /public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+
+# Archivos sensibles y configuración local
+.env*
+Homestead.*
 auth.json
-npm-debug.log
-yarn-error.log
+
+# Archivos de caché y logs
+.phpunit.result.cache
+/.phpunit.cache
+npm-debug.log*
+yarn-error.log*
+storage/*.key
+
+# Configuración de editores y herramientas locales
 /.fleet
 /.idea
 /.vscode
+
+# Laravel storage (excepto app/public para assets accesibles)
+storage/debugbar/
+storage/framework/*
+storage/logs/*
+storage/oauth-private.key
+storage/oauth-public.key
+storage/*.key
+
+# SQLite database (si usas SQLite)
+database/database.sqlite
+database/database.sqlite-journal
