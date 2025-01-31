@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'message' => 'inicio sessiada'], 200);
     }
 
     // Cerrar sesión
