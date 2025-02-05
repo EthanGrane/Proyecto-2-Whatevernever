@@ -1,16 +1,19 @@
 <template>
-    <div class="container">
+    <div class="tituloapp">
+        <h2>WhereEverNever.</h2>
+    </div>
+    <div class="container" id="templatelogin">
         <div class="row justify-content-center my-5">
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-
+                    <div class="card-body iniciosession">
+                        <h2>Inicio de Session</h2>
                         <form @submit.prevent="submitLogin">
                             <div class="">
                                 <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">{{ $t('email') }}</label>
-                                    <input v-model="loginForm.email" id="email" type="email" class="form-control" required autofocus autocomplete="username">
+                                    <input v-model="loginForm.email" id="email" type="email" class="form-control" required autofocus autocomplete="username" placeholder="email">
                                     <!-- Validation Errors -->
                                     <div class="text-danger mt-1">
                                         <div v-for="message in validationErrors?.email">
@@ -23,7 +26,7 @@
                                     <label for="password" class="form-label">
                                         {{ $t('password') }}
                                     </label>
-                                    <input v-model="loginForm.password" id="password" type="password" class="form-control" required autocomplete="current-password">
+                                    <input v-model="loginForm.password" id="password" type="password" class="form-control" required autocomplete="current-password" placeholder="********">
                                     <!-- Validation Errors -->
                                     <div class="text-danger-600 mt-1">
                                         <div v-for="message in validationErrors?.password">
@@ -33,7 +36,7 @@
                                 </div>
                                 <!-- Remember me -->
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" v-model="loginForm.remember" id="flexCheckIndeterminate">
+                                    <input class="form-check-input" type="checkbox" name="remember" v-model="loginForm.remember" id="recuerdameinput">
                                     <label class="form-check-label" for="flexCheckIndeterminate">
                                         {{ $t('remember_me') }}
                                     </label>
@@ -46,7 +49,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <router-link :to="{name: 'auth.forgot-password'}">{{ $t('forgot_password')}}</router-link>
+                            <!--<router-link :to="{name: 'auth.forgot-password'}">{{ $t('forgot_password')}}</router-link>-->
                         </form>
                     </div>
                 </div>
