@@ -1,7 +1,4 @@
 <template>
-    <div class="tituloapp">
-        <h2>WhereEverNever.</h2>
-    </div>
     <div class="container" id="templatelogin">
         <div class="row justify-content-center my-5">
             <div class="col-md-6">

@@ -5,11 +5,37 @@
     --text: #FFFFFF;
 }
 
+.inter {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
 
+    color: var(--text);
+
     font-family: 'Inter', Arial;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 30px 20px;
+    background-image: radial-gradient(ellipse 100% 100% at top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+header img {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+header h2 {
+    font-style: italic;
+    font-weight: 700;
 }
 
 html {
@@ -45,19 +71,35 @@ html {
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    background-color: var(--background1);
     display: flex;
     justify-content: space-around;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    background-color: var(--background1);
+}
+
+.navfooter * {
+    background-color: var(--background1);
 }
 
 .divmenufooter {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 25vw;
+}
+
+.divmenufooter div {
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.divmenufooter div a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
 }
 
 .tituloapp {
@@ -125,4 +167,10 @@ html {
 #recuerdameinput {
     background-color: var(--background3);
     border: var(--text);
+}
+
+/*Pagina home*/
+#map {
+    background-image: url("/public/images/backgroundmain.png");
+    background-size: cover;
 }

@@ -1,5 +1,12 @@
 <template>
+    <div id="map">
+
+    </div>
 </template>
+
+<script>
+
+</script>
 <!--
 <template>
     <div class="demo" id="edit-demo">

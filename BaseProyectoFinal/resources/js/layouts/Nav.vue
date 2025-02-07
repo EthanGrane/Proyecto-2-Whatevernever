@@ -1,16 +1,30 @@
 <template>
-    <nav class="navbar navbar-light bg-white shadow-sm navfooter">
-        <div class="container">
+    <nav class="navfooter">
+        <div>
+            <!--
             <ul class="navbar-nav mt-2 mt-lg-0 me-auto mb-2 mb-lg-0">
                 <LocaleSwitcher />
             </ul>
-            <ul class="navbar-nav mt-2 mt-lg-0 ms-auto divmenufooter">
-                    <li class="nav-item">
-                        <router-link to="/" class="nav-link" aria-current="page">{{ $t('home') }}</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link :to="{ name : 'public-posts.index'}" class="nav-link">Blog</router-link>
-                    </li>
+            -->
+            <div class="divmenufooter">
+                <div>
+                    <router-link to="/profile">
+                        <img src="/images/profile.webp" alt="Profile">
+                        {{ $t('profile') }}
+                    </router-link>
+                </div>
+                <div class="nav-item">
+                    <router-link to="/" aria-current="page">
+                        <img src="/images/Map.webp" alt="{{ $t('home') }}">
+                    </router-link>
+                </div>
+                <div>
+                    <router-link to="/search">
+                        <img src="/images/search.webp" alt="Profile">
+                        {{ $t('search') }}
+                    </router-link>
+                </div>
+                <!--
                 <template v-if="!authStore().user?.name">
                     <li class="nav-item">
                         <router-link class="nav-link" to="/login"
@@ -32,7 +46,8 @@
                         <li><a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a></li>
                     </ul>
                 </li>
-            </ul>
+                -->
+            </div>
         </div>
     </nav>
 </template>

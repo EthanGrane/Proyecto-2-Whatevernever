@@ -87,3 +87,6 @@ php artisan serve
 ```bash
 npm run build or yarn build
 ```
+
+### Localizacion de importacion de footer y header
+resources/js/components/layouts/Guest.vue
