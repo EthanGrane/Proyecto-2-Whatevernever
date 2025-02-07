@@ -18,10 +18,10 @@ export function InitializeMap(centerLngLon) {
 
     // Hide Controls
     map.addControl(new mapboxgl.NavigationControl({
-        showCompass: false,
-        showZoom: false,
-        visualizePitch: false
-    }));
+        showCompass: true,
+        showZoom: true,
+        visualizePitch: true,
+    }),'bottom-right');
 
     // Debug
     map.on('dblclick', (e) => {
