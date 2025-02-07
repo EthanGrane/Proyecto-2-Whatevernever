@@ -1,4 +1,16 @@
 # Readme
-### Recursos:
-https://docs.mapbox.com/help/dive-deeper/web-apps/
-https://docs.mapbox.com/mapbox-gl-js/guides
+
+## Ayuda
+
+### Como iniciar VUE y Laravel?
+```
+php artisan serve  
+```
+```
+npm run dev
+```
+### Donde importar CSS?
+Proyecto2Base\resources\js\app.js
+```
+import '../css/app.css';
+```
