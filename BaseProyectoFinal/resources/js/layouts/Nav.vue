@@ -1,26 +1,28 @@
 <template>
-    <nav class="navfooter">
+    <nav>
         <div>
+
             <!--
             <ul class="navbar-nav mt-2 mt-lg-0 me-auto mb-2 mb-lg-0">
                 <LocaleSwitcher />
             </ul>
             -->
-            <div class="divmenufooter">
+
+            <div class="navMenu">
                 <div>
                     <router-link to="/profile">
-                        <img src="/images/profile.webp" alt="Profile">
+                        <img src="/images/icon_profile.svg" alt="Profile" class="icon">
                         {{ $t('profile') }}
                     </router-link>
                 </div>
                 <div class="nav-item">
                     <router-link to="/" aria-current="page">
-                        <img src="/images/Map.webp" alt="{{ $t('home') }}">
+                        <img src="/images/emoji_map.webp" alt="{{ $t('home') }}">
                     </router-link>
                 </div>
                 <div>
                     <router-link to="/search">
-                        <img src="/images/search.webp" alt="Profile">
+                        <img src="/images/icon_search.svg" alt="Profile" class="icon">
                         {{ $t('search') }}
                     </router-link>
                 </div>
