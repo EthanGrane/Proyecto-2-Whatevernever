@@ -5,11 +5,41 @@
     --text: #FFFFFF;
 }
 
+.inter {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
 
-    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+
+    font-family: 'Inter', Arial;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px 30px 20px;
+    background-image: radial-gradient(ellipse 100% 100% at top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+header img {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+header h2 {
+    font-style: italic;
+    font-weight: 700;
+}
+
+html {
+    background-color: var(--background1);
 }
 
 .boton1 {
@@ -32,7 +62,7 @@
     text-decoration: none;
 }
 
-#menunavegacion {
+.navfooter {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -41,9 +71,42 @@
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    background-color: var(--background1);
     display: flex;
     justify-content: space-around;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: var(--background1);
+}
+
+.navfooter * {
+    background-color: var(--background1);
+}
+
+.divmenufooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25vw;
+}
+
+.divmenufooter div {
+    max-height: 40px;
+    max-width: 40px;
+}
+
+.divmenufooter div a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.tituloapp {
+    color: var(--text);
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: -2rem;
 }
 
 #map {
@@ -57,112 +120,58 @@
 
 /*Inicio de session*/
 
-#fondoiniciosession * {
+#templatelogin {
+    background: linear-gradient(to bottom, #000000, #2A2A2A, #1A1A1A, #000000);
+}
+
+.iniciosession {
+    color: var(--text);
+    text-align: center;
+}
+
+.iniciosession * {
     font-size: 110%;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
-#fondoiniciosession div:first-child * {
-    font-size: 200%;
-    padding: 40px;
-    color: black;
+.iniciosession div div {
+    margin-top: 4rem;
 }
 
-#fondoiniciosession div:last-child{
-    background-color: black;
-    width: 100%;
-    padding: 30px;
-    height: 80vh;
-    gap: 10px;
+.iniciosession h2 {
+    font-size: 270%;
 }
 
-#fondoiniciosession h2 {
-    font-size: 200%;
+.iniciosession input {
+    background-color: rgba(0, 0, 0, 0.0);
+    border: none;
+    color: var(--background3);
 }
 
-#fondoiniciosession input {
-    width: 18rem;
-    height: 5rem;
-    border-radius: 50px;
-    color: black;
-    margin-top: -20px;
-    margin-bottom: -20px;
-}
-
-#fondoiniciosession input:last-child {
-    margin-top: 40px;
-}
-
-
-/*Pagina Perfil*/
-#fondoperfil div:first-child {
+.iniciosession input:hover {
     background-color: var(--background1);
-    padding: 1rem;
-    display: flex;
-    justify-content: space-around;
+    color: var(--text);
 }
 
-#fondoperfil div:first-child img {
-    border-radius: 100%;
-    height: 6rem;
-    width: 6rem;
-}
-
-#informacionperfil {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    color: white;
-}
-
-#botonmarcadoresperfil {
-    transition: 300ms;
-    padding: 1.5rem 1rem;
-    background-color: var(--background1);
+.iniciosession button {
     position: absolute;
-    top: 50%;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    color: var(--text);
-    z-index: 2;
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 1rem;
+    border-radius: 50px;
+    top: 120%;
+    right: 25%;
+    left: 25%;
+    
 }
 
-#botonmarcadoresperfil.activo {
-    transition: 300ms;
-    transform: rotate(180deg);
-    animation: rotateSideButton 0.5s ease-in-out;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-left-radius: 20px;
+#recuerdameinput {
+    background-color: var(--background3);
+    border: var(--text);
 }
 
-@keyframes rotateSideButton {
-    0% { transform: rotate(0deg); }
-    50% {border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-        border-bottom-left-radius: 20px;
-        border-top-left-radius: 20px;}
-    100% { transform: rotate(180deg); }
-}
-
-#menulateralperfil {
-    position: fixed;
-    left: -100%; /* Oculto fuera de la pantalla */
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    background: var(--background2);
-    transition: left 0.5s ease-in-out;
-    color: var(--text);
-}
-
-#menulateralperfil.activo {
-    left: 0; 
+/*Pagina home*/
+#map {
+    /*Borrar esto quano el mapa ya este implementado*/
+    background-image: url("/public/images/backgroundmain.png");
+    background-size: cover;
 }

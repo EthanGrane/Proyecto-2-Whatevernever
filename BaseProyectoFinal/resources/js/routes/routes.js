@@ -68,6 +68,16 @@ export default [
                 component: () => import('../views/home/index.vue'),
             },
             {
+                path: '/profile',
+                name: 'profile',
+                component: () => import('../views/profile/profileView.vue'),
+            },
+            {
+                path: '/search',
+                name: 'search',
+                component: () => import('../views/search/searchView.vue'),
+            },
+            {
                 path: 'posts',
                 name: 'public-posts.index',
                 component: () => import('../views/posts/index.vue'),
