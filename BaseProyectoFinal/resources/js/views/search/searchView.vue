@@ -1,5 +1,5 @@
 <template>
-    <h1>Puta 2</h1>
+    <h1>Search page</h1>
 </template>
 
 <script setup>

@@ -6,10 +6,10 @@
             </router-link>
         </div>
         <div>
-            <h2>WhereEverNever.</h2>
+            <h2>{{$t('whereevernever')}}.</h2>
         </div>
         <div>
-            <img src="/images/emoji_redPin.png">
+            <LocaleSwitcher />
         </div>
     </header>
 </template>
