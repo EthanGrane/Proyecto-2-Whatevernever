@@ -171,6 +171,7 @@ html {
 
 /*Pagina home*/
 #map {
+    /*Borrar esto quano el mapa ya este implementado*/
     background-image: url("/public/images/backgroundmain.png");
     background-size: cover;
 }
