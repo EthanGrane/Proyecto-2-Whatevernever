@@ -2,7 +2,7 @@
     <header>
         <div>
             <router-link to="/friends">
-                <img src="/images/icon_friends.webp">
+                <img src="/images/icon_friends.svg" class="icon">
             </router-link>
         </div>
         <div>

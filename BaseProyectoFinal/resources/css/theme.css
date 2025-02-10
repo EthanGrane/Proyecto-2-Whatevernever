@@ -32,6 +32,12 @@ header h2 {
     font-weight: 700;
 }
 
+.icon
+{
+    width: 24px;
+    height: 24px;
+}
+
 .inter {
     font-family: "Inter", serif;
     font-optical-sizing: auto;

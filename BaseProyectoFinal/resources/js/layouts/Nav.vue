@@ -1,7 +1,7 @@
 <template>
     <nav>
         <div>
-            
+
             <!--
             <ul class="navbar-nav mt-2 mt-lg-0 me-auto mb-2 mb-lg-0">
                 <LocaleSwitcher />
@@ -11,7 +11,7 @@
             <div class="navMenu">
                 <div>
                     <router-link to="/profile">
-                        <img src="/images/icon_userProfile.webp" alt="Profile">
+                        <img src="/images/icon_profile.svg" alt="Profile" class="icon">
                         {{ $t('profile') }}
                     </router-link>
                 </div>
@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <router-link to="/search">
-                        <img src="/images/icon_search.webp" alt="Profile">
+                        <img src="/images/icon_search.svg" alt="Profile" class="icon">
                         {{ $t('search') }}
                     </router-link>
                 </div>
