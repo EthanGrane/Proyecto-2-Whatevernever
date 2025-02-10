@@ -2,6 +2,8 @@ let map = null;
 let markers = [];
 let friends = [];
 
+console.log("Hello world!");
+
 export function InitializeMap(centerLngLon) {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
 
