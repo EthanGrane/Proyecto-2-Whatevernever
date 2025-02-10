@@ -2,14 +2,14 @@
     <header>
         <div>
             <router-link to="/friends">
-                <img src="/images/Friend_Icon.webp">
+                <img src="/images/icon_friends.webp">
             </router-link>
         </div>
         <div>
             <h2>WhereEverNever.</h2>
         </div>
         <div>
-            <img src="/images/ping_red.png">
+            <img src="/images/emoji_redPin.png">
         </div>
     </header>
 </template>
