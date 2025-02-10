@@ -1,0 +1,49 @@
+
+#templatelogin {
+    background: linear-gradient(to bottom, #000000, #2A2A2A, #1A1A1A, #000000);
+}
+
+.iniciosession {
+    color: var(--text);
+    text-align: center;
+}
+
+.iniciosession * {
+    font-size: 110%;
+}
+
+.iniciosession div div {
+    margin-top: 4rem;
+}
+
+.iniciosession h2 {
+    font-size: 270%;
+}
+
+.iniciosession input {
+    background-color: rgba(0, 0, 0, 0.0);
+    border: none;
+    color: var(--background3);
+}
+
+.iniciosession input:hover {
+    background-color: var(--background1);
+    color: var(--text);
+}
+
+.iniciosession button {
+    position: absolute;
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 1rem;
+    border-radius: 50px;
+    top: 120%;
+    right: 25%;
+    left: 25%;
+    
+}
+
+#recuerdameinput {
+    background-color: var(--background3);
+    border: var(--text);
+}

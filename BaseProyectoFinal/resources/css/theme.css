@@ -5,17 +5,11 @@
     --text: #FFFFFF;
 }
 
-.inter {
-    font-family: "Inter", serif;
-    font-optical-sizing: auto;
-    font-weight: 100;
-    font-style: normal;
-}
-
-* {
+html {
     margin: 0;
     padding: 0;
 
+    background-color: var(--background1);
     color: var(--text);
 
     font-family: 'Inter', Arial;
@@ -38,11 +32,20 @@ header h2 {
     font-weight: 700;
 }
 
-html {
-    background-color: var(--background1);
+.icon
+{
+    width: 24px;
+    height: 24px;
 }
 
-.boton1 {
+.inter {
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.primaryButton {
     background-color: var(--background2);
     color: var(--text);
     padding: 10px;
@@ -50,11 +53,11 @@ html {
     text-decoration: none;
 }
 
-.boton1:hover {
+.primaryButton:hover {
     background-color: var(--background3);
 }
 
-.boton2 {
+.secondaryButton {
     background-color: var(--text);
     color: var(--background1);
     padding: 10px;
@@ -62,47 +65,7 @@ html {
     text-decoration: none;
 }
 
-.navfooter {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    justify-content: space-around;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    background-color: var(--background1);
-}
-
-.navfooter * {
-    background-color: var(--background1);
-}
-
-.divmenufooter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 25vw;
-}
-
-.divmenufooter div {
-    max-height: 40px;
-    max-width: 40px;
-}
-
-.divmenufooter div a{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text);
-}
-
-.tituloapp {
+.titleLogo {
     color: var(--text);
     text-align: center;
     padding-top: 2rem;
@@ -116,62 +79,4 @@ html {
     height: 100%;
     width: 100%;
     z-index: -1;
-}
-
-/*Inicio de session*/
-
-#templatelogin {
-    background: linear-gradient(to bottom, #000000, #2A2A2A, #1A1A1A, #000000);
-}
-
-.iniciosession {
-    color: var(--text);
-    text-align: center;
-}
-
-.iniciosession * {
-    font-size: 110%;
-}
-
-.iniciosession div div {
-    margin-top: 4rem;
-}
-
-.iniciosession h2 {
-    font-size: 270%;
-}
-
-.iniciosession input {
-    background-color: rgba(0, 0, 0, 0.0);
-    border: none;
-    color: var(--background3);
-}
-
-.iniciosession input:hover {
-    background-color: var(--background1);
-    color: var(--text);
-}
-
-.iniciosession button {
-    position: absolute;
-    background-color: var(--text);
-    color: var(--background1);
-    padding: 1rem;
-    border-radius: 50px;
-    top: 120%;
-    right: 25%;
-    left: 25%;
-    
-}
-
-#recuerdameinput {
-    background-color: var(--background3);
-    border: var(--text);
-}
-
-/*Pagina home*/
-#map {
-    /*Borrar esto quano el mapa ya este implementado*/
-    background-image: url("/public/images/backgroundmain.png");
-    background-size: cover;
 }
