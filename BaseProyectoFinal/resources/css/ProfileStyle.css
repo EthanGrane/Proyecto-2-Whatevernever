@@ -1,0 +1,14 @@
+.fondoperfil {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.infoperfil {
+    padding-top: 15vh;
+    background: linear-gradient(#AB6F00, #000000);
+    position: absolute;
+    top: 0%;
+    z-index: -1;
+    width: 100%;
+}

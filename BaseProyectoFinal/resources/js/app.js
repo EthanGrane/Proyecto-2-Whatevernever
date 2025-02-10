@@ -66,6 +66,7 @@ import "primeicons/primeicons.css";
 import 'sweetalert2/dist/sweetalert2.min.css';
 */
 import '../css/theme.css';
+import '../css/ProfileStyle.css';
 
 const app = createApp({
     created() {
