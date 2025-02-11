@@ -1,0 +1,30 @@
+#fondobuscador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#fondobuscador div:first-child input {
+    border-radius: 40px;
+    padding: 16px;
+    border: none;
+    width: 80vw;
+}
+
+#resultadobusqueda {
+    width: 100vw;
+}
+
+.searchuserdiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px;
+}
+
+.infousersearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
