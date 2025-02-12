@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 5vh;
 }
 
 #fondobuscador div:first-child input {
@@ -12,7 +13,7 @@
 }
 
 #resultadobusqueda {
-    width: 100vw;
+    width: 95vw;
 }
 
 .searchuserdiv {

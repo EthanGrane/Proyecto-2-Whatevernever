@@ -17,6 +17,9 @@ html {
 }
 
 header {
+    position: sticky;
+    top: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 10px 20px 30px 20px;
@@ -72,11 +75,19 @@ header h2 {
 }
 
 .ternaryButton {
+    transition: 500ms;
     background-color: var(--background4);
     border: 2px solid var(--background3);
     border-radius: 40px;
     color: white;
     padding: 10px;
+}
+
+.ternaryButton:hover {
+    transition: 500ms;
+    background-color: var(--text);
+    border: 2px solid var(--background4);
+    color: #000000;
 }
 
 .titleLogo {
@@ -93,4 +104,40 @@ header h2 {
     height: 100%;
     width: 100%;
     z-index: -1;
+}
+
+/*Barra de scroll*/
+/* Amplada */
+::-webkit-scrollbar {
+    width: 1.1rem;
+}
+
+/* Fons */
+::-webkit-scrollbar-track {
+    background: var(--background1);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+/* barra */
+::-webkit-scrollbar-thumb {
+    background: var(--background2);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+/* Cambio de color al pasar el mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--background3);
+}
+
+
+/*Transicion entre paginas*/
+/*         */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.4s ease-in;
+}
+
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
 }

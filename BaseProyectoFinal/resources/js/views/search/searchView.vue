@@ -24,12 +24,22 @@
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 
-//Se deveria obtener de la base de datos con la api
-const users = ref([
-    { name: "Rana Gustavo", username: "ranagustavo", image: "/images/users/ranagustavo.webp" },
-    { name: "Juan Pérez", username: "juanperez", image: "/images/users/ranagustavo.webp" },
-    { name: "Maria López", username: "marialopez", image: "/images/users/ranagustavo.webp" }
-]);
+const users = ref("");
+
+async function cargarUsers(params) {
+    axios.get('http://127.0.0.1:8000/api/friends/showFriends')
+    .then(response => {
+        users.value = response.data;
+    })
+    .catch(error => {
+        console.error("Hubo un error:", error);
+    });
+}
+
+cargarUsers();
+
+console.log(users);
 
 </script>

@@ -78,6 +78,11 @@ export default [
                 component: () => import('../views/search/searchView.vue'),
             },
             {
+                path: '/friends',
+                name: 'friends',
+                component: () => import('../views/friends/friendsView.vue'),
+            },
+            {
                 path: 'posts',
                 name: 'public-posts.index',
                 component: () => import('../views/posts/index.vue'),
