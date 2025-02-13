@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('marker_reviews', function (Blueprint $table) {
             $table->id();
-            $table->integer('review_starts');
+            $table->integer('review_stars');
             $table->string('review_content')->nullable();
             $table->integer('user_id');
             $table->integer('marker_id');
