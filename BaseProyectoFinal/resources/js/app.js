@@ -69,7 +69,6 @@ import '../css/theme.css';
 import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
 
-
 const app = createApp({
     created() {
         useAuth().getUser()

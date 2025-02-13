@@ -16,8 +16,6 @@ nav {
 
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-
-    /*z-index: 1000;*/
 }
 
 .navMenu {
@@ -25,6 +23,7 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 25vw;
+    width: 90%;
 }
 
 .navMenu div {
