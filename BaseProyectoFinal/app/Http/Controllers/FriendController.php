@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 class FriendController extends Controller
 {
-    public function showFriends() {
+    public function showFriends(Request $request) {
+        $search = $request->query('search');
+
         $compe = [
             [ "name"=> "Rana Gustavo", "username"=> "ranagustavo", "image"=> "/images/users/ranagustavo.webp" ],
             [ "name"=> "Juan Pérez", "username"=> "juanperez", "image"=> "/images/users/ranagustavo.webp" ],
