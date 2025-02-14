@@ -69,6 +69,7 @@ import '../css/theme.css';
 import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
 import '../css/ProfileStyle.css';
+import '../css/SearchStyle.css';
 
 const app = createApp({
     created() {

@@ -32,5 +32,10 @@
     "password_updated": "¡Tu contraseña ha sido actualizada!",
     "new_password": "Nueva Contraseña",
     "login_with": "Iniciar Sesión con",
-    "register_with": "Registro con"
+    "register_with": "Registro con",
+    "viewfriendmap": "Mapa Amigo",
+    "lastmarkers": "Ultimos MARCADORES",
+    "whereevernever": "WhereEverNever",
+    "addfriendbutton": "Añadir",
+    "buscadoramigos": "🔎 Buscar Amigos..."
 }

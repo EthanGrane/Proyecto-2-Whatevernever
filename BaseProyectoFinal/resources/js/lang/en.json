@@ -24,6 +24,7 @@
     "send_password_reset_link": "Send Password Reset Link",
     "settings": "Settings",
     "profile": "Profile",
+    "search": "Search",
     "your_info": "Your Info",
     "info_updated": "Your info has been updated!",
     "update": "Update",
@@ -36,5 +37,10 @@
     "send_verification_link": "Send Verification Link",
     "resend_verification_link": "Resend Verification Link ?",
     "failed_to_verify_email": "Failed to verify email.",
-    "verify_email_address": "We sent you an email with an the verification link."
+    "verify_email_address": "We sent you an email with an the verification link.",
+    "viewfriendmap": "View Friend Map",
+    "lastmarkers": "Last MARKERS",
+    "whereevernever": "Black man cool word",
+    "addfriendbutton": "Add",
+    "buscadoramigos": "🔎 Search Friends..."
 }
