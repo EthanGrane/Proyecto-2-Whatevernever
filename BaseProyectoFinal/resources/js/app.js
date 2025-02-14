@@ -68,6 +68,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import '../css/theme.css';
 import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
+import '../css/ProfileStyle.css';
 
 const app = createApp({
     created() {
