@@ -2,8 +2,7 @@ let map = null;
 let markers = [];
 let friends = [];
 
-export function InitializeMap(centerLngLon) 
-{
+export function InitializeMap(centerLngLon) {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
 
     const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
@@ -19,7 +18,7 @@ export function InitializeMap(centerLngLon)
 
     // Hide Controls
     map.addControl(new mapboxgl.NavigationControl({
-        showCompass: true,
+        showCompass: false,
         showZoom: true,
         visualizePitch: true,
     }),'bottom-right');
@@ -71,6 +70,7 @@ export function ReloadMapMarkers(map) {
         element.style.width = `${width}px`;
         element.style.height = `${height}px`;
         element.style.backgroundSize = '100%';
+        element.style.borderRadius = '100%';
 
         element.addEventListener('click', () => {
             FlyToPosition(friend.lng, friend.lat, map, 12);
@@ -78,7 +78,9 @@ export function ReloadMapMarkers(map) {
 
         new mapboxgl.Marker(element)
             .setLngLat([friend.lng, friend.lat])
-            .addTo(map);
+            .addTo(map);        
+        
+        console.log(friend.profilePicture);
     }
 }
 

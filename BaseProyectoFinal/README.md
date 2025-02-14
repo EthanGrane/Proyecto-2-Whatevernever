@@ -47,6 +47,15 @@ Entrar a la carpeta del repositorio
 composer install
 ```
 
+### Instalar SPARTIE
+
+https://www.youtube.com/watch?v=NMFKF77XSBE
+
+```bash
+composer require "spatie/laravel-medialibrary"
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="medialibrary-migrations"
+```
+
 ### Copiar el fichero .env.example  a .env edita las credenciales de la base de datos y la url
 
 
