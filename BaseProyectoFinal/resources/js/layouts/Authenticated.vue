@@ -1,4 +1,12 @@
 <template>
+    <div>
+        <router-view v-slot="{ Component }">
+            <transition name="fade" mode="out-in">
+                <component :is="Component" />
+            </transition>
+        </router-view>
+    </div>
+    <!--
     <div class="layout-wrapper" :class="containerClass">
         <app-topbar></app-topbar>
         <div class="layout-sidebar">
@@ -39,9 +47,13 @@
 
         <div class="layout-mask"></div>
     </div>
+    -->
 </template>
 
 <script setup>
+import Navbar from './Nav.vue';
+import Header from './Header.vue';
+/*
 import { computed, watch, ref } from 'vue';
 import { useRoute } from "vue-router";
 import Breadcrumb from 'primevue/breadcrumb';
@@ -130,11 +142,13 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
-
+*/
 </script>
 
 <style lang="scss">
+/*
 .bread{
     padding:.1rem;
 }
+*/
 </style>

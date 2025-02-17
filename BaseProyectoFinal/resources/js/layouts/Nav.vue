@@ -1,6 +1,5 @@
 <template>
     <nav>
-        <div>
 
             <!--
             <ul class="navbar-nav mt-2 mt-lg-0 me-auto mb-2 mb-lg-0">
@@ -50,7 +49,6 @@
                 </li>
                 -->
             </div>
-        </div>
     </nav>
 </template>
 

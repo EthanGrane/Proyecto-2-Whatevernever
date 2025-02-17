@@ -103,7 +103,6 @@ header h2 {
     bottom: 0;
     height: 100%;
     width: 100%;
-    z-index: -1;
 }
 
 /*Barra de scroll*/
