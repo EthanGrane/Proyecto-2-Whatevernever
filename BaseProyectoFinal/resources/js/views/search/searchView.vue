@@ -1,3 +1,47 @@
+
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+const users = ref("");
+const loading = ref(true);
+const inputbusqueda = ref("");
+let timeout;
+
+async function cargarUsers() {
+    loading.value = true;
+    axios.get('http://127.0.0.1:8000/api/friends/showFriends?search='+inputbusqueda.value)
+    .then(response => 
+    {
+        users.value = response.data;
+        loading.value = false;
+    })
+    .catch(error => 
+    {
+        console.error("[SearchView.vue] Error:", error);
+        loading.value = false;
+    });
+}
+
+cargarUsers();
+
+function manejarInput() {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+        cargarUsers();
+    }, 500);
+}
+
+/*
+@error="setDefaultImage"
+
+function setDefaultImage(Event) {
+    Event.target.src = '/images/ProfilePicture_0.jpg';
+}
+*/
+</script>
+
 <template>
     <div id="fondobuscador">
         <div>
@@ -40,44 +84,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-
-const users = ref("");
-const loading = ref(true);
-const inputbusqueda = ref("");
-let timeout;
-
-async function cargarUsers() {
-    loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/friends/showFriends?search='+inputbusqueda.value)
-    .then(response => {
-        users.value = response.data;
-        loading.value = false;
-    })
-    .catch(error => {
-        console.error("Hubo un error:", error);
-        loading.value = false;
-    });
-}
-
-cargarUsers();
-
-function manejarInput() {
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-        cargarUsers();
-    }, 500);
-}
-
-/*
-@error="setDefaultImage"
-
-function setDefaultImage(Event) {
-    Event.target.src = '/images/ProfilePicture_0.jpg';
-}
-*/
-</script>

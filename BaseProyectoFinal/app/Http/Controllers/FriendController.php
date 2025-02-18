@@ -12,11 +12,12 @@ class FriendController extends Controller
 
         $query = User::query();
 
-        if ($search) {
+        if ($search) 
+        {
             $query->where('name', 'like', "%$search%");
         }
 
-        $friends = $query->get(['name', 'username']);
+        $friends = $query->get(['name', 'username', 'last_lng', 'last_lat']);
 
         return response()->json($friends);
     }
