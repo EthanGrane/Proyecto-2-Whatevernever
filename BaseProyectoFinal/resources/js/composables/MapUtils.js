@@ -1,6 +1,6 @@
 let map = null;
-let markers = [];
 let friends = [];
+let selectedFriend = null;
 
 export function InitializeMap(centerLngLon) {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
@@ -80,9 +80,15 @@ export function ReloadMapMarkers(map)
         element.style.height = `${height}px`;
         element.style.backgroundSize = '100%';
         element.style.borderRadius = '100%';
+        element.style.boxShadow = 'rgb(0 0 0 / 15%) 0px 16px 4px';
 
-        element.addEventListener('click', () => {
-            FlyToPosition(friend.last_lng, friend.last_lat, map, 12);
+        element.dataset.originalWidth = width;
+        element.dataset.originalHeight = height;
+
+        element.addEventListener('click', () => 
+        {
+            FlyToPosition(friend.last_lng, friend.last_lat, map);
+            SelectFriend(element);
         });
 
         new mapboxgl.Marker(element)
@@ -93,6 +99,29 @@ export function ReloadMapMarkers(map)
     }
 }
 
+function SelectFriend(friendElement) 
+{
+    if (selectedFriend !== null || selectedFriend == friendElement) 
+    {
+        selectedFriend.style.width = `${selectedFriend.dataset.originalWidth}px`;
+        selectedFriend.style.height = `${selectedFriend.dataset.originalHeight}px`;
+        selectedFriend.style.zIndex = 0;
+        selectedFriend.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${selectedFriend.dataset.originalWidth / 2}px 4px`;
+
+        if(selectedFriend == friendElement)
+        {
+            selectedFriend = null;
+            return; 
+        }
+    }
+
+    selectedFriend = friendElement;
+
+    selectedFriend.style.width = '128px';
+    selectedFriend.style.height = '128px';
+    selectedFriend.style.boxShadow = 'black 0 0 32px';
+    selectedFriend.style.zIndex = 1;
+}
 
 export function FlyToPosition(lng, lat, map, zoom = -1) {
     if (zoom == -1) {
