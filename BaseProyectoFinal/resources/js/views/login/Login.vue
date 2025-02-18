@@ -4,7 +4,7 @@
             <div class="col-md-6">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body iniciosession">
-                        <h2>Inicio de Session</h2>
+                        <h2>Inicio de Sesión</h2>
                         <form @submit.prevent="submitLogin">
                             <div class="">
                                 <!-- Email -->
@@ -12,8 +12,8 @@
                                     <label for="email" class="form-label">{{ $t('email') }}</label>
                                     <input v-model="loginForm.email" id="email" type="email" class="form-control" required autofocus autocomplete="username" placeholder="email">
                                     <!-- Validation Errors -->
-                                    <div class="text-danger mt-1">
-                                        <div v-for="message in validationErrors?.email">
+                                    <div v-if="validationErrors?.email" class="text-danger mt-1">
+                                        <div v-for="message in validationErrors.email" :key="message">
                                             {{ message }}
                                         </div>
                                     </div>
@@ -25,28 +25,29 @@
                                     </label>
                                     <input v-model="loginForm.password" id="password" type="password" class="form-control" required autocomplete="current-password" placeholder="********">
                                     <!-- Validation Errors -->
-                                    <div class="text-danger-600 mt-1">
-                                        <div v-for="message in validationErrors?.password">
+                                    <div v-if="validationErrors?.password" class="text-danger mt-1">
+                                        <div v-for="message in validationErrors.password" :key="message">
                                             {{ message }}
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Remember me -->
-                                <div class="form-check">
+                                <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" name="remember" v-model="loginForm.remember" id="recuerdameinput">
-                                    <label class="form-check-label" for="flexCheckIndeterminate">
+                                    <label class="form-check-label" for="recuerdameinput">
                                         {{ $t('remember_me') }}
                                     </label>
                                 </div>
 
                                 <!-- Buttons -->
-                                <div class="flex items-center justify-end mt-4">
+                                <div class="d-flex justify-content-end mt-4">
                                     <button class="btn btn-primary" :class="{ 'opacity-25': processing }" :disabled="processing">
+                                        <span v-if="processing" class="spinner-border spinner-border-sm"></span>
                                         {{ $t('login') }}
                                     </button>
                                 </div>
                             </div>
-                            <!--<router-link :to="{name: 'auth.forgot-password'}">{{ $t('forgot_password')}}</router-link>-->
+                            <router-link :to="{name: 'auth.forgot-password'}">{{ $t('forgot_password')}}</router-link>
                         </form>
                     </div>
                 </div>
@@ -56,9 +57,7 @@
 </template>
 
 <script setup>
-
 import useAuth from '@/composables/auth'
 
 const { loginForm, validationErrors, processing, submitLogin } = useAuth();
-
 </script>

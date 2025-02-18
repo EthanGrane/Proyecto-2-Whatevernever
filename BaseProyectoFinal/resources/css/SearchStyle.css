@@ -34,6 +34,20 @@
 .infousersearch img {
     height: 87px;
     width: 87px;
+    border-radius: 100%;
+}
+
+.infousersearch p:nth-child(2) {
+    text-align: center;
+    border-radius: 50px;
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 0px 10px;
+}
+
+#notfoundsearcherror {
+    text-align: center;
+    margin: 30px;
 }
 
 .imagenfalsa_carga {

@@ -1,7 +1,7 @@
 <template>
     <div id="fondobuscador">
         <div>
-            <input v-model="inputbusqueda" @change="cargarUsers" :placeholder="$t('buscadoramigos')">
+            <input v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
         </div>
         <div id="resultadobusqueda">
             <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
@@ -22,7 +22,7 @@
             <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
                 <div class="infousersearch">
                     <div>
-                        <img :src="user.image" :alt="user.name">
+                        <img :src="user.image ? user.image : '/images/ProfilePicture_1.jpg'" alt="User image">
                     </div>
                     <div>
                         <b><p>{{ user.name }}</p></b>
@@ -32,6 +32,10 @@
                 <div>
                     <button class="ternaryButton">{{ $t('addfriendbutton') }}</button>
                 </div>
+            </div>
+
+            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
+                <h2>No se encontro el usuario deseado :(</h2>
             </div>
         </div>
     </div>
@@ -44,6 +48,7 @@ import axios from 'axios';
 const users = ref("");
 const loading = ref(true);
 const inputbusqueda = ref("");
+let timeout;
 
 async function cargarUsers() {
     loading.value = true;
@@ -60,4 +65,19 @@ async function cargarUsers() {
 
 cargarUsers();
 
+function manejarInput() {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+        cargarUsers();
+    }, 500);
+}
+
+/*
+@error="setDefaultImage"
+
+function setDefaultImage(Event) {
+    Event.target.src = '/images/ProfilePicture_0.jpg';
+}
+*/
 </script>

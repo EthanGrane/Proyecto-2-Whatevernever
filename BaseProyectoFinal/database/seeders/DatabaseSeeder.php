@@ -7,9 +7,12 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $this->call(CategoryTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
-        $this->call(CreateAdminUserSeeder::class);
+        //$this->call(CreateAdminUserSeeder::class);
+        $this->call(friends_table_seeder::class);
+        $this->call(marker_reviews_table_seeder::class);
+        $this->call(markers_table_seeder::class);
+        $this->call(user_table_seeder::class);
 
         // $this->call(RoleSeeder::class);
         // \App\Models\User::factory(10)->create();

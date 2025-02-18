@@ -66,21 +66,25 @@ export default [
                 path: '/',
                 name: 'home',
                 component: () => import('../views/home/index.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: '/profile',
                 name: 'profile',
                 component: () => import('../views/profile/profileView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: '/search',
                 name: 'search',
                 component: () => import('../views/search/searchView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: '/friends',
                 name: 'friends',
                 component: () => import('../views/friends/friendsView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: 'posts',
