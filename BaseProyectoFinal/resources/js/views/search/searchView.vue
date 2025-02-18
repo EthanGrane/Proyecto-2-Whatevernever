@@ -74,7 +74,7 @@ function setDefaultImage(Event) {
                     </div>
                 </div>
                 <div>
-                    <button class="ternaryButton">{{ $t('addfriendbutton') }}</button>
+                    <button class="ternaryButton">{{ $t('addFriendText') }}</button>
                 </div>
             </div>
 

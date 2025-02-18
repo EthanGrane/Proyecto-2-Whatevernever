@@ -6,7 +6,7 @@
             </router-link>
         </div>
         <div>
-            <h2>{{$t('whereevernever')}}.</h2>
+            <h2>{{$t('brandName')}}.</h2>
         </div>
         <div>
             <LocaleSwitcher />

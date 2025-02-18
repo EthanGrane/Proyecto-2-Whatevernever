@@ -68,8 +68,10 @@ export function ReloadMapMarkers(map)
         console.log(friend);
         
         const element = document.createElement('div');
-        const width = 64;
-        const height = 64;
+        
+        const sizeReduction = Math.floor(Math.random() * 32);
+        const width = 64 - sizeReduction;
+        const height = 64 - sizeReduction;
 
         element.className = 'map-marker';
         element.style.backgroundImage = `url(/images/ProfilePicture_${(index % 9)}.jpg)`;
