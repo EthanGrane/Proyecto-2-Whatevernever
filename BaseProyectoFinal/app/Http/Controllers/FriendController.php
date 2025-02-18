@@ -12,11 +12,12 @@ class FriendController extends Controller
 
         $query = User::query();
 
-        if ($search) {
+        if ($search) 
+        {
             $query->where('name', 'like', "%$search%");
         }
 
-        $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username']);
+        $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
 
         foreach ($friends as $friend) {
             $media = $friend->getFirstMedia('users');

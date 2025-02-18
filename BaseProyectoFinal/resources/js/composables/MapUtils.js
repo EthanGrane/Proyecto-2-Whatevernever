@@ -54,30 +54,39 @@ export function SetFriends(newFriends)
     friends.push(...newFriends);
 }
 
-export function ReloadMapMarkers(map) {
+export function ReloadMapMarkers(map) 
+{
+    console.log("ReloadMarker");
     const markers = document.querySelectorAll('.marker');
     markers.forEach(marker => marker.remove());
 
-    for (let index = 0; index < friends.length; index++) {
+    console.log(`Friends lenght: ${friends.length}`)
+    for (let index = 0; index < friends.length; index++) 
+    {
         const friend = friends[index];
-
+        
+        console.log(friend);
+        
         const element = document.createElement('div');
-        const width = 64;
-        const height = 64;
+        
+        const sizeReduction = Math.floor(Math.random() * 32);
+        const width = 64 - sizeReduction;
+        const height = 64 - sizeReduction;
 
         element.className = 'map-marker';
-        element.style.backgroundImage = `url(${friend.profilePicture})`;
+        element.style.backgroundImage = `url(/images/ProfilePicture_${(index % 9)}.jpg)`;
+        //element.style.backgroundImage = `url(${friend.profilePicture})`;
         element.style.width = `${width}px`;
         element.style.height = `${height}px`;
         element.style.backgroundSize = '100%';
         element.style.borderRadius = '100%';
 
         element.addEventListener('click', () => {
-            FlyToPosition(friend.lng, friend.lat, map, 12);
+            FlyToPosition(friend.last_lng, friend.last_lat, map, 12);
         });
 
         new mapboxgl.Marker(element)
-            .setLngLat([friend.lng, friend.lat])
+            .setLngLat([friend.last_lng, friend.last_lat])
             .addTo(map);        
         
         console.log(friend.profilePicture);
