@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('username');
             $table->string('name');
             $table->string('email');
+            $table->string('desc');
             $table->string('password');
             $table->double('last_lng')->nullable();
             $table->double('last_lat')->nullable();

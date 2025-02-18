@@ -20,7 +20,7 @@ import { authStore } from "../../store/auth";
 const image = ref("/images/users/ranagustavo.webp");
 const name = ref( authStore().user?.name );
 const username = ref( authStore().user?.username );
-const description = ref("https://www.pacosanz.com/donaciones");
+const description = ref( authStore().user?.desc );
 
 
 </script>

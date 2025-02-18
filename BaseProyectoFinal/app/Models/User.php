@@ -24,6 +24,7 @@ class User extends Authenticatable implements HasMedia
         'password',
         'last_lng',
         'last_lat',
+        'desc',
     ];
 
     /**
