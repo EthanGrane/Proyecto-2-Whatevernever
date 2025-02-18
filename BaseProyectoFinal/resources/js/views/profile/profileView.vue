@@ -15,9 +15,11 @@
 
 <script setup>
 import { ref } from 'vue';
+import { authStore } from "../../store/auth";
+
 const image = ref("/images/users/ranagustavo.webp");
-const name = ref("Paco Sanz");
-const username = ref("pacosanz");
+const name = ref( authStore().user?.name );
+const username = ref( authStore().user?.username );
 const description = ref("https://www.pacosanz.com/donaciones");
 
 
