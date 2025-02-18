@@ -17,7 +17,12 @@ class FriendController extends Controller
             $query->where('name', 'like', "%$search%");
         }
 
-        $friends = $query->get(['name', 'username', 'last_lng', 'last_lat']);
+        $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
+
+        foreach ($friends as $friend) {
+            $media = $friend->getFirstMedia('users');
+            $friend->image = $media ? $media->getUrl() : asset('images/ProfilePicture_7.jpg');
+        }
 
         return response()->json($friends);
     }
