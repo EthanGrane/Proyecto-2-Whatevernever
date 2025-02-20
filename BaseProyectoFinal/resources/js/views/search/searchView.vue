@@ -2,6 +2,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { forEach } from 'lodash';
 
 const users = ref("");
 const loading = ref(true);
@@ -15,6 +16,15 @@ async function cargarUsers() {
     {
         users.value = response.data;
         loading.value = false;
+
+        users.value.forEach(user => {
+            try {
+                user.image = "images/users/"+user.media[0].file_name;
+            } catch (error) {
+                user.image = "";
+            }
+        });
+
     })
     .catch(error => 
     {
@@ -22,6 +32,7 @@ async function cargarUsers() {
         loading.value = false;
     });
 }
+
 
 cargarUsers();
 
@@ -66,7 +77,7 @@ function setDefaultImage(Event) {
             <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
                 <div class="infousersearch">
                     <div>
-                        <img :src="user.image ? user.image : '/images/ProfilePicture_1.jpg'" alt="User image">
+                        <img :src="user.image ? user.image : '/images/icon_profile.svg'" alt="User image">
                     </div>
                     <div>
                         <b><p>{{ user.name }}</p></b>

@@ -77,6 +77,9 @@ const app = createApp({
     }
 });
 
+const api= "127.0.0.1:8000/";
+const url= "127.0.0.1:8000/";
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
