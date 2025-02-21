@@ -1,6 +1,36 @@
 
-#templatelogin {
-    background: linear-gradient(to bottom, #000000, #2A2A2A, #1A1A1A, #000000);
+label
+{
+    font-weight: 700;
+}
+
+input
+{
+    background: none !important;
+    background-color: none !important;
+    border-width: 0 !important;
+    color: white !important;
+}
+
+input::placeholder
+{
+    color: #787878 !important;
+}
+
+input:-webkit-autofill {
+    background-color: transparent !important;
+}
+
+input:-moz-autofill {
+    background-color: transparent !important;
+}
+
+input:-ms-input-placeholder {
+    background-color: transparent !important;
+}
+.loginContainer
+{
+    background: black;
 }
 
 .iniciosession {
@@ -43,7 +73,22 @@
     
 }
 
-#recuerdameinput {
-    background-color: var(--background3);
-    border: var(--text);
+.checkLabel
+{
+    width: 100%;
+
+    font-weight: 200; 
+    font-size: smaller;
+    text-align: left !important;
+}
+
+.checkInput {
+    border: 1px solid white !important;
+    background-color: none !important;
+    transition: background-color 0.3s ease
+}
+
+.checkInput:checked {
+    background-color: white !important;
+    transition: background-color 0.3s ease
 }
