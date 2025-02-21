@@ -31,6 +31,7 @@ export function InitializeMap(centerLngLon) {
     // Disable some Intreaction Handles
     map['dragRotate'].disable();
 
+
     return map;
 }
 
