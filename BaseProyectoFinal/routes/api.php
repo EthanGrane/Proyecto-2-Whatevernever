@@ -55,3 +55,4 @@ Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
 
 //API
 Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
+Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);

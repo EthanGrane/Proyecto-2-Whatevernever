@@ -73,4 +73,20 @@ class User extends Authenticatable implements HasMedia
                 ->height(env('IMAGE_HEIGHT', 300));
         }
     }
+
+    /*
+    public function friends() {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'sender_user_id')
+                    ->using(Friend::class)
+                    ->withPivot('request_status');
+    }
+    */
+
+    public function sentFriendRequests() {
+        return $this->hasMany(Friend::class, 'sender_user_id');
+    }
+    
+    public function receivedFriendRequests() {
+        return $this->hasMany(Friend::class, 'reciver_user_id');
+    }
 }

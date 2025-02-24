@@ -70,6 +70,7 @@ import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
 import '../css/ProfileStyle.css';
 import '../css/SearchStyle.css';
+import '../css/friendsStyle.css';
 
 const app = createApp({
     created() {
