@@ -18,4 +18,10 @@ class Friend extends Pivot
         'reciver_user_id',
         'friend_group_id',
     ];
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_user_id');
+    }
+
 }

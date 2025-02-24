@@ -13,7 +13,7 @@
 }
 
 .friendsbuttonsNOTselected {
-    transition: 300ms;
+    transition: 400ms;
     background: none;
     color: var(--text);
     border: none;
@@ -23,7 +23,7 @@
 }
 
 .friendsbuttonsselected {
-    transition: 300ms;
+    transition: 400ms;
     background-color: var(--text);
     color: var(--background1);
     border: none;

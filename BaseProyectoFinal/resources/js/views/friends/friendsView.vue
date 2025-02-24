@@ -5,7 +5,7 @@
         </div>
         <div id="friendsbuttons">
             <button :class="{ friendsbuttonsselected: pages, friendsbuttonsNOTselected: !pages }" @click="page1">
-                Amigos
+                Notificaciones
             </button>
             <button :class="{ friendsbuttonsselected: !pages, friendsbuttonsNOTselected: pages }" @click="page2">
                 Solicitudes

@@ -27,16 +27,33 @@ class FriendController extends Controller
         return response()->json($friends);
     }
 
+    /*
     public function showMyFriends(Request $request) {
         $userId = $request->query('user');
+        $status = $request->query('status');
 
         $user = User::findOrFail($userId);
     
         // Obtener las solicitudes de amistad enviadas por el usuario
         $sentRequests = $user->sentFriendRequests()
-            ->where('request_status', 1)  // Si quieres filtrar por estado, como "pendiente"
+            ->where('request_status', $status)  // Si quieres filtrar por estado, como "pendiente"
             ->get();
     
         return response()->json($sentRequests);
+    }
+    */
+
+    public function showMyFriends(Request $request)
+    {
+        $userId = $request->query('user');
+        //$status = $request->query('status');
+
+        $user = User::findOrFail($userId); // Obtener usuario autenticado
+
+        $friendRequests = $user->friendsReceived()->get();
+
+        return response()->json([
+            $friendRequests
+        ]);
     }
 }
