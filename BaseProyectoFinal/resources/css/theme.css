@@ -13,7 +13,7 @@ html {
     background-color: var(--background1);
     color: var(--text);
 
-    font-family: 'Inter', Arial;
+    font-family: "IBM Plex Sans", serif;
 }
 
 header {
@@ -36,7 +36,7 @@ header img {
     max-width: 50px;
 }
 
-header h2 {
+.brandName {
     font-style: italic;
     font-weight: 700;
 }
@@ -55,15 +55,17 @@ header h2 {
 }
 
 .primaryButton {
-    background-color: var(--background2);
-    color: var(--text);
-    padding: 10px;
-    border-radius: 20px;
-    text-decoration: none;
+    background-color: white !important;
+    color: black !important;
+    font-weight: 500;
+    padding: 10px !important;
+    border-radius: 20px !important;
+    border-width: 0 !important;
+    text-decoration: none !important;
 }
 
 .primaryButton:hover {
-    background-color: var(--background3);
+    background-color: rgb(223, 223, 223) !important;
 }
 
 .secondaryButton {
