@@ -17,7 +17,7 @@ class friends_table_seeder extends Seeder
     {
         $faker = Faker::create();
 
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 200) as $index) {
             $sender = mt_rand(1, 50);
             $reciver = mt_rand(1, 50);
             if ($sender == $reciver) {

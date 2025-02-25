@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
             $table->boolean('request_status')->default(false);
-            $table->integer('sender_user_id');
-            $table->integer('reciver_user_id');
+            $table->foreignId('sender_user_id')->constrained('users');
+            $table->foreignId('reciver_user_id')->constrained('users');
             $table->integer('friend_group_id')->nullable();
             $table->timestamps();
         });

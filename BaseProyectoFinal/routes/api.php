@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthorController;
+use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FriendController;
 
 Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forget.password.post');
 Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
@@ -55,3 +55,4 @@ Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
 
 //API
 Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
+Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);

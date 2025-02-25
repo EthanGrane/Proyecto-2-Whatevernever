@@ -70,12 +70,16 @@ import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
 import '../css/ProfileStyle.css';
 import '../css/SearchStyle.css';
+import '../css/friendsStyle.css';
 
 const app = createApp({
     created() {
         useAuth().getUser()
     }
 });
+
+const api= "127.0.0.1:8000/";
+const url= "127.0.0.1:8000/";
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
