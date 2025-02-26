@@ -56,7 +56,7 @@ function setDefaultImage(Event) {
 <template>
     <div id="fondobuscador">
         <div>
-            <input v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
+            <input class="searchfield" v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
         </div>
         <div id="resultadobusqueda">
             <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">

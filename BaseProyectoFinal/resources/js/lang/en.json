@@ -44,5 +44,6 @@
     "addFriendText": "Add",
     "buscadoramigos": "🔎 Search Friends...",
     "termsAndConditions":  "He leído y acepto los términos y condiciones de uso.",
-    "friends_title": "My Friends"
+    "friends_title": "My Friends",
+    "acceptFriendRequest": "Accept"
 }

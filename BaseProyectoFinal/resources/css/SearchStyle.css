@@ -88,3 +88,8 @@
         opacity: 0.5;
     }
 }
+
+.searchfield {
+    background-color: var(--text) !important;
+    color: var(--background1) !important;
+}

@@ -30,6 +30,10 @@
     font-size: 125%;
     border-bottom: 2px solid var(--text);
     width: 100%;
-    border-top-left-radius: 40px;
-    border-top-right-radius: 40px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.friendrequestspage {
+    width: 100%;
 }
