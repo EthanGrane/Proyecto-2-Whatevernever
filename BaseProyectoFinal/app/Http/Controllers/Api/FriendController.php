@@ -52,8 +52,16 @@ class FriendController extends Controller
 
         $friendRequests = $user->friendsReceived()->get();
 
-        return response()->json([
+        return response()->json(
             $friendRequests
-        ]);
+        );
+    }
+
+    public function acceptFriend(Request $request) {
+        $userId = auth()->id();
+
+        return response()->json(
+            $userId
+        );
     }
 }
