@@ -45,5 +45,8 @@
     "buscadoramigos": "🔎 Search Friends...",
     "termsAndConditions":  "He leído y acepto los términos y condiciones de uso.",
     "friends_title": "My Friends",
-    "acceptFriendRequest": "Accept"
+    "acceptFriendRequest": "Accept",
+    "cancelFriendRequest": "Cancel",
+    "sendRequests": "Requests Send",
+    "recivedRequests": "Requests Recived"
 }

@@ -3,6 +3,10 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { forEach } from 'lodash';
+import { authStore } from "../../store/auth";
+
+const auth = authStore();
+const user_id = ref(auth.user?.id);
 
 const users = ref("");
 const loading = ref(true);
@@ -31,6 +35,13 @@ async function cargarUsers() {
         console.error("[SearchView.vue] Error:", error);
         loading.value = false;
     });
+}
+
+async function sendRequest(id_reciver) {
+    axios.post('http://127.0.0.1:8000/api/friends/request', {
+        "id_sender": user_id.value,
+        "id_receiver": id_reciver
+    })
 }
 
 
@@ -85,7 +96,7 @@ function setDefaultImage(Event) {
                     </div>
                 </div>
                 <div>
-                    <button class="ternaryButton">{{ $t('addFriendText') }}</button>
+                    <button @click="sendRequest(user.id)" class="ternaryButton">{{ $t('addFriendText') }}</button>
                 </div>
             </div>
 

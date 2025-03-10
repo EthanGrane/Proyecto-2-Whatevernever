@@ -5,45 +5,102 @@
         </div>
         <div id="friendsbuttons">
             <button :class="{ friendsbuttonsselected: pages, friendsbuttonsNOTselected: !pages }" @click="page1">
-                Amigos
+                {{$t('sendRequests')}}
             </button>
             <button :class="{ friendsbuttonsselected: !pages, friendsbuttonsNOTselected: pages }" @click="page2">
-                Solicitudes
+                {{ $t('recivedRequests') }}
             </button>
         </div>
-        <div v-if="pages">
-            <p>Amigos</p>
-        </div>
-        <div v-if="!pages" class="friendrequestspage">
-            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
+        <!--Requests i send-->
+        <div v-if="pages" class="friendrequestspage">
+            <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
                 <div class="infousersearch">
+                    <div>
+                        <div class="imagenfalsa_carga"></div>
+                    </div>
+                    <div>
+                        <div class="nombrefalso_carga"></div>
+                        <div class="nombrefalso_carga"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="botonfalso_carga"></div>
+                </div>
+            </div>
+            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
+                <div class="infousersearch" v-if="user.request_status == 0">
                     <div>
                         <img src="/images/icon_profile.svg" alt="User image">
                     </div>
                     <div>
-                        <b><p>{{ user.name }}</p></b>
-                        <p>{{ user.username }}</p>
+                        <b><p>{{ user.reciver.name }}</p></b>
+                        <p>{{ user.reciver.username }}</p>
+                    </div>
+                </div>
+                <div v-if="user.request_status == 0">
+                    <button @click="deleteFriend(user.id)" class="ternaryButton">{{ $t('cancelFriendRequest') }}</button>
+                </div>
+            </div>
+            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
+                <h2>Sin solicitudes</h2>
+            </div>
+        </div>
+        <!--Requests i recive-->
+        <div v-if="!pages" class="friendrequestspage">
+            <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
+                <div class="infousersearch">
+                    <div>
+                        <div class="imagenfalsa_carga"></div>
+                    </div>
+                    <div>
+                        <div class="nombrefalso_carga"></div>
+                        <div class="nombrefalso_carga"></div>
                     </div>
                 </div>
                 <div>
-                    <button class="ternaryButton">{{ $t('acceptFriendRequest') }}</button>
+                    <div class="botonfalso_carga"></div>
                 </div>
+            </div>
+            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
+                <div class="infousersearch" v-if="user.request_status == 0">
+                    <div>
+                        <img src="/images/icon_profile.svg" alt="User image">
+                    </div>
+                    <div>
+                        <b><p>{{ user.sender.name }}</p></b>
+                        <p>{{ user.sender.username }}</p>
+                    </div>
+                </div>
+                <div v-if="user.request_status == 0">
+                    <button @click="acceptRequest(user.id)" class="ternaryButton">{{ $t('acceptFriendRequest') }}</button>
+                </div>
+            </div>
+            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
+                <h2>Sin solicitudes</h2>
             </div>
         </div>
     </div>
 </template>
 <script setup>
 import { ref } from 'vue';
+import { authStore } from "../../store/auth";
+import axios from 'axios';
+
+    const auth = authStore();
+    const user_id = ref(auth.user?.id);
 
     const loading = ref(false);
     const users = ref([]);
     const pages = ref(true);
 
-    async function cargarUsers() {
-    loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/friends/myFriends?user=102')
+    console.log("Id usuario: " + user_id.value);
+
+    async function cargarRequests() {
+        loading.value = true;
+        axios.get('http://127.0.0.1:8000/api/friends/myFriends?user='+user_id.value)
         .then(response => {
-            users.value = response.data.map(request => request.sender); // Extraemos solo los usuarios
+            users.value = response.data;
+            //users.value = response.data.map(request => request.sender);
             loading.value = false;
         })
         .catch(error => {
@@ -52,13 +109,65 @@ import { ref } from 'vue';
         });
     }
 
+    async function LoadRequestsSend() {
+        loading.value = true;
+        axios.get('http://127.0.0.1:8000/api/friends/requestsSend?user='+user_id.value)
+        .then(response => {
+            users.value = response.data;
+
+            loading.value = false;
+        })
+        .catch(error => {
+            console.error("[FriendsView.vue] Error:", error);
+            loading.value = false;
+        })
+    }
+
     function page1() {
         pages.value = true;
+        users.value = [];
+        LoadRequestsSend();
     }
 
     function page2() {
         pages.value = false;
+        users.value = [];
+        cargarRequests();
     }
 
-    cargarUsers();
+    async function acceptRequest(id_friendship) {
+        try {
+            axios.post('http://127.0.0.1:8000/api/friends/accept', {
+                "id": id_friendship,
+            })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error("[SearchView.vue] Error:", error);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function deleteFriend(id_friendship) {
+        try {
+            axios.post('http://127.0.0.1:8000/api/friends/delete', {
+                "friend_id": id_friendship,
+            })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.error("[SearchView.vue] Error:", error);
+            });
+
+            LoadRequestsSend();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    LoadRequestsSend();
 </script>

@@ -56,4 +56,7 @@ Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
 //API
 Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
 Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
+Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
 Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
+Route::post('/friends/request', [FriendController::class, 'createRequest']);
+Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
