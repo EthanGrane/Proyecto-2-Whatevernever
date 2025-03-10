@@ -11,6 +11,7 @@
                 {{ $t('recivedRequests') }}
             </button>
         </div>
+        
         <!--Requests i send-->
         <div v-if="pages" class="friendrequestspage">
             <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
@@ -42,7 +43,7 @@
                 </div>
             </div>
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>Sin solicitudes</h2>
+                <h2>{{$t('withoutrequests')}}</h2>
             </div>
         </div>
         <!--Requests i recive-->
@@ -76,7 +77,7 @@
                 </div>
             </div>
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>Sin solicitudes</h2>
+                <h2>{{$t('withoutrequests')}}</h2>
             </div>
         </div>
     </div>

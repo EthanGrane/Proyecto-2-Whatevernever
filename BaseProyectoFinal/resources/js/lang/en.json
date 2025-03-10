@@ -48,5 +48,8 @@
     "acceptFriendRequest": "Accept",
     "cancelFriendRequest": "Cancel",
     "sendRequests": "Requests Send",
-    "recivedRequests": "Requests Recived"
+    "recivedRequests": "Requests Recived",
+    "usernotfound": "User not found :(",
+    "withoutrequests": "Without requests",
+    "friendscounter": "Friends"
 }

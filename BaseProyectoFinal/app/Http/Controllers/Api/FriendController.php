@@ -44,7 +44,7 @@ class FriendController extends Controller
     }
     */
 
-    //Show user friends
+    //Show friends that recived a request
     public function showMyFriends(Request $request)
     {
         $userId = $request->query('user');
@@ -59,6 +59,7 @@ class FriendController extends Controller
         );
     }
 
+    //Show friends i send a request
     public function requestsSent(Request $request) {
         $userId = $request->query('user');
 
@@ -69,6 +70,20 @@ class FriendController extends Controller
         return response()->json(
             $friendRequests
         );
+    }
+
+    //Muestra todos tus amigos tanto los que has enviado la solicitut como los que has recivido
+    public function ShowAllFriends(Request $request) {
+        $userId = $request->query('user');
+    
+        $user = User::findOrFail($userId);
+    
+        $friendsSent = $user->friendsSent()->get();
+        $friendsReceived = $user->friendsReceived()->get();
+    
+        $allFriends = $friendsSent->merge($friendsReceived);
+    
+        return response()->json($allFriends);
     }
 
     //Delete Friendship or friend request (its the same in the bbdd)

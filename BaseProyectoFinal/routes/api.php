@@ -60,3 +60,4 @@ Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
 Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
 Route::post('/friends/request', [FriendController::class, 'createRequest']);
 Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
+Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);

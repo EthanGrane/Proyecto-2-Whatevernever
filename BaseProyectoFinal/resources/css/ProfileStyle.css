@@ -32,3 +32,49 @@
 .markers h4 {
     text-align: left;
 }
+
+.numeroseguidores {
+    transition: 300ms;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.numeroseguidores:hover {
+    transition: 300ms;
+    filter: invert();
+}
+
+.numeroseguidores h3 {
+    border-radius: 100%;
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 10px;
+}
+
+.numeroseguidores h4 {
+    text-decoration: underline;
+}
+
+/*Panel de amigos*/
+.panelamigos {
+    position: fixed;
+    top: 15vh;
+    left: 19vw;
+    background-color: var(--background1);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    width: 60vw;
+    height: 60vh;
+    z-index: 10;
+    color: white;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.tituloibotoncerraramigos {
+    display: flex;
+    justify-content: space-between;
+}

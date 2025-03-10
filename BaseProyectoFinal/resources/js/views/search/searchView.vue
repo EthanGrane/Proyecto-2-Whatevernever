@@ -101,7 +101,7 @@ function setDefaultImage(Event) {
             </div>
 
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>No se encontro el usuario deseado :(</h2>
+                <h2>{{ $t('usernotfound') }}</h2>
             </div>
         </div>
     </div>
