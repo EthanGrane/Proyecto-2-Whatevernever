@@ -47,6 +47,11 @@ header img {
     height: 24px;
 }
 
+.icon-shake-hover:hover
+{
+    animation: shake 0.6s ease-in-out 1;
+}
+
 .inter {
     font-family: "Inter", serif;
     font-optical-sizing: auto;
@@ -136,4 +141,13 @@ header img {
 
 .fade-enter-from, .fade-leave-to {
     opacity: 0;
+}
+
+@keyframes shake 
+{
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-15deg); }
+    40% { transform: rotate(15deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
 }

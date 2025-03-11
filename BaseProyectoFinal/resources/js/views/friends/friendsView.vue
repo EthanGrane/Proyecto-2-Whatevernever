@@ -1,8 +1,5 @@
 <template>
     <div id="backgroundfriends">
-        <div>
-            <h1>{{ $t('friends_title') }}</h1>
-        </div>
         <div id="friendsbuttons">
             <button :class="{ friendsbuttonsselected: pages, friendsbuttonsNOTselected: !pages }" @click="page1">
                 Amigos

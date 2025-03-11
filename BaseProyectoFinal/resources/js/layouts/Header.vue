@@ -2,7 +2,7 @@
     <header>
         <div>
             <router-link to="/friends">
-                <img src="/images/icon_friends.svg" class="icon">
+                <img src="/images/icon_notification-bell.svg" class="icon icon-shake-hover">
             </router-link>
         </div>
         <div>
