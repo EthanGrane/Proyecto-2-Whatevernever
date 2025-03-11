@@ -70,7 +70,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-end mt-3">
-                                            <button class="btn btn-primary btn-sm" :class="{ 'opacity-25': processing }"
+                                            <button class="btn btn-primary btn-sm primary-button" :class="{ 'opacity-25': processing }"
                                                 :disabled="processing">
                                                 <span v-if="processing" class="spinner-border spinner-border-sm"></span>
                                                 {{ $t('login') }}

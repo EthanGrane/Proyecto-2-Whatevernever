@@ -1,14 +1,14 @@
 <template>
-    <div class="fondoperfil">
-        <div class="infoperfil">
+    <div class="profile-background">
+        <div class="profile-info-container">
             <img :src="image" :alt="image">
             <h1>{{ name }}</h1>
-            <h3 class="usernamestyle">{{ username }}</h3>
+            <h3 class="profile-info-username">{{ username }}</h3>
             <p>{{ description }}</p>
-            <button class="ternaryButton">🗺️ {{ $t('viewfriendmap') }}</button>
+            <button class="secondary-button">🗺️ {{ $t('viewfriendmap') }}</button>
         </div>
-        <div class="markers">
-            <h4>📍 {{ $t('lastmarkers') }}</h4>
+        <div class="profile-markers-list">
+            <h4>📍 {{ $t('lastprofile-markers-list') }}</h4>
         </div>
     </div>
 </template>

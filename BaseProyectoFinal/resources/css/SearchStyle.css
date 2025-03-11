@@ -1,43 +1,64 @@
-#fondobuscador {
+.search-background {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 5vh;
+    margin-top: 6vh;
 }
 
-#fondobuscador div:first-child input {
-    border-radius: 40px;
+.search-field {
+    width: 75vw;
+    margin-bottom: 32px;
+
+    border-radius: 42px;
     padding: 16px;
     border: none;
-    width: 80vw;
+
+    background-color: var(--text) !important;
+    color: var(--background1) !important;
 }
 
-#resultadobusqueda {
-    width: 95vw;
+
+#search-user-list-container {
+    width: 75%;
+    margin: auto;
     padding-bottom: 4rem;
 }
 
-.searchuserdiv {
+.search-user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.search-user-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 40px;
+    width: 100%;
+    margin-bottom: 32px;
 }
 
-.infousersearch {
+.search-user-information-container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
 }
 
-.infousersearch img {
+.search-user-information-container img {
     height: 87px;
     width: 87px;
     border-radius: 100%;
 }
 
-.infousersearch p:nth-child(2) {
+.search-user-information-name 
+{
+    font-size: x-large;
+    font-weight: 500;
+}
+
+.search-user-information-username {
     text-align: center;
     border-radius: 50px;
     background-color: var(--text);
@@ -45,39 +66,56 @@
     padding: 0px 10px;
 }
 
-#notfoundsearcherror {
-    text-align: center;
-    margin: 30px;
-}
-
-.imagenfalsa_carga {
+.search-fake-user-image {
     background-color: var(--background2);
     height: 87px;
     width: 87px;
-    border-radius: 50px;
+    border-radius: 100%;
 }
 
-.nombrefalso_carga {
+.search-fake-user-name {
     background-color: var(--background2);
-    margin: 5px;
-    height: 25px;
-    width: 25vw;
-    border-radius: 20px;
+    margin: 6px;
+    height: 26px;
+    width: 26vw;
+    border-radius: 8px;
 }
 
-.botonfalso_carga {
+.search-fake-user-username {
     background-color: var(--background2);
-    margin: 5px;
-    height: 40px;
-    width: 70px;
-    border-radius: 50px;
+    margin: 6px;
+    height: 26px;
+    width: 16vw;
+    border-radius: 16px;
 }
 
-.imagenfalsa_carga, .nombrefalso_carga, .botonfalso_carga {
-    animation: pulso 1s infinite;
+.search-fake-user-description {
+    background-color: var(--background2);
+    margin: 6px;
+    height: 26px;
+    width: 32vw;
+    border-radius: 16px;
 }
 
-@keyframes pulso {
+.search-fake-button {
+    background-color: var(--background2);
+    margin: 6px;
+    height: 46px;
+    width: 72px;
+    border-radius: 32px;
+}
+
+.search-fake-user-image, .nombrefalso_carga, .search-fake-button {
+    animation: fade-pulse 1s infinite;
+}
+
+#notfoundsearcherror {
+    text-align: center;
+    margin: 32px;
+}
+
+
+@keyframes fade-pulse {
     0% {
         opacity: 0.5;
     }
@@ -87,9 +125,4 @@
     100% {
         opacity: 0.5;
     }
-}
-
-.searchfield {
-    background-color: var(--text) !important;
-    color: var(--background1) !important;
 }
