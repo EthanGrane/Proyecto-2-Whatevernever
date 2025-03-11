@@ -95,4 +95,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Friend::class, 'reciver_user_id')
                     ->with('sender');
     }
+
+    public function friendsSent()
+    {
+        return $this->hasMany(Friend::class, 'sender_user_id')
+                    ->with('reciver');
+    }
 }

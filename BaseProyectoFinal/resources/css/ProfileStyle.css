@@ -37,3 +37,75 @@
 .profile-markers-list h4 {
     text-align: left;
 }
+
+.numeroseguidores {
+    transition: 300ms;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.numeroseguidores:hover {
+    transition: 300ms;
+    filter: invert();
+}
+
+.numeroseguidores h3 {
+    border-radius: 100%;
+    background-color: var(--text);
+    color: var(--background1);
+    padding: 10px;
+}
+
+.numeroseguidores h4 {
+    text-decoration: underline;
+}
+
+/*Panel de amigos*/
+.panelamigos {
+    position: fixed;
+    top: 15vh;
+    left: 19vw;
+    background-color: var(--background1);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    width: 60vw;
+    height: 60vh;
+    z-index: 10;
+    color: white;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.tituloibotoncerraramigos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.friendlistprofile {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 50vh;
+}
+
+.friendlistprofile::-webkit-scrollbar {
+    width: 0.8rem;
+}
+
+.friendlistprofile::-webkit-scrollbar-track {
+    background: var(--background4);
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+.friendlistprofile::-webkit-scrollbar-thumb {
+    background: var(--background3);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.friendlistprofile::-webkit-scrollbar-thumb:hover {
+    background: var(--text);
+}

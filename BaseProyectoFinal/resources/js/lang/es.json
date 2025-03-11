@@ -40,5 +40,11 @@
     "buscadoramigos": "🔎 Buscar Amigos...",
     "termsAndConditions":  "He leído y acepto los términos y condiciones de uso.",
     "friends_title": "Mis Amigos",
-    "acceptFriendRequest": "Aceptar"
+    "acceptFriendRequest": "Aceptar",
+    "cancelFriendRequest": "Cancelar",
+    "sendRequests": "Solicitudes Enviadas",
+    "recivedRequests": "Solicitudes Recividas",
+    "usernotfound": "No se encontro el usuario deseado :(",
+    "withoutrequests": "Sin solicitudes",
+    "friendscounter": "Amigos"
 }

@@ -3,6 +3,10 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { forEach } from 'lodash';
+import { authStore } from "../../store/auth";
+
+const auth = authStore();
+const user_id = ref(auth.user?.id);
 
 const users = ref("");
 const loading = ref(true);
@@ -33,6 +37,15 @@ async function cargarUsers() {
     });
 }
 
+async function sendRequest(id_reciver) {
+    axios.post('http://127.0.0.1:8000/api/friends/request', {
+        "id_sender": user_id.value,
+        "id_receiver": id_reciver
+    })
+}
+
+
+cargarUsers();
 function manejarInput() {
     clearTimeout(timeout);
 
@@ -93,12 +106,13 @@ setTimeout(() => {
                 </div>
 
                 <div>
-                    <button class="secondary-button">{{ $t('addFriendText') }}</button>
+                    <button @click="sendRequest(user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
+
                 </div>
             </div>
 
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>No se encontro el usuario deseado :(</h2>
+                <h2>{{ $t('usernotfound') }}</h2>
             </div>
         </div>
     </div>
