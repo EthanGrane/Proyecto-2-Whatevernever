@@ -52,7 +52,7 @@ class FriendController extends Controller
 
         $user = User::findOrFail($userId); // Obtener usuario autenticado
 
-        $friendRequests = $user->friendsReceived()->get();
+        $friendRequests = $user->friendsReceived()->where('request_status', '!=', 1)->get();
 
         return response()->json(
             $friendRequests
@@ -65,7 +65,7 @@ class FriendController extends Controller
 
         $user = User::findOrFail($userId);
         
-        $friendRequests = $user->friendsSent()->get();
+        $friendRequests = $user->friendsSent()->where('request_status', '!=', 1)->get();
 
         return response()->json(
             $friendRequests
@@ -78,12 +78,11 @@ class FriendController extends Controller
     
         $user = User::findOrFail($userId);
     
-        $friendsSent = $user->friendsSent()->get();
-        $friendsReceived = $user->friendsReceived()->get();
+        $friendsSent = $user->friendsSent()->where('request_status', '!=', 0)->get();
+        $friendsReceived = $user->friendsReceived()->where('request_status', '!=', 0)->get();
     
         $allFriends = $friendsSent->merge($friendsReceived);
     
-        //Cambia la clave de sender o reciver por simplemente user
         $formattedFriends = $allFriends->map(function ($friend) {
             return [
                 'id' => $friend->id,
@@ -95,7 +94,7 @@ class FriendController extends Controller
         });
     
         return response()->json($formattedFriends);
-    }
+    }    
 
     //Delete Friendship or friend request (its the same in the bbdd)
     public function deleteFriend(Request $request) {

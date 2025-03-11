@@ -51,5 +51,7 @@
     "recivedRequests": "Requests Recived",
     "usernotfound": "User not found :(",
     "withoutrequests": "Without requests",
-    "friendscounter": "Friends"
+    "friendscounter": "Friends",
+    "deleteFriend": "Eliminate",
+    "withoutfriends": "Without friends :'("
 }

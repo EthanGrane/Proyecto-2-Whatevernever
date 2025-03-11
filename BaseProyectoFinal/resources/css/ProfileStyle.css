@@ -55,9 +55,11 @@
 
 .numeroseguidores h3 {
     border-radius: 100%;
+    width: 3vw;
     background-color: var(--text);
     color: var(--background1);
     padding: 10px;
+    text-align: center;
 }
 
 .numeroseguidores h4 {
@@ -108,4 +110,15 @@
 
 .friendlistprofile::-webkit-scrollbar-thumb:hover {
     background: var(--text);
+}
+
+.closse-friend-panel {
+    transition: 300ms;
+    border-radius: 100%;
+    border: none;
+}
+
+.closse-friend-panel:hover {
+    transition: 300ms;
+    filter: invert();
 }

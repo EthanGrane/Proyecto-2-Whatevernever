@@ -11,32 +11,37 @@
         
         <!--Requests i send-->
         <div v-if="pages" class="friendrequestspage">
-            <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
-                <div class="infousersearch">
+            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
+                <div class="search-user-information-container">
                     <div>
-                        <div class="imagenfalsa_carga"></div>
+                        <div class="search-fake-user-image"></div>
                     </div>
                     <div>
-                        <div class="nombrefalso_carga"></div>
-                        <div class="nombrefalso_carga"></div>
+                        <div class="search-fake-user-username"></div>
+
+                        <div class="d-flex flex-row">
+                            <div class="search-fake-user-name"></div>
+                            <div class="search-fake-user-description"></div>
+                        </div>
+
                     </div>
                 </div>
                 <div>
-                    <div class="botonfalso_carga"></div>
+                    <div class="search-fake-button"></div>
                 </div>
             </div>
-            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
-                <div class="infousersearch" v-if="user.request_status == 0">
+            <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                <div class="search-user-information-container" v-if="user.request_status == 0">
                     <div>
-                        <img src="/images/icon_profile.svg" alt="User image">
+                        <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
                     </div>
-                    <div>
-                        <b><p>{{ user.reciver.name }}</p></b>
-                        <p>{{ user.reciver.username }}</p>
+                    <div class="search-user-information">
+                        <b><p class="search-user-information-name">{{ user.reciver.name }}</p></b>
+                        <p class="search-user-information-username">{{ user.reciver.username }}</p>
                     </div>
                 </div>
                 <div v-if="user.request_status == 0">
-                    <button @click="deleteFriend(user.id)" class="ternaryButton">{{ $t('cancelFriendRequest') }}</button>
+                    <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('cancelFriendRequest') }}</button>
                 </div>
             </div>
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
@@ -45,32 +50,37 @@
         </div>
         <!--Requests i recive-->
         <div v-if="!pages" class="friendrequestspage">
-            <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
-                <div class="infousersearch">
+            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
+                <div class="search-user-information-container">
                     <div>
-                        <div class="imagenfalsa_carga"></div>
+                        <div class="search-fake-user-image"></div>
                     </div>
                     <div>
-                        <div class="nombrefalso_carga"></div>
-                        <div class="nombrefalso_carga"></div>
+                        <div class="search-fake-user-username"></div>
+
+                        <div class="d-flex flex-row">
+                            <div class="search-fake-user-name"></div>
+                            <div class="search-fake-user-description"></div>
+                        </div>
+
                     </div>
                 </div>
                 <div>
-                    <div class="botonfalso_carga"></div>
+                    <div class="search-fake-button"></div>
                 </div>
             </div>
-            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
-                <div class="infousersearch" v-if="user.request_status == 0">
+            <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                <div class="search-user-information-container" v-if="user.request_status == 0">
                     <div>
-                        <img src="/images/icon_profile.svg" alt="User image">
+                        <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
                     </div>
-                    <div>
-                        <b><p>{{ user.sender.name }}</p></b>
-                        <p>{{ user.sender.username }}</p>
+                    <div class="search-user-information">
+                        <b><p class="search-user-information-name">{{ user.sender.name }}</p></b>
+                        <p class="search-user-information-username">{{ user.sender.username }}</p>
                     </div>
                 </div>
                 <div v-if="user.request_status == 0">
-                    <button @click="acceptRequest(user.id)" class="ternaryButton">{{ $t('acceptFriendRequest') }}</button>
+                    <button @click="acceptRequest(user.id)" class="secondary-button">{{ $t('acceptFriendRequest') }}</button>
                 </div>
             </div>
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
@@ -144,6 +154,9 @@ import axios from 'axios';
             .catch(error => {
                 console.error("[SearchView.vue] Error:", error);
             });
+
+            users.value = [];
+            setTimeout(cargarRequests, 1000);
         } catch (error) {
             console.log(error);
         }
@@ -161,7 +174,8 @@ import axios from 'axios';
                 console.error("[SearchView.vue] Error:", error);
             });
 
-            LoadRequestsSend();
+            users.value = [];
+            setTimeout(LoadRequestsSend, 1000);
         } catch (error) {
             console.log(error);
         }
