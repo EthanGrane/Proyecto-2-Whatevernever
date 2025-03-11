@@ -83,7 +83,18 @@ class FriendController extends Controller
     
         $allFriends = $friendsSent->merge($friendsReceived);
     
-        return response()->json($allFriends);
+        //Cambia la clave de sender o reciver por simplemente user
+        $formattedFriends = $allFriends->map(function ($friend) {
+            return [
+                'id' => $friend->id,
+                'request_status' => $friend->request_status,
+                'user' => $friend->sender_user_id == auth()->id() ? $friend->reciver : $friend->sender,
+                'created_at' => $friend->created_at,
+                'updated_at' => $friend->updated_at,
+            ];
+        });
+    
+        return response()->json($formattedFriends);
     }
 
     //Delete Friendship or friend request (its the same in the bbdd)

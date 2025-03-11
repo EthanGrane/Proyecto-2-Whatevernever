@@ -19,47 +19,51 @@
             <h4>📍 {{ $t('lastmarkers') }}</h4>
         </div>
         <!--Amigos-->
-        <div v-if="panelamigos" class="panelamigos">
-            <div class="tituloibotoncerraramigos">
-                <div>
-                    <h3>{{ $t('friendscounter') }}</h3>
-                </div>
-                <div>
-                    <button @click="panelamigos = false">X</button>
-                </div>
-                <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
-                    <div class="infousersearch">
-                        <div>
-                            <div class="imagenfalsa_carga"></div>
-                        </div>
-                        <div>
-                            <div class="nombrefalso_carga"></div>
-                            <div class="nombrefalso_carga"></div>
-                        </div>
+        <transition name="fade">
+            <div v-if="panelamigos" class="panelamigos">
+                <div class="tituloibotoncerraramigos">
+                    <div>
+                        <h3>{{ $t('friendscounter') }}</h3>
                     </div>
                     <div>
-                        <div class="botonfalso_carga"></div>
+                        <button @click="panelamigos = false">X</button>
                     </div>
                 </div>
-                <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
-                    <div class="infousersearch" v-if="user.request_status == 1">
-                        <div>
-                            <img src="/images/icon_profile.svg" alt="User image">
+                <div class="friendlistprofile">
+                    <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
+                        <div class="infousersearch">
+                            <div>
+                                <div class="imagenfalsa_carga"></div>
+                            </div>
+                            <div>
+                                <div class="nombrefalso_carga"></div>
+                                <div class="nombrefalso_carga"></div>
+                            </div>
                         </div>
                         <div>
-                            <b><p>{{ user.reciver.name }}</p></b>
-                            <p>{{ user.reciver.username }}</p>
+                            <div class="botonfalso_carga"></div>
                         </div>
                     </div>
-                    <div v-if="user.request_status == 0">
-                        <button @click="acceptRequest(user.id)" class="ternaryButton">{{ $t('acceptFriendRequest') }}</button>
+                    <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
+                        <div class="infousersearch" v-if="user.request_status == 1">
+                            <div>
+                                <img src="/images/icon_profile.svg" alt="User image">
+                            </div>
+                            <div>
+                                <b><p>{{ user.user.name }}</p></b>
+                                <p>{{ user.user.username }}</p>
+                            </div>
+                        </div>
+                        <div v-if="user.request_status == 0">
+                            <button @click="acceptRequest(user.id)" class="ternaryButton">{{ $t('acceptFriendRequest') }}</button>
+                        </div>
                     </div>
-                </div>
-                <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                    <h2>{{$t('withoutrequests')}}</h2>
+                    <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
+                        <h2>{{$t('withoutrequests')}}</h2>
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
