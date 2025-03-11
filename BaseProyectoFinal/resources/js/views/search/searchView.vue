@@ -46,7 +46,6 @@ async function sendRequest(id_reciver) {
 
 
 cargarUsers();
-
 function manejarInput() {
     clearTimeout(timeout);
 
@@ -55,48 +54,60 @@ function manejarInput() {
     }, 500);
 }
 
-/*
-@error="setDefaultImage"
+// Call
 
-function setDefaultImage(Event) {
-    Event.target.src = '/images/ProfilePicture_0.jpg';
-}
-*/
+// DEBUG DELAY (BORRAR EN PORDUCCION)
+setTimeout(() => {
+    cargarUsers();
+}, 2000);
+
+
 </script>
 
 <template>
-    <div id="fondobuscador">
+    <div class="search-background">
+        
         <div>
-            <input class="searchfield" v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
+            <input class="search-field" v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
         </div>
-        <div id="resultadobusqueda">
-            <div v-if="loading" v-for="n in 4" :key="n" class="searchuserdiv">
-                <div class="infousersearch">
+
+        <div id="search-user-list-container">
+            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
+                <div class="search-user-information-container">
                     <div>
-                        <div class="imagenfalsa_carga"></div>
+                        <div class="search-fake-user-image"></div>
                     </div>
                     <div>
-                        <div class="nombrefalso_carga"></div>
-                        <div class="nombrefalso_carga"></div>
+                        <div class="search-fake-user-username"></div>
+
+                        <div class="d-flex flex-row">
+                            <div class="search-fake-user-name"></div>
+                            <div class="search-fake-user-description"></div>
+                        </div>
+
                     </div>
                 </div>
                 <div>
-                    <div class="botonfalso_carga"></div>
+                    <div class="search-fake-button"></div>
                 </div>
             </div>
 
-            <div v-for="(user, index) in users" :key="index" class="searchuserdiv">
-                <div class="infousersearch">
+            <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                <div class="search-user-information-container">
                     <div>
-                        <img :src="user.image ? user.image : '/images/icon_profile.svg'" alt="User image">
+                        <img :src="user.image ? user.image : '/images/ProfilePicture_6.jpg'" alt="User image" class="search-user-information-image">
                     </div>
-                    <div>
-                        <b><p>{{ user.name }}</p></b>
-                        <p>{{ user.username }}</p>
+                    
+                    <div class="search-user-information">
+                        <b><p class="search-user-information-name">{{ user.name }}</p></b>
+                        <p class="search-user-information-username">{{ user.username }}</p>
                     </div>
+
                 </div>
+
                 <div>
-                    <button @click="sendRequest(user.id)" class="ternaryButton">{{ $t('addFriendText') }}</button>
+                    <button @click="sendRequest(user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
+
                 </div>
             </div>
 
