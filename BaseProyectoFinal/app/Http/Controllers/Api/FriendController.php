@@ -142,8 +142,12 @@ class FriendController extends Controller
     public function createRequest(Request $request) {
         $request->validate([
             'id_sender' => 'required|exists:users,id',
-            'id_receiver' => 'required|exists:users,id|different:id_sender',
+            'id_receiver' => 'required|exists:users,id',
         ]);
+
+        if ($request->id_sender == $request->id_receiver) {
+            return response()->json(['message' => 'You can\'t be your own friend D:>', 'type' => 'bad'], 200);
+        }
     
         $existingFriendship = Friend::where(function ($query) use ($request) {
                 $query->where('sender_user_id', $request->id_sender)
@@ -156,7 +160,7 @@ class FriendController extends Controller
             ->first();
     
         if ($existingFriendship) {
-            return response()->json(['error' => 'Friend request already exists'], 400);
+            return response()->json(['message' => 'Already sent, don\'t be annoying >:|', 'type' => 'bad'], 200);
         }
     
         $friendship = Friend::create([
@@ -166,7 +170,8 @@ class FriendController extends Controller
         ]);
     
         return response()->json([
-            'message' => 'Friend request sent successfully',
+            'message' => 'Friend request sent :D',
+            'type' => 'good',
             'friendship' => $friendship
         ], 201);
     }    

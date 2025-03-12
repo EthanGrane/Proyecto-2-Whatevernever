@@ -2,7 +2,6 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { forEach } from 'lodash';
 import { authStore } from "../../store/auth";
 
 const auth = authStore();
@@ -11,7 +10,23 @@ const user_id = ref(auth.user?.id);
 const users = ref("");
 const loading = ref(true);
 const inputbusqueda = ref("");
+
+const showMessageBool = ref(false);
+const popupMessage = ref("");
+const messageType = ref("");
+
 let timeout;
+
+function showMessage(message, type) {
+    showMessageBool.value = true;
+
+    messageType.value = type;
+    popupMessage.value = message;
+
+    setTimeout(() => {
+        showMessageBool.value = false;
+    }, 3000);
+}
 
 async function cargarUsers() {
     loading.value = true;
@@ -38,10 +53,12 @@ async function cargarUsers() {
 }
 
 async function sendRequest(id_reciver) {
-    axios.post('http://127.0.0.1:8000/api/friends/request', {
+    let response = await axios.post('http://127.0.0.1:8000/api/friends/request', {
         "id_sender": user_id.value,
         "id_receiver": id_reciver
     })
+
+    showMessage(response.data.message, response.data.type);
 }
 
 
@@ -114,6 +131,10 @@ setTimeout(() => {
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
                 <h2>{{ $t('usernotfound') }}</h2>
             </div>
+        </div>
+        <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
+            <h3>Info:</h3>
+            <p>{{ popupMessage }}</p>
         </div>
     </div>
 </template>
