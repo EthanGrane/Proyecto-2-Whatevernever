@@ -53,27 +53,28 @@
     filter: invert();
 }
 
+.numeroseguidores:hover h4 {
+    transition: 1000ms;
+    color: var(--background1);
+}
+
 .numeroseguidores h3 {
     border-radius: 100%;
-    width: 3vw;
+    width: 3rem;
     background-color: var(--text);
     color: var(--background1);
     padding: 10px;
     text-align: center;
 }
 
-.numeroseguidores h4 {
-    text-decoration: underline;
-}
-
 /*Panel de amigos*/
 .panelamigos {
     position: fixed;
     top: 15vh;
-    left: 19vw;
+    left: 12vw;
     background-color: var(--background1);
     box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
-    width: 60vw;
+    width: 80vw;
     height: 60vh;
     z-index: 10;
     color: white;
