@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\api\FriendGroupsController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -54,6 +55,7 @@ Route::get('get-category-posts/{id}', [PostControllerAdvance::class, 'getCategor
 Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
 
 //API
+//Friends
 Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
 Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
 Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
@@ -61,3 +63,6 @@ Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
 Route::post('/friends/request', [FriendController::class, 'createRequest']);
 Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
 Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
+
+//Friend Groups
+Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup']);

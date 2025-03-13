@@ -145,6 +145,10 @@ class FriendController extends Controller
             'id_receiver' => 'required|exists:users,id',
         ]);
 
+        if ($request->id_sender != auth()->id()) {
+            return response()->json(['message' => 'Error you are not authorized to do this'], 401);
+        }
+
         if ($request->id_sender == $request->id_receiver) {
             return response()->json(['message' => 'You can\'t be your own friend D:>', 'type' => 'bad'], 200);
         }
