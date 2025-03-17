@@ -43,8 +43,11 @@
     "acceptFriendRequest": "Aceptar",
     "cancelFriendRequest": "Cancelar",
     "sendRequests": "Solicitudes Enviadas",
-    "recivedRequests": "Solicitudes Recividas",
+    "recivedRequests": "Solicitudes Recibidas",
     "usernotfound": "No se encontro el usuario deseado :(",
     "withoutrequests": "Sin solicitudes",
-    "friendscounter": "Amigos"
+    "friendscounter": "Amigos",
+    "deleteFriend": "Eliminar",
+    "lastprofile-markers-list": "Ultimos marcadores",
+    "withoutfriends": "Sin amigos :'("
 }

@@ -52,7 +52,7 @@ class FriendController extends Controller
 
         $user = User::findOrFail($userId); // Obtener usuario autenticado
 
-        $friendRequests = $user->friendsReceived()->get();
+        $friendRequests = $user->friendsReceived()->where('request_status', '!=', 1)->get();
 
         return response()->json(
             $friendRequests
@@ -65,7 +65,7 @@ class FriendController extends Controller
 
         $user = User::findOrFail($userId);
         
-        $friendRequests = $user->friendsSent()->get();
+        $friendRequests = $user->friendsSent()->where('request_status', '!=', 1)->get();
 
         return response()->json(
             $friendRequests
@@ -78,12 +78,11 @@ class FriendController extends Controller
     
         $user = User::findOrFail($userId);
     
-        $friendsSent = $user->friendsSent()->get();
-        $friendsReceived = $user->friendsReceived()->get();
+        $friendsSent = $user->friendsSent()->where('request_status', '!=', 0)->get();
+        $friendsReceived = $user->friendsReceived()->where('request_status', '!=', 0)->get();
     
         $allFriends = $friendsSent->merge($friendsReceived);
     
-        //Cambia la clave de sender o reciver por simplemente user
         $formattedFriends = $allFriends->map(function ($friend) {
             return [
                 'id' => $friend->id,
@@ -95,7 +94,7 @@ class FriendController extends Controller
         });
     
         return response()->json($formattedFriends);
-    }
+    }    
 
     //Delete Friendship or friend request (its the same in the bbdd)
     public function deleteFriend(Request $request) {
@@ -143,8 +142,16 @@ class FriendController extends Controller
     public function createRequest(Request $request) {
         $request->validate([
             'id_sender' => 'required|exists:users,id',
-            'id_receiver' => 'required|exists:users,id|different:id_sender',
+            'id_receiver' => 'required|exists:users,id',
         ]);
+
+        if ($request->id_sender != auth()->id()) {
+            return response()->json(['message' => 'Error you are not authorized to do this'], 401);
+        }
+
+        if ($request->id_sender == $request->id_receiver) {
+            return response()->json(['message' => 'You can\'t be your own friend D:>', 'type' => 'bad'], 200);
+        }
     
         $existingFriendship = Friend::where(function ($query) use ($request) {
                 $query->where('sender_user_id', $request->id_sender)
@@ -157,7 +164,7 @@ class FriendController extends Controller
             ->first();
     
         if ($existingFriendship) {
-            return response()->json(['error' => 'Friend request already exists'], 400);
+            return response()->json(['message' => 'Already sent, don\'t be annoying >:|', 'type' => 'bad'], 200);
         }
     
         $friendship = Friend::create([
@@ -167,7 +174,8 @@ class FriendController extends Controller
         ]);
     
         return response()->json([
-            'message' => 'Friend request sent successfully',
+            'message' => 'Friend request sent :D',
+            'type' => 'good',
             'friendship' => $friendship
         ], 201);
     }    
