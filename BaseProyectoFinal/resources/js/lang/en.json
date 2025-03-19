@@ -52,6 +52,8 @@
     "usernotfound": "User not found :(",
     "withoutrequests": "Without requests",
     "friendscounter": "Friends",
+    "lastprofile-markers-list": "Last Marker",
     "deleteFriend": "Eliminate",
-    "withoutfriends": "Without friends :'("
+    "withoutfriends": "Without friends :'(",
+    "generalconfigurationbutton": "General"
 }

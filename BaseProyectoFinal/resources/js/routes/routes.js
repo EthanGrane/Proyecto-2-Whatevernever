@@ -87,6 +87,18 @@ export default [
                 beforeEnter: requireLogin,
             },
             {
+                path: '/groups',
+                name: 'groups',
+
+                component: () => import('../views/friendgroups/friendsgroups.vue'),
+            },
+            {
+                path: '/configuration',
+                name: 'configuration',
+
+                component: () => import('../views/configuration/ConfigurationView.vue'),
+            },
+            {
                 path: 'posts',
                 name: 'public-posts.index',
                 component: () => import('../views/posts/index.vue'),
