@@ -75,7 +75,7 @@ header img {
 
 .secondary-button {
     transition: 500ms;
-    background-color: var(--background1);
+    background-color: var(--background2);
     border: 2px solid var(--background3);
     border-radius: 16px;
     color: white;
@@ -87,9 +87,8 @@ header img {
 
 .secondary-button:hover {
     transition: 500ms;
-    background-color: var(--text);
-    border: 2px solid var(--background1);
-    color: var(--background1);
+    background-color: var(--background3);
+    border: 2px solid var(--background3);
 }
 
 .titleLogo {
@@ -150,4 +149,8 @@ header img {
     40% { transform: rotate(15deg); }
     60% { transform: rotate(-10deg); }
     80% { transform: rotate(10deg); }
+}
+
+hr {
+    border: 1px solid var(--text);
 }
