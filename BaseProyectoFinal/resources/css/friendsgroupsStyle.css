@@ -37,14 +37,12 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    position: absolute;
-    left: 0%;
-    top: 75%;
 }
 
 .create-group-button-configuration div {
-    border: 1px solid var(--text);
+    border: 2px solid var(--background2);
     border-radius: 20px;
-    padding: 0.5rem;
+    padding: 0.4rem;
     background-color: var(--background1);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
 }

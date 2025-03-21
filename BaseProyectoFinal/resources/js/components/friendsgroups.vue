@@ -98,17 +98,12 @@ ShowMyGroups();
         -->
         <div class="created-joined-groups">
             <div class="groups-divs">
-                <h3>My Created Groups</h3>
+                <h3>{{ $t('groupsconfigurationbutton') }}</h3>
                 <div v-for="(item, index) in myGroups" :key="index" class="search-group-container">
                     <div>
                         <b><p>{{ item.name }}</p></b>
                     </div>
                     <button @click="dropGroup(item.id)" class="secondary-button">Delete</button>
-                </div>
-                <div class="create-group-button-configuration">
-                    <div>
-                        <button class="secondary-button" @click="CreateGroup(groupname)">Create Group</button><input placeholder="Group name..." class="secondary-button" v-model="groupname">
-                    </div>
                 </div>
             </div>
             <!--
@@ -126,6 +121,11 @@ ShowMyGroups();
         <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
             <h3>Info:</h3>
             <p>{{ popupMessage }}</p>
+        </div>
+        <div class="create-group-button-configuration">
+            <div>
+                <button class="secondary-button" @click="CreateGroup(groupname)">Create Group</button><input placeholder="Group name..." class="secondary-button" v-model="groupname">
+            </div>
         </div>
     </div>
 </template>

@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import Friendsgroups from '../../components/friendsgroups.vue';
+import GeneralConfigurationView from '../../components/GeneralConfigurationView.vue';
+import AccountConfigurationView from '../../components/AccountConfigurationView.vue';
+import useAuth from "@/composables/auth";
+
+const { logout } = useAuth();
 
 const conf_page = ref("general");
 const show_pages = ref(true);
@@ -19,19 +24,19 @@ function changePage(page) {
     <div class="configuration-background">
         <div class="configuration-console">
             <button class="secondary-button" @click="changePage('general')" >{{ $t('generalconfigurationbutton') }}</button>
-            <button class="secondary-button" @click="changePage('account')" >Account</button>
-            <button class="secondary-button" @click="changePage('groups')" >Groups</button>
+            <button class="secondary-button" @click="changePage('account')" >{{ $t('accountconfigurationbutton') }}</button>
+            <button class="secondary-button" @click="changePage('groups')" >{{ $t('groupsconfigurationbutton') }}</button>
 
-            <button class="secondary-button sign-out-button" >Sign Out</button>
+            <button class="secondary-button sign-out-button" @click="logout" >{{ $t('signoutbutton') }}</button>
         </div>
         <transition name="fade" mode="out-in">
             <div v-if="show_pages" class="configuration-pages">
                 <div v-if="conf_page == 'general'">
-                    <h2>General page</h2>
+                    <GeneralConfigurationView/>
                 </div>
 
                 <div v-if="conf_page == 'account'">
-                    <h2>Account page</h2>
+                    <AccountConfigurationView/>
                 </div>
 
                 <div v-if="conf_page == 'groups'">

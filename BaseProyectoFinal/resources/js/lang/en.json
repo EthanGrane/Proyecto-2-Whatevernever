@@ -55,5 +55,8 @@
     "lastprofile-markers-list": "Last Marker",
     "deleteFriend": "Eliminate",
     "withoutfriends": "Without friends :'(",
-    "generalconfigurationbutton": "General"
+    "generalconfigurationbutton": "General",
+    "accountconfigurationbutton": "Account",
+    "groupsconfigurationbutton": "Groups",
+    "signoutbutton" : "Sign Out"
 }

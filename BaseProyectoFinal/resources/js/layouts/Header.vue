@@ -2,7 +2,7 @@
     <header>
         <div>
             <router-link to="/friends">
-                <img v-if="hasNotification == true" src="/images/icon_notification-bell-marked.svg"
+                <img v-if="hasNotification == true" src="/images/icon_notification-bell-marked.svg" alt="Solicitudes de amistad"
                     class="icon icon-shake-hover">
                 <img v-else src="/images/icon_notification-bell.svg" class="icon icon-shake-hover">
             </router-link>
@@ -11,12 +11,13 @@
             <h2 class="brandName">{{ $t('brandName') }}.</h2>
         </div>
         <div>
-            <LocaleSwitcher />
+            <img src="/images/emoji_pinRed.png" class="icon icon-shake-hover" alt="Pin para marcar el mapa">
         </div>
     </header>
 </template>
 
 <script setup>
+
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 
 import { onMounted, ref } from 'vue';

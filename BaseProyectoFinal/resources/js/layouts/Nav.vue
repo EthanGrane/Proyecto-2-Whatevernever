@@ -1,43 +1,43 @@
 <template>
     <nav>
 
-            <!--
+        <!--
             <ul class="navbar-nav mt-2 mt-lg-0 me-auto mb-2 mb-lg-0">
                 <LocaleSwitcher />
             </ul>
             -->
 
-            <div class="navMenu">
-                <div>
-                    <router-link to="/profile">
-                        <img src="/images/icon_profile.svg" alt="Profile" class="icon">
-                        {{ $t('profile') }}
-                    </router-link>
-                </div>
-                <div>
-                    <router-link to="/feed">
-                        <img src="/images/Feed.png" alt="Feet image" class="icon">
-                        <p>Feed</p>
-                    </router-link>
-                </div>
-                <div class="nav-item">
-                    <router-link to="/" aria-current="page">
-                        <img src="/images/emoji_map.webp" alt="{{ $t('home') }}">
-                    </router-link>
-                </div>
-                <div>
-                    <router-link to="/search">
-                        <img src="/images/icon_search.svg" alt="Profile" class="icon">
-                        {{ $t('search') }}
-                    </router-link>
-                </div>
-                <div>
-                    <router-link to="/configuration">
-                        <img src="/images/settings.svg" alt="Setings image" class="icon">
-                        <p>Settings</p>
-                    </router-link>
-                </div>
-                <!--
+        <div class="navMenu">
+            <div>
+                <router-link to="/profile">
+                    <img src="/images/icon_profile.svg" alt="Profile" class="icon">
+                    {{ $t('profile') }}
+                </router-link>
+            </div>
+            <div>
+                <router-link to="/feed">
+                    <img src="/images/feed.svg" alt="Feet image" class="icon">
+                    <p>Feed</p>
+                </router-link>
+            </div>
+            <div class="nav-item">
+                <router-link to="/" aria-current="page">
+                    <img src="/images/emoji_map.webp" alt="{{ $t('home') }}">
+                </router-link>
+            </div>
+            <div>
+                <router-link to="/search">
+                    <img src="/images/icon_search.svg" alt="Profile" class="icon">
+                    {{ $t('search') }}
+                </router-link>
+            </div>
+            <div>
+                <router-link to="/configuration">
+                    <img src="/images/settings.svg" alt="Setings image" class="icon">
+                    <p>Settings</p>
+                </router-link>
+            </div>
+            <!--
                 <template v-if="!authStore().user?.name">
                     <li class="nav-item">
                         <router-link class="nav-link" to="/login"
@@ -48,19 +48,21 @@
                         <router-link class="nav-link" to="/register">{{ $t('register') }}</router-link>
                     </li>
                 </template>
-                <li v-if="authStore().user?.name" class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ authStore().user?.name }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><router-link class="dropdown-item" to="/admin">Admin</router-link></li>
-                        <li><router-link to="/admin/posts" class="dropdown-item">Post</router-link></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a></li>
-                    </ul>
-                </li>
-                -->
-            </div>
+<li v-if="authStore().user?.name" class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ authStore().user?.name }}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li><router-link class="dropdown-item" to="/admin">Admin</router-link></li>
+        <li><router-link to="/admin/posts" class="dropdown-item">Post</router-link></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a></li>
+    </ul>
+</li>
+-->
+        </div>
     </nav>
 </template>
 
