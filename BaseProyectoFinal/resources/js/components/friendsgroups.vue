@@ -96,7 +96,6 @@ ShowMyGroups();
             <input v-model="groupname" placeholder="Group Name">
         </div>
         -->
-        <h2>Group Administration</h2>
         <div class="created-joined-groups">
             <div class="groups-divs">
                 <h3>My Created Groups</h3>
