@@ -80,6 +80,8 @@ php artisan db:seed
 ### Instalar las dependencias de Node
 
 ```bash
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 npm install
 
 npm run dev

@@ -18,6 +18,7 @@
         <div class="profile-markers-list">
             <h4>📍 {{ $t('lastprofile-markers-list') }}</h4>
         </div>
+        
         <!--Amigos-->
         <transition name="fade">
             <div v-if="panelamigos" class="panelamigos">
@@ -82,6 +83,7 @@ const name = ref( authStore().user?.name );
 const username = ref( authStore().user?.username );
 const description = ref( authStore().user?.desc );
 const friendnumber = ref(0);
+
 
 const auth = authStore();
 const users = ref([]);

@@ -103,7 +103,8 @@ import axios from 'axios';
 
     console.log("Id usuario: " + user_id.value);
 
-    async function cargarRequests() {
+    async function cargarRequests() 
+    {
         loading.value = true;
         axios.get('http://127.0.0.1:8000/api/friends/myFriends?user='+user_id.value)
         .then(response => {
