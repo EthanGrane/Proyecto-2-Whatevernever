@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\FriendGroupsController;
+use App\Http\Controllers\Api\MarkerController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forget.password.post');
 Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
-Route::group(['middleware' => 'auth:sanctum'], function() {
+Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('users', UserController::class);
 
-    Route::post('users/updateimg', [UserController::class,'updateimg']); //Listar
+    Route::post('users/updateimg', [UserController::class, 'updateimg']); //Listar
 
     Route::apiResource('posts', PostControllerAdvance::class);
     Route::apiResource('categories', CategoryController::class);
@@ -36,7 +37,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
 
-    Route::get('abilities', function(Request $request) {
+    Route::get('abilities', function (Request $request) {
         return $request->user()->roles()->with('permissions')
             ->get()
             ->pluck('permissions')
@@ -69,3 +70,6 @@ Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup
 Route::get('/friends/showMyGroups', [FriendGroupsController::class, 'showMyGroups']);
 Route::get('/friends/showJoinedGroups', [FriendGroupsController::class, 'showJoinedGroups']);
 Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
+
+// Get Last Friends Post
+Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
