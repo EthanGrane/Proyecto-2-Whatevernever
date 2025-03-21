@@ -1,0 +1,20 @@
+.configuration-background {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.configuration-console {
+    width: 20vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.configuration-pages {
+    width: 80vw;
+}
+
+.sign-out-button {
+    justify-self: right;
+}

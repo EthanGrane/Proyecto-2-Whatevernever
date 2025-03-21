@@ -14,6 +14,12 @@
                         {{ $t('profile') }}
                     </router-link>
                 </div>
+                <div>
+                    <router-link to="/feed">
+                        <img src="/images/Feed.png" alt="Feet image" class="icon">
+                        <p>Feed</p>
+                    </router-link>
+                </div>
                 <div class="nav-item">
                     <router-link to="/" aria-current="page">
                         <img src="/images/emoji_map.webp" alt="{{ $t('home') }}">
@@ -23,6 +29,12 @@
                     <router-link to="/search">
                         <img src="/images/icon_search.svg" alt="Profile" class="icon">
                         {{ $t('search') }}
+                    </router-link>
+                </div>
+                <div>
+                    <router-link to="/configuration">
+                        <img src="/images/settings.svg" alt="Setings image" class="icon">
+                        <p>Settings</p>
                     </router-link>
                 </div>
                 <!--

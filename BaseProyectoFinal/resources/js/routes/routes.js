@@ -87,6 +87,18 @@ export default [
                 beforeEnter: requireLogin,
             },
             {
+                path: '/configuration',
+                name: 'configuration',
+
+                component: () => import('../views/configuration/ConfigurationView.vue'),
+            },
+            {
+                path: '/feed',
+                name: 'feed',
+
+                component: () => import('../views/feed/feedView.vue'),
+            },
+            {
                 path: 'posts',
                 name: 'public-posts.index',
                 component: () => import('../views/posts/index.vue'),

@@ -1,0 +1,50 @@
+.created-joined-groups {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.groups-background {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+}
+
+.groups-divs {
+    height: 60vh;
+    width: 80%;
+    border-radius: 30px;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.search-group-container {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    /* border-bottom: 1px solid var(--text); */
+    background-color: var(--background2);
+    border-radius: 20px;
+}
+
+.create-group-button-configuration {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    left: 0%;
+    top: 75%;
+}
+
+.create-group-button-configuration div {
+    border: 1px solid var(--text);
+    border-radius: 20px;
+    padding: 0.5rem;
+    background-color: var(--background1);
+}

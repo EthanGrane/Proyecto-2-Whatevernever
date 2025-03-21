@@ -71,6 +71,8 @@ import '../css/footerStyles.css';
 import '../css/ProfileStyle.css';
 import '../css/SearchStyle.css';
 import '../css/friendsStyle.css';
+import '../css/friendsgroupsStyle.css';
+import '../css/configurationStyle.css';
 
 const app = createApp({
     created() {
