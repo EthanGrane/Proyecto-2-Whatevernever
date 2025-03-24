@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use Illuminate\Http\Request;
 use App\Models\FriendGroup;
+use App\Models\FriendGroupFriends;
 
 class FriendGroupsController extends Controller
 {
@@ -62,21 +63,27 @@ class FriendGroupsController extends Controller
         );
     }
 
-    //ATENCION!!!: Modificar para adaptar a la nueva migracion
+    //Añadir un amigo a un grupo
     public function addToGroup(Request $request) {
         $request->validate([
-            'id_owner' => 'required|exists:users,id',
             'id_group' => 'required|int',
             'id_target_user' => 'required|exists:users,id',
         ]);
 
-        if (auth()->id() != $request->id_owner) {
+        $group = FriendGroup::where('id', $request->id_group)->first();
+
+        if (!$group) {
+            return response()->json(['message' => 'This group doesen\'t exist'], 200);
+        }
+
+        if (auth()->id() != $group->owner_user_id) {
             return response()->json(['message' => 'You are not the owner of this group'], 401);
         }
 
-        if (!FriendGroup::where('id', $request->id_group)->exists()) {
-            return response()->json(['message' => 'This group doesen\'t exist'], 200);
-        }
+        FriendGroupFriends::create([
+            'friends_id' => $request->id_target_user,
+            'friend_group_id' => $request->id_target_user,
+        ]);
 
         return response()->json(['message' => 'User added to the group'], 200);
     }

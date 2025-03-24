@@ -91,12 +91,14 @@ export default [
                 name: 'configuration',
 
                 component: () => import('../views/configuration/ConfigurationView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: '/feed',
                 name: 'feed',
 
                 component: () => import('../views/feed/feedView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: 'posts',

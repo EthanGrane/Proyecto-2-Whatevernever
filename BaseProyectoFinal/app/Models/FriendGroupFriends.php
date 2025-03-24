@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FriendGroup extends Model
+class FriendGroupFriends extends Model
 {
     use HasFactory;
 
-    protected $table = 'friend_groups';
+    protected $table = 'friend_groups_friends';
 
     protected $fillable = [
-        'name',
-        'owner_user_id',
+        'friends_id',
+        'friend_group_id',
     ];
 }
