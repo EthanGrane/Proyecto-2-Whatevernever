@@ -26,7 +26,6 @@ async function getFeed() {
         markers.value = response.data.markers;
         loading.value = false;
 
-
     } catch (error) {
         console.error("[ProfileView.vue] Error:", error);
         loading.value = false;
