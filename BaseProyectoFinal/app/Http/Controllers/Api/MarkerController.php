@@ -12,51 +12,28 @@ class MarkerController extends Controller
 {
     public function getLastMarkerFromFriends(Request $request)
     {
-        /**
-         USE whatevernever;
-
-SELECT 
-    m.user_id, 
-    MAX(m.id) AS id, 
-    MAX(m.name) AS name, 
-    MAX(m.created_at) AS created_at
-FROM markers AS m
-INNER JOIN friends AS f ON f.sender_user_id = m.user_id OR f.reciver_user_id = m.user_id
-WHERE f.request_status = 1
-GROUP BY m.user_id;
-
-         */
-        $user_id = $request->input("user_id");
+        $user_id = 103; //$request->input("user_id");
 
         if ($user_id == null) {
             return response()->json(["status" => 500, "message" => "User Id invalid"]);
         }
 
-        $markers = DB::table('markers as m')
-            ->join('friends as f', function ($join) {
-                $join->on('m.user_id', '=', 'f.sender_user_id')
-                    ->orOn('m.user_id', '=', 'f.reciver_user_id');
+        $markers = DB::table("markers as m")
+            ->join("friends as f", function ($join) {
+                $join->on("m.user_id", "=", "f.reciver_user_id");
             })
-            ->where('f.request_status', 0)
-            ->where(function ($query) use ($user_id) {
-                $query->where('f.sender_user_id', $user_id)
-                    ->orWhere('f.reciver_user_id', $user_id);
-            })
-            ->whereIn('m.user_id', function ($query) use ($user_id) {
-                $query->select('user_id')
-                    ->from('markers')
-                    ->whereIn('user_id', function ($subQuery) use ($user_id) {
-                        $subQuery->select('sender_user_id')
-                            ->orWhere('reciver_user_id', $user_id);
-                    })
-                    ->orderBy('created_at', 'desc')
-                    ->groupBy('user_id');
-            })
-            ->select('m.*')
+            ->where("f.request_status", 1)
+            ->where("f.sender_user_id", $user_id)
+            ->join(
+                DB::raw("(SELECT user_id, MAX(id) as last_id FROM markers GROUP BY user_id) as latest_markers"),
+                'm.id',
+                '=',
+                'latest_markers.last_id'
+            )
+            ->select("m.user_id", "m.id", "m.lat", "m.lng", "m.name", "m.description")
             ->get();
 
         return response()->json(["status" => 200, "markers" => $markers]);
     }
-
 
 }

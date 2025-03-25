@@ -31,10 +31,10 @@ nav {
 
 .navMenu {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 10vw;
-    width: 90%;
+    width: 75%;
 }
 
 .navMenu div {
