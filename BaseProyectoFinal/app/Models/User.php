@@ -101,4 +101,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Friend::class, 'sender_user_id')
                     ->with('reciver');
     }
+
+    public function friendGroups()
+    {
+        return $this->belongsToMany(FriendGroup::class, 'friend_groups_friends', 'id_friend', 'friend_group_id');
+    }
+
 }

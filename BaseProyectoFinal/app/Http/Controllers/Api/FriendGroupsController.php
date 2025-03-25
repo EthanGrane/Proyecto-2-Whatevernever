@@ -66,25 +66,54 @@ class FriendGroupsController extends Controller
     //Añadir un amigo a un grupo
     public function addToGroup(Request $request) {
         $request->validate([
-            'id_group' => 'required|int',
-            'id_target_user' => 'required|exists:users,id',
+            'id_group' => 'required|int|exists:friend_groups,id',
+            'id_target_user' => 'required|int',
         ]);
 
-        $group = FriendGroup::where('id', $request->id_group)->first();
+        $group = FriendGroup::find($request->id_group);
 
         if (!$group) {
-            return response()->json(['message' => 'This group doesen\'t exist'], 200);
+            return response()->json(['message' => 'This group doesn\'t exist'], 404);
         }
 
         if (auth()->id() != $group->owner_user_id) {
-            return response()->json(['message' => 'You are not the owner of this group'], 401);
+            return response()->json(['message' => 'You are not the owner of this group'], 403);
         }
 
-        FriendGroupFriends::create([
-            'friends_id' => $request->id_target_user,
-            'friend_group_id' => $request->id_target_user,
+        $exists = FriendGroupFriends::where('id_friend', $request->id_target_user)
+            ->where('friend_group_id', $request->id_group)
+            ->exists();
+
+        if (!$exists) {
+            $group->friends()->attach($request->id_target_user);
+
+            return response()->json(['message' => 'User added to the group', 'type' => 'good'], 201);
+        }
+
+        return response()->json(['message' => 'This User is already in this group', 'type' => 'bad'], 200);
+    }
+
+    public function showPeopleInGroup(Request $request) {
+        $request->validate([
+            'id_group' => 'required|int'
         ]);
 
-        return response()->json(['message' => 'User added to the group'], 200);
+        $group = FriendGroup::find($request->id_group);
+
+        if (!$group) {
+            return response()->json(['message' => 'This group doesn\'t exist'], 404);
+        }
+        /*
+        if (auth()->id() != $group->owner_user_id) {
+            return response()->json(['message' => 'You are not the owner of this group'], 403);
+        }
+        */
+        $users = $group->friends()->select('username', 'name', 'email')->get();
+
+        return response()->json([
+            'group' => $group->name,
+            'users' => $users
+        ], 200);
     }
+
 }

@@ -15,4 +15,9 @@ class FriendGroup extends Model
         'name',
         'owner_user_id',
     ];
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friend_groups_friends', 'friend_group_id', 'id_friend');
+    }
 }

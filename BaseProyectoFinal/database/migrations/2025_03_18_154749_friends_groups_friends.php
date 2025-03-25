@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('friend_groups_friends', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('friends_id')->constrained('friends');
+            $table->foreignId('id_friend')->constrained('users');
             $table->foreignId('friend_group_id')->constrained('friend_groups');
             $table->timestamps();
         });

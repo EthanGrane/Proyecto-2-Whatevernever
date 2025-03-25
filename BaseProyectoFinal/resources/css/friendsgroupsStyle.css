@@ -46,3 +46,22 @@
     background-color: var(--background1);
     box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
 }
+
+.friendlistgroups {
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    width: 100vw;
+    height: 80vh;
+    background-color: var(--background2);
+    padding: 20px;
+    border-radius: 20px;
+    overflow-y: scroll;
+}
+
+.adminGroupCloseButton {
+    position: fixed;
+    bottom: 11%;
+    left: 43%;
+    width: 15%;
+}

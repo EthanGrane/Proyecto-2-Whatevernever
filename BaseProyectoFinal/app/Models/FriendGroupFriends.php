@@ -12,7 +12,7 @@ class FriendGroupFriends extends Model
     protected $table = 'friend_groups_friends';
 
     protected $fillable = [
-        'friends_id',
+        'id_friend',
         'friend_group_id',
     ];
 }
