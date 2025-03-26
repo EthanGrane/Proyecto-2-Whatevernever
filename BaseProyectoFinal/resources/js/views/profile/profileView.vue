@@ -19,8 +19,21 @@ const users = ref([]);
 const loading = ref(false);
 const user_id = ref(auth.user?.id);
 
-function verAmigos() 
-{
+const testValue = ref();
+
+async function test() {
+    console.log(testValue.value);
+    
+    axios.get('http://127.0.0.1:8000/api/markers/getAllMarkersFromFriendId?friend_id=' + testValue.value)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error("[ProfileView.vue] Error:", error);
+        })
+}
+
+function verAmigos() {
     userFriendsListPopupActive.value = true;
 }
 
@@ -64,8 +77,7 @@ showMyFriends();
 
 <template>
     <div class="profile-background">
-        <div class="profile-info-container" 
-        style="background: linear-gradient(#99de45, #000000);
+        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);
         ">
             <img :src="image" :alt="image" class="profile-info-pfp">
 
@@ -75,14 +87,20 @@ showMyFriends();
 
             <p>{{ description }}</p>
             <button class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="verAmigos" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter') }}</button>
+            <button @click="verAmigos" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter')
+                }}</button>
         </div>
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
+        <!--
+        <input type="file" ref="userUpdatePicture" @change="updateImg(userUpdatePicture.files[0])" name="picture">
+        <button type="submit">Submit</button>
+        -->
 
-            <input type="file" ref="userUpdatePicture" @change="updateImg(userUpdatePicture.files[0])" name="picture">
-            <button type="submit">Submit</button>
+        <input type="number" v-model="testValue" style="width: 200px; height: 60px;">
+        <button @click="test(testValue)">Test</button>
+
 
         <!--Amigos-->
         <transition name="fade">
@@ -91,7 +109,7 @@ showMyFriends();
                     <div>
                         <h3 class="">{{ $t('friendscounter') }}</h3>
                     </div>
-                    <div>   
+                    <div>
                         <button @click="userFriendsListPopupActive = false" class="closse-friend-panel">X</button>
                     </div>
                 </div>
