@@ -30,5 +30,4 @@ class Marker extends Pivot
         return $this->belongsTo(User::class, 'marker_list_id');
     }
 
-
 }
