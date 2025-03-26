@@ -103,17 +103,49 @@ class FriendGroupsController extends Controller
         if (!$group) {
             return response()->json(['message' => 'This group doesn\'t exist'], 404);
         }
-        /*
+        
         if (auth()->id() != $group->owner_user_id) {
             return response()->json(['message' => 'You are not the owner of this group'], 403);
         }
-        */
-        $users = $group->friends()->select('username', 'name', 'email')->get();
+        
+        $users = $group->friends()->select('username', 'name', 'email', 'users.id')->get();
 
         return response()->json([
             'group' => $group->name,
             'users' => $users
         ], 200);
     }
+
+    //Kicks a user from a group
+    public function kickFromGroup(Request $request) {
+        $request->validate([
+            'id_user' => 'required|int',
+            'id_group' => 'required|int'
+        ]);
+    
+        $group = FriendGroup::where('id', $request->id_group)->first();
+        if (!$group || auth()->id() != $group->owner_user_id) {
+            return response()->json([
+                'message' => 'You are not the owner of this group'
+            ], 403);
+        }
+    
+        $relation = FriendGroupFriends::where('id_friend', $request->id_user)
+            ->where('friend_group_id', $request->id_group)
+            ->first();
+    
+        if (!$relation) {
+            return response()->json([
+                'message' => 'This user is not in this group'
+            ], 404);
+        }
+    
+        $relation->delete();
+    
+        return response()->json([
+            'message' => 'Friend Kicked',
+            'type' => 'good'
+        ], 200);
+    }    
 
 }

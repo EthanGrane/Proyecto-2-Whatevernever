@@ -71,3 +71,4 @@ Route::get('/friends/showJoinedGroups', [FriendGroupsController::class, 'showJoi
 Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
 Route::post('/friends/addToGroup', [FriendGroupsController::class, 'addToGroup']);
 Route::get('/friends/friendsInGroup', [FriendGroupsController::class, 'showPeopleInGroup']);
+Route::post('/friends/kickFromGroup', [FriendGroupsController::class, 'kickFromGroup']);

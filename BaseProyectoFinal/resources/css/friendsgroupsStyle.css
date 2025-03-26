@@ -65,3 +65,8 @@
     left: 43%;
     width: 15%;
 }
+
+.friend-groups-admin-delete-button {
+    display: flex;
+    gap: 20px;
+}

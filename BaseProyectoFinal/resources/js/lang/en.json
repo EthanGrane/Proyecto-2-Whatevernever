@@ -58,5 +58,7 @@
     "generalconfigurationbutton": "General",
     "accountconfigurationbutton": "Account",
     "groupsconfigurationbutton": "Groups",
-    "signoutbutton" : "Sign Out"
+    "signoutbutton" : "Sign Out",
+    "kickuserfromgroup": "Kick",
+    "deletebutton": "Delete"
 }

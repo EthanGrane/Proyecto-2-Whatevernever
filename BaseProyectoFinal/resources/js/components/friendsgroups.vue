@@ -26,7 +26,7 @@ function showMessage(message, type) {
 
     setTimeout(() => {
         showMessageBool.value = false;
-    }, 3000);
+    }, 1000);
 }
 
 async function CreateGroup(name) {
@@ -117,6 +117,9 @@ async function addFriendToGroup(friend_id) {
 
         showMessage(response.data.message, response.data.type);
 
+        showMyFriends();
+        showFriendsInGroup();
+
     } catch (error) {
         console.log(error);
     }
@@ -135,8 +138,23 @@ async function showFriendsInGroup() {
     }
 }
 
-async function expulseFriendFromGroup(user_id) {
-    showMessage("Pene pe pene pene pene", "bad");
+async function expulseFriendFromGroup(deleting_user_id) {
+    console.log(deleting_user_id);
+    try {
+        let response = await axios.post("http://127.0.0.1:8000/api/friends/kickFromGroup", {
+            "id_user": deleting_user_id,
+            "id_group": addingFriendToGroup.value,
+        });
+
+        showMessage(response.data.message, response.data.type);
+    } catch (error) {
+
+        console.log(error);
+        showMessage(error, "bad");
+    }
+
+    showMyFriends();
+    showFriendsInGroup();
 }
 
 //showJoinedGroups();
@@ -159,9 +177,9 @@ ShowMyGroups();
                     <div>
                         <b><p>{{ item.name }}</p></b>
                     </div>
-                    <div>
-                        <button @click="friendAddMenu(item.id)" class="secondary-button">Admin this group</button>
-                        <button @click="dropGroup(item.id)" class="secondary-button">Delete</button>
+                    <div class="friend-groups-admin-delete-button">
+                        <button @click="friendAddMenu(item.id)" class="secondary-button">Admin</button>
+                        <button @click="dropGroup(item.id)" class="secondary-button">{{ $t('deletebutton') }}</button>
                     </div>
                 </div>
             </div>
@@ -184,18 +202,18 @@ ShowMyGroups();
                 <p>Friends in this group</p>
 
                 <div>
-                    <div v-for="(users, index) in friendsInGroup" :key="index" class="search-user-container">
+                    <div v-for="(user, index) in friendsInGroup" :key="index" class="search-user-container">
                         <div class="search-user-information-container">
                             <div>
                                 <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
                             </div>
                             <div class="search-user-information">
-                                <b><p class="search-user-information-name">{{ users.name }}</p></b>
-                                <p class="search-user-information-username">{{ users.username }}</p>
+                                <b><p class="search-user-information-name">{{ user.name }}</p></b>
+                                <p class="search-user-information-username">{{ user.username }}</p>
                             </div>
                         </div>
                         <div>
-                            <button @click="expulseFriendFromGroup(users.id)" class="secondary-button">Expulse</button>
+                            <button @click="expulseFriendFromGroup(user.id)" class="secondary-button">{{ $t('kickuserfromgroup') }}</button>
                         </div>
                     </div>
                 </div>
@@ -205,7 +223,7 @@ ShowMyGroups();
                 
                 <div>
                     <div v-for="(user, index) in users" :key="index" class="search-user-container">
-                        <div class="search-user-information-container" v-if="user.request_status == 1">
+                        <div class="search-user-information-container" v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
                             <div>
                                 <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
                             </div>
@@ -214,8 +232,8 @@ ShowMyGroups();
                                 <p class="search-user-information-username">{{ user.user.username }}</p>
                             </div>
                         </div>
-                        <div v-if="user.request_status == 1">
-                            <button @click="addFriendToGroup(user.user.id)" class="secondary-button">Add</button>
+                        <div v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
+                            <button @click="addFriendToGroup(user.user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
                         </div>
                     </div>
                 </div>
@@ -230,7 +248,7 @@ ShowMyGroups();
         </div>
         <div class="create-group-button-configuration">
             <div>
-                <button class="secondary-button" @click="CreateGroup(groupname)">Create Group</button><input placeholder="Group name..." class="secondary-button" v-model="groupname">
+                <input placeholder="Group name..." class="secondary-button" v-model="groupname"><button class="secondary-button" @click="CreateGroup(groupname)">Create Group</button>
             </div>
         </div>
     </div>

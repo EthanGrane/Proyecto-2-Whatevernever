@@ -53,6 +53,8 @@
     "generalconfigurationbutton": "General",
     "accountconfigurationbutton": "Cuenta",
     "groupsconfigurationbutton": "Grupos",
-    "signoutbutton" : "Cerrar session"
+    "signoutbutton" : "Cerrar session",
+    "kickuserfromgroup": "Expulsar",
+    "deletebutton": "Borrar"
 
 }
