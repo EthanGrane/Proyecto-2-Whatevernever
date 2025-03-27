@@ -91,13 +91,22 @@ export default [
                 name: 'configuration',
 
                 component: () => import('../views/configuration/ConfigurationView.vue'),
+                beforeEnter: requireLogin,
             },
             {
                 path: '/feed',
                 name: 'feed',
 
                 component: () => import('../views/feed/feedView.vue'),
+                beforeEnter: requireLogin,
             },
+            {
+                path: '/testApi',
+                name: 'testApi',
+
+                component: () => import('../views/testApi/testApi.vue'),
+            },
+
             {
                 path: 'posts',
                 name: 'public-posts.index',
