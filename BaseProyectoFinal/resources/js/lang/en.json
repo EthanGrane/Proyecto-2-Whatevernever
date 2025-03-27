@@ -60,5 +60,6 @@
     "groupsconfigurationbutton": "Groups",
     "signoutbutton" : "Sign Out",
     "kickuserfromgroup": "Kick",
-    "deletebutton": "Delete"
+    "deletebutton": "Delete",
+    "markersconfigurationbutton": "Markers"
 }

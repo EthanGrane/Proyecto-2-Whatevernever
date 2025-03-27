@@ -55,6 +55,6 @@
     "groupsconfigurationbutton": "Grupos",
     "signoutbutton" : "Cerrar session",
     "kickuserfromgroup": "Expulsar",
-    "deletebutton": "Borrar"
-
+    "deletebutton": "Borrar",
+    "markersconfigurationbutton": "Marcadores"
 }

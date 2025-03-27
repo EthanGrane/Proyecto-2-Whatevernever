@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import Friendsgroups from '../../components/friendsgroups.vue';
 import GeneralConfigurationView from '../../components/GeneralConfigurationView.vue';
 import AccountConfigurationView from '../../components/AccountConfigurationView.vue';
+import MarquerListConfiguraitonView from '../../components/MarquerListConfigurationView.vue';
+
 import useAuth from "@/composables/auth";
 
 const { logout } = useAuth();
@@ -26,6 +28,7 @@ function changePage(page) {
             <button class="secondary-button" @click="changePage('general')" >{{ $t('generalconfigurationbutton') }}</button>
             <button class="secondary-button" @click="changePage('account')" >{{ $t('accountconfigurationbutton') }}</button>
             <button class="secondary-button" @click="changePage('groups')" >{{ $t('groupsconfigurationbutton') }}</button>
+            <button class="secondary-button" @click="changePage('markers')" >{{ $t('markersconfigurationbutton') }}</button>
 
             <button class="secondary-button sign-out-button" @click="logout" >{{ $t('signoutbutton') }}</button>
         </div>
@@ -41,6 +44,10 @@ function changePage(page) {
 
                 <div v-if="conf_page == 'groups'">
                     <Friendsgroups/>
+                </div>
+
+                <div v-if="conf_page == 'markers'">
+                    <MarquerListConfiguraitonView></MarquerListConfiguraitonView>
                 </div>
             </div>
         </transition>
