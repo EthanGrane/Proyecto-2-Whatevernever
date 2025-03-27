@@ -19,20 +19,6 @@ const users = ref([]);
 const loading = ref(false);
 const user_id = ref(auth.user?.id);
 
-const testValue = ref();
-
-async function test() {
-    console.log(testValue.value);
-    
-    axios.get('http://127.0.0.1:8000/api/markers/getAllMarkersFromFriendId?friend_id=' + testValue.value)
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error("[ProfileView.vue] Error:", error);
-        })
-}
-
 function verAmigos() {
     userFriendsListPopupActive.value = true;
 }
@@ -79,6 +65,7 @@ showMyFriends();
     <div class="profile-background">
         <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);
         ">
+        
             <img :src="image" :alt="image" class="profile-info-pfp">
 
             <h1 class="profile-info-name">{{ name }}</h1>
@@ -97,10 +84,6 @@ showMyFriends();
         <input type="file" ref="userUpdatePicture" @change="updateImg(userUpdatePicture.files[0])" name="picture">
         <button type="submit">Submit</button>
         -->
-
-        <input type="number" v-model="testValue" style="width: 200px; height: 60px;">
-        <button @click="test(testValue)">Test</button>
-
 
         <!--Amigos-->
         <transition name="fade">

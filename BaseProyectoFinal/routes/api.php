@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
 
     // Markers
+    Route::apiResource('markers', MarkerController::class);
     Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
     Route::get('/markers/getAllMarkersFromFriendId',[MarkerController::class, 'getAllMarkersFromFriendId']);
+
 });
