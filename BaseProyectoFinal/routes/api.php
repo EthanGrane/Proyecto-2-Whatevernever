@@ -56,9 +56,9 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     //API
     //Friends
-    Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
-    Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
-    Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
+    Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
+    Route::get('/friends/myFriends', [FriendController::class, 'ShowrequestsRecived']);
+    Route::get('/friends/requestsSend', [FriendController::class, 'ShowrequestsSent']);
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/request', [FriendController::class, 'createRequest']);
     Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);

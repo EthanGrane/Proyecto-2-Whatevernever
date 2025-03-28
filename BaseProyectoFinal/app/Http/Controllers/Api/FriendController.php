@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class FriendController extends Controller
 {
-    public function showFriends(Request $request)
+    public function showUsers(Request $request)
     {
         $search = $request->query('search');
 
@@ -34,7 +34,7 @@ class FriendController extends Controller
     }
 
     //Show friends that recived a request
-    public function showMyFriends(Request $request)
+    public function ShowrequestsRecived(Request $request)
     {
         $userId = $request->query('user');
         //$status = $request->query('status');
@@ -49,7 +49,7 @@ class FriendController extends Controller
     }
 
     //Show friends i send a request
-    public function requestsSent(Request $request)
+    public function ShowrequestsSent(Request $request)
     {
         $userId = $request->query('user');
 
