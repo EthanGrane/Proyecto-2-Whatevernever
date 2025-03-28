@@ -11,22 +11,9 @@ const users = ref("");
 const loading = ref(true);
 const inputbusqueda = ref("");
 
-const showMessageBool = ref(false);
-const popupMessage = ref("");
-const messageType = ref("");
+const friendsRequestSended = ref();
 
 let timeout;
-
-function showMessage(message, type) {
-    showMessageBool.value = true;
-
-    messageType.value = type;
-    popupMessage.value = message;
-
-    setTimeout(() => {
-        showMessageBool.value = false;
-    }, 3000);
-}
 
 async function cargarUsers() {
     loading.value = true;
@@ -58,7 +45,17 @@ async function sendRequest(id_reciver) {
         "id_receiver": id_reciver
     })
 
-    showMessage(response.data.message, response.data.type);
+}
+
+async function deleteRequest(user_id) 
+{
+
+    let response = await axios.delete('http://127.0.0.1:8000/api/friends/1').then({
+    })
+    .catch(error =>
+    {
+        console.log(error);
+    });
 }
 
 
@@ -110,6 +107,7 @@ setTimeout(() => {
             </div>
 
             <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                
                 <div class="search-user-information-container">
                     <div>
                         <img :src="user.image ? user.image : '/images/ProfilePicture_6.jpg'" alt="User image" class="search-user-information-image">
@@ -119,22 +117,20 @@ setTimeout(() => {
                         <b><p class="search-user-information-name">{{ user.name }}</p></b>
                         <p class="search-user-information-username">{{ user.username }}</p>
                     </div>
-
                 </div>
 
                 <div>
-                    <button @click="sendRequest(user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
-
+                    <button v-if="true" @click="sendRequest(user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
+                    <button v-else @click="deleteRequest(user.id)" class="secondary-button">{{ $t('cancel') }}</button>
                 </div>
+
             </div>
 
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
                 <h2>{{ $t('usernotfound') }}</h2>
             </div>
+
         </div>
-        <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
-            <h3>Info:</h3>
-            <p>{{ popupMessage }}</p>
-        </div>
+
     </div>
 </template>

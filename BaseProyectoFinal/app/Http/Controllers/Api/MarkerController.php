@@ -62,6 +62,16 @@ class MarkerController extends Controller
     /*
      * CRUD
      */
+    public function index()
+    {
+        try {
+            $marker = Marker::all();
+            return response()->json($marker, 200);
+        } catch (\Exception $e) {
+            return response()->json(["status" => 500, "Error" => $e->getMessage()]);
+        }
+    }
+
     public function show($id)
     {
         try {

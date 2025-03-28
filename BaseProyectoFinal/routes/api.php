@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     //API
     //Friends
+    Route::apiResource('friend', FriendController::class);
     Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
     Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
     Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
