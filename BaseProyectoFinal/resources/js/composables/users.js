@@ -148,6 +148,27 @@ export default function useUsers() {
             })
     }
 
+    const updateImg = async (picture) => {
+        if (isLoading.value) return;
+
+        isLoading.value = true
+        validationErrors.value = {}
+
+        axios.post('/api/users/updateimg', picture)
+            .then(response => {
+                swal({
+                    icon: 'success',
+                    title: 'User image updated successfully'
+                })
+            })
+            .catch(error => {
+                if (error.response?.data) {
+                    validationErrors.value = error.response.data.errors
+                }
+            })
+            .finally(() => isLoading.value = false)
+    }
+
     return {
         users,
         user,
@@ -161,6 +182,7 @@ export default function useUsers() {
         storeUser,
         updateUser,
         deleteUser,
+        updateImg,
         validationErrors,
         isLoading
     }

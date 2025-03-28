@@ -67,10 +67,10 @@ class User extends Authenticatable implements HasMedia
 
     public function registerMediaConversions(Media $media = null): void
     {
-        if (env('RESIZE_IMAGE') === true) {
+        if (env(key: 'RESIZE_IMAGE') === true) {
             $this->addMediaConversion('resized-image')
-                ->width(env('IMAGE_WIDTH', 300))
-                ->height(env('IMAGE_HEIGHT', 300));
+                ->width(env('IMAGE_WIDTH', 312))
+                ->height(env('IMAGE_HEIGHT', 312));
         }
     }
 

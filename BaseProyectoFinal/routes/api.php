@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\FriendGroupsController;
+use App\Http\Controllers\Api\MarkerController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forget.password.post');
 Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
-Route::group(['middleware' => 'auth:sanctum'], function() {
-
+Route::group(['middleware' => 'auth:sanctum'], function () 
+{
     Route::apiResource('users', UserController::class);
 
-    Route::post('users/updateimg', [UserController::class,'updateimg']); //Listar
+    Route::post('users/updateimg', [UserController::class, 'updateimg']); //Listar
 
     Route::apiResource('posts', PostControllerAdvance::class);
     Route::apiResource('categories', CategoryController::class);
@@ -36,7 +37,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
 
-    Route::get('abilities', function(Request $request) {
+    Route::get('abilities', function (Request $request) {
         return $request->user()->roles()->with('permissions')
             ->get()
             ->pluck('permissions')
@@ -46,29 +47,36 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
             ->values()
             ->toArray();
     });
+
+    Route::get('category-list', [CategoryController::class, 'getList']);
+
+    Route::get('get-posts', [PostControllerAdvance::class, 'getPosts']);
+    Route::get('get-category-posts/{id}', [PostControllerAdvance::class, 'getCategoryByPosts']);
+    Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
+
+    //API
+    //Friends
+    Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
+    Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
+    Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
+    Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
+    Route::post('/friends/request', [FriendController::class, 'createRequest']);
+    Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
+    Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
+    Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
+
+    //Friend Groups
+    Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup']);
+    Route::get('/friends/showMyGroups', [FriendGroupsController::class, 'showMyGroups']);
+    Route::get('/friends/showJoinedGroups', [FriendGroupsController::class, 'showJoinedGroups']);
+    Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
+    Route::post('/friends/addToGroup', [FriendGroupsController::class, 'addToGroup']);
+    Route::get('/friends/friendsInGroup', [FriendGroupsController::class, 'showPeopleInGroup']);
+    Route::post('/friends/kickFromGroup', [FriendGroupsController::class, 'kickFromGroup']);
+
+    // Markers
+    Route::apiResource('markers', MarkerController::class);
+    Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
+    Route::get('/markers/getAllMarkersFromFriendId',[MarkerController::class, 'getAllMarkersFromFriendId']);
+
 });
-
-Route::get('category-list', [CategoryController::class, 'getList']);
-
-Route::get('get-posts', [PostControllerAdvance::class, 'getPosts']);
-Route::get('get-category-posts/{id}', [PostControllerAdvance::class, 'getCategoryByPosts']);
-Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
-
-//API
-//Friends
-Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
-Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
-Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
-Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
-Route::post('/friends/request', [FriendController::class, 'createRequest']);
-Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
-Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
-
-//Friend Groups
-Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup']);
-Route::get('/friends/showMyGroups', [FriendGroupsController::class, 'showMyGroups']);
-Route::get('/friends/showJoinedGroups', [FriendGroupsController::class, 'showJoinedGroups']);
-Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
-Route::post('/friends/addToGroup', [FriendGroupsController::class, 'addToGroup']);
-Route::get('/friends/friendsInGroup', [FriendGroupsController::class, 'showPeopleInGroup']);
-Route::post('/friends/kickFromGroup', [FriendGroupsController::class, 'kickFromGroup']);

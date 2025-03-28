@@ -73,7 +73,10 @@ import '../css/SearchStyle.css';
 import '../css/friendsStyle.css';
 import '../css/friendsgroupsStyle.css';
 import '../css/configurationStyle.css';
+import '../css/feedStyle.css';
+import '../css/mapbox.css';
 import '../css/markersStyle.css';
+
 
 const app = createApp({
     created() {

@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Friend;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 
 class FriendController extends Controller
 {
-    public function showFriends(Request $request) {
+    public function showFriends(Request $request)
+    {
         $search = $request->query('search');
 
         $query = User::query();
 
-        if ($search) 
-        {
+        if ($search) {
             $query->where('name', 'like', "%$search%");
         }
 
-        $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
+        $friends = $query
+            ->orderBy('name', 'asc')
+            ->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
 
         foreach ($friends as $friend) {
             $friend->getFirstMedia('users');
@@ -27,22 +32,6 @@ class FriendController extends Controller
 
         return response()->json($friends);
     }
-
-    /*
-    public function showMyFriends(Request $request) {
-        $userId = $request->query('user');
-        $status = $request->query('status');
-
-        $user = User::findOrFail($userId);
-    
-        // Obtener las solicitudes de amistad enviadas por el usuario
-        $sentRequests = $user->sentFriendRequests()
-            ->where('request_status', $status)  // Si quieres filtrar por estado, como "pendiente"
-            ->get();
-    
-        return response()->json($sentRequests);
-    }
-    */
 
     //Show friends that recived a request
     public function showMyFriends(Request $request)
@@ -60,11 +49,12 @@ class FriendController extends Controller
     }
 
     //Show friends i send a request
-    public function requestsSent(Request $request) {
+    public function requestsSent(Request $request)
+    {
         $userId = $request->query('user');
 
         $user = User::findOrFail($userId);
-        
+
         $friendRequests = $user->friendsSent()->where('request_status', '!=', 1)->get();
 
         return response()->json(
@@ -73,16 +63,17 @@ class FriendController extends Controller
     }
 
     //Muestra todos tus amigos tanto los que has enviado la solicitut como los que has recivido
-    public function ShowAllFriends(Request $request) {
+    public function ShowAllFriends(Request $request)
+    {
         $userId = $request->query('user');
-    
+
         $user = User::findOrFail($userId);
-    
+
         $friendsSent = $user->friendsSent()->where('request_status', '!=', 0)->get();
         $friendsReceived = $user->friendsReceived()->where('request_status', '!=', 0)->get();
-    
+
         $allFriends = $friendsSent->merge($friendsReceived);
-    
+
         $formattedFriends = $allFriends->map(function ($friend) {
             return [
                 'id' => $friend->id,
@@ -92,54 +83,57 @@ class FriendController extends Controller
                 'updated_at' => $friend->updated_at,
             ];
         });
-    
+
         return response()->json($formattedFriends);
-    }    
+    }
 
     //Delete Friendship or friend request (its the same in the bbdd)
-    public function deleteFriend(Request $request) {
+    public function deleteFriend(Request $request)
+    {
         $request->validate([
             'friend_id' => 'required|exists:friends,id',
         ]);
-    
+
         $user = auth()->user();
-    
+
         $friend = Friend::where(function ($query) use ($user) {
             $query->where('sender_user_id', $user->id)
-                  ->orWhere('reciver_user_id', $user->id);
+                ->orWhere('reciver_user_id', $user->id);
         })->findOrFail($request->friend_id);
-    
+
         $friend->delete();
-    
+
         return response()->json([
             'message' => 'Friend deleted successfully',
         ], 200);
     }
-    
+
 
     //Accept friend request
-    public function acceptFriend(Request $request) {
+    public function acceptFriend(Request $request)
+    {
         $friendship_id = $request->id;
-    
+
         // Buscar la fila en la tabla friends
         $friendship = Friend::find($friendship_id);
-    
+
         if (!$friendship) {
             return response()->json(['error' => 'Friendship not found'], 404);
         }
-    
+
         // Modificar el campo request_status
         $friendship->request_status = 1;
         $friendship->save();
-    
+
         return response()->json([
             'message' => 'Friend request accepted successfully',
             'friendship' => $friendship
         ]);
-    }  
-    
+    }
+
     //Create Friend Request
-    public function createRequest(Request $request) {
+    public function createRequest(Request $request)
+    {
         $request->validate([
             'id_sender' => 'required|exists:users,id',
             'id_receiver' => 'required|exists:users,id',
@@ -152,31 +146,31 @@ class FriendController extends Controller
         if ($request->id_sender == $request->id_receiver) {
             return response()->json(['message' => 'You can\'t be your own friend D:>', 'type' => 'bad'], 200);
         }
-    
+
         $existingFriendship = Friend::where(function ($query) use ($request) {
-                $query->where('sender_user_id', $request->id_sender)
-                      ->where('reciver_user_id', $request->id_receiver);
-            })
+            $query->where('sender_user_id', $request->id_sender)
+                ->where('reciver_user_id', $request->id_receiver);
+        })
             ->orWhere(function ($query) use ($request) {
                 $query->where('sender_user_id', $request->id_receiver)
-                      ->where('reciver_user_id', $request->id_sender);
+                    ->where('reciver_user_id', $request->id_sender);
             })
             ->first();
-    
+
         if ($existingFriendship) {
             return response()->json(['message' => 'Already sent, don\'t be annoying >:|', 'type' => 'bad'], 200);
         }
-    
+
         $friendship = Friend::create([
             'sender_user_id' => $request->id_sender,
             'reciver_user_id' => $request->id_receiver,
             'request_status' => 0, // 0 = pending
         ]);
-    
+
         return response()->json([
             'message' => 'Friend request sent :D',
             'type' => 'good',
             'friendship' => $friendship
         ], 201);
-    }    
+    }
 }

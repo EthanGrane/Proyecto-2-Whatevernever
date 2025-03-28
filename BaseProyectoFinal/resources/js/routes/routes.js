@@ -101,6 +101,13 @@ export default [
                 beforeEnter: requireLogin,
             },
             {
+                path: '/testApi',
+                name: 'testApi',
+
+                component: () => import('../views/testApi/testApi.vue'),
+            },
+
+            {
                 path: 'posts',
                 name: 'public-posts.index',
                 component: () => import('../views/posts/index.vue'),

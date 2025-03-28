@@ -105,15 +105,13 @@ class UserController extends Controller
 
     public function updateimg(Request $request)
     {
-
-        $user = User::find($request->id);
-
-        if($request->hasFile('picture')) {
+        $user = auth()->user();
+        if($request->hasFile('picture')) 
+        {
             $user->media()->delete();
-            $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images-users');
-
+            $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images/users');
         }
-        $user =  User::with('media')->find($request->id);
+        $user =  User::with('media')->find($user->id);
         return  $user;
     }
 
