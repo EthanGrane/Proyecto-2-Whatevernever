@@ -89,6 +89,7 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import { authStore } from "../../store/auth";

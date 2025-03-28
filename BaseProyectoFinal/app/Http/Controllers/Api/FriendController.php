@@ -36,8 +36,7 @@ class FriendController extends Controller
     //Show friends that recived a request
     public function showMyFriends(Request $request)
     {
-        $userId = $request->query('user');
-        //$status = $request->query('status');
+        $userId = auth()->user()->id;
 
         $user = User::findOrFail($userId); // Obtener usuario autenticado
 
