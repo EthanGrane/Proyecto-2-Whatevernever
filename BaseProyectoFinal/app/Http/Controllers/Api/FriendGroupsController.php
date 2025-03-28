@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Friend;
 use Illuminate\Http\Request;
 use App\Models\FriendGroup;
+use App\Models\FriendGroupFriends;
 
 class FriendGroupsController extends Controller
 {
@@ -62,22 +63,89 @@ class FriendGroupsController extends Controller
         );
     }
 
-    //ATENCION!!!: Modificar para adaptar a la nueva migracion
+    //Añadir un amigo a un grupo
     public function addToGroup(Request $request) {
         $request->validate([
-            'id_owner' => 'required|exists:users,id',
-            'id_group' => 'required|int',
-            'id_target_user' => 'required|exists:users,id',
+            'id_group' => 'required|int|exists:friend_groups,id',
+            'id_target_user' => 'required|int',
         ]);
 
-        if (auth()->id() != $request->id_owner) {
-            return response()->json(['message' => 'You are not the owner of this group'], 401);
+        $group = FriendGroup::find($request->id_group);
+
+        if (!$group) {
+            return response()->json(['message' => 'This group doesn\'t exist'], 404);
         }
 
-        if (!FriendGroup::where('id', $request->id_group)->exists()) {
-            return response()->json(['message' => 'This group doesen\'t exist'], 200);
+        if (auth()->id() != $group->owner_user_id) {
+            return response()->json(['message' => 'You are not the owner of this group'], 403);
         }
 
-        return response()->json(['message' => 'User added to the group'], 200);
+        $exists = FriendGroupFriends::where('id_friend', $request->id_target_user)
+            ->where('friend_group_id', $request->id_group)
+            ->exists();
+
+        if (!$exists) {
+            $group->friends()->attach($request->id_target_user);
+
+            return response()->json(['message' => 'User added to the group', 'type' => 'good'], 201);
+        }
+
+        return response()->json(['message' => 'This User is already in this group', 'type' => 'bad'], 200);
     }
+
+    public function showPeopleInGroup(Request $request) {
+        $request->validate([
+            'id_group' => 'required|int'
+        ]);
+
+        $group = FriendGroup::find($request->id_group);
+
+        if (!$group) {
+            return response()->json(['message' => 'This group doesn\'t exist'], 404);
+        }
+        
+        if (auth()->id() != $group->owner_user_id) {
+            return response()->json(['message' => 'You are not the owner of this group'], 403);
+        }
+        
+        $users = $group->friends()->select('username', 'name', 'email', 'users.id')->get();
+
+        return response()->json([
+            'group' => $group->name,
+            'users' => $users
+        ], 200);
+    }
+
+    //Kicks a user from a group
+    public function kickFromGroup(Request $request) {
+        $request->validate([
+            'id_user' => 'required|int',
+            'id_group' => 'required|int'
+        ]);
+    
+        $group = FriendGroup::where('id', $request->id_group)->first();
+        if (!$group || auth()->id() != $group->owner_user_id) {
+            return response()->json([
+                'message' => 'You are not the owner of this group'
+            ], 403);
+        }
+    
+        $relation = FriendGroupFriends::where('id_friend', $request->id_user)
+            ->where('friend_group_id', $request->id_group)
+            ->first();
+    
+        if (!$relation) {
+            return response()->json([
+                'message' => 'This user is not in this group'
+            ], 404);
+        }
+    
+        $relation->delete();
+    
+        return response()->json([
+            'message' => 'Friend Kicked',
+            'type' => 'good'
+        ], 200);
+    }    
+
 }

@@ -1,0 +1,15 @@
+.marker-list-configuration-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    width: 100%;
+}
+
+.marker-list {
+    background-color: var(--background2);
+    border-radius: 20px;
+    padding: 20px;
+    width: 90%;
+    height: 90%;
+}

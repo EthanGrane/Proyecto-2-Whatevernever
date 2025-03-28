@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('friend_groups_friends', function (Blueprint $table) {
+        Schema::create('marker_list_markers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_friend')->constrained('users');
-            $table->foreignId('friend_group_id')->constrained('friend_groups');
+            $table->foreignId('marker_list_id')->constrained('marker_list');
+            $table->foreignId('marker_id')->constrained('markers');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('friend_groups_friends');
+        Schema::dropIfExists('marker_list_markers');
     }
 };

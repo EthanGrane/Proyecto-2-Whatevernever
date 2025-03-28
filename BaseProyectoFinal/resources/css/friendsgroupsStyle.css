@@ -1,6 +1,5 @@
 .created-joined-groups {
-    display: flex;
-    justify-content: space-around;
+    
     width: 100%;
 }
 
@@ -16,10 +15,10 @@
     height: 60vh;
     width: 80%;
     border-radius: 30px;
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
     padding: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
+    width: 100%;
 }
 
 .search-group-container {
@@ -27,10 +26,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    /* border-bottom: 1px solid var(--text); */
-    background-color: var(--background2);
+    padding: 0.2rem;
+    /*background-color: var(--background2);*/
     border-radius: 20px;
+    width: 100%;
 }
 
 .create-group-button-configuration {
@@ -45,4 +44,28 @@
     padding: 0.4rem;
     background-color: var(--background1);
     box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+}
+
+.friendlistgroups {
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    width: 100vw;
+    height: 80vh;
+    background-color: var(--background2);
+    padding: 20px;
+    border-radius: 20px;
+    overflow-y: scroll;
+}
+
+.adminGroupCloseButton {
+    position: fixed;
+    bottom: 11%;
+    left: 43%;
+    width: 15%;
+}
+
+.friend-groups-admin-delete-button {
+    display: flex;
+    gap: 20px;
 }
