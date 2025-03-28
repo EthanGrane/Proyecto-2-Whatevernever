@@ -1,5 +1,5 @@
 let map = null;
-let markers = [];
+let markerList = [];
 let selectedFriend = null;
 
 export function InitializeMap(centerLngLon) {
@@ -71,24 +71,26 @@ export function AddMarkerToMap(lng, lat, map)
 }
 
 export function AddFriendMarkerToMap(lng, lat, name, profilePicture, map) {
-    markers.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
+    markerList.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
 
     ReloadMapMarkers(map);
 }
 
-export function SetFriends(newFriends) {
-    markers.length = 0;
-    markers.push(...newFriends);
+export function SetFriends(newFriends) 
+{
+    markerList.length = 0;
+    markerList.push(...newFriends);
 }
 
-export function ReloadMapMarkers(map) {
+export function ReloadMapMarkers(map) 
+{
     console.log("ReloadMarker");
-    const markers = document.querySelectorAll('.marker');
-    markers.forEach(marker => marker.remove());
+    const markersOnView = document.querySelectorAll('.marker');
+    markersOnView.forEach(marker => marker.remove());
 
-    console.log(`Friends lenght: ${markers.length}`)
-    for (let index = 0; index < markers.length; index++) {
-        const friend = markers[index];
+    console.log(`Friends lenght: ${markerList.length}`)
+    for (let index = 0; index < markerList.length; index++) {
+        const friend = markerList[index];
 
         console.log(friend);
 
