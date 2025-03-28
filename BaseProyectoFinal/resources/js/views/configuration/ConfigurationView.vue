@@ -13,11 +13,9 @@ const conf_page = ref("general");
 const show_pages = ref(true);
 
 function changePage(page) {
-    show_pages.value = false;
 
     conf_page.value = page;
 
-    setTimeout(() => {show_pages.value = true}, 500);
 }
 
 </script>
@@ -32,24 +30,22 @@ function changePage(page) {
 
             <button class="secondary-button sign-out-button" @click="logout" >{{ $t('signoutbutton') }}</button>
         </div>
-        <transition name="fade" mode="out-in">
-            <div v-if="show_pages" class="configuration-pages">
-                <div v-if="conf_page == 'general'">
-                    <GeneralConfigurationView/>
-                </div>
-
-                <div v-if="conf_page == 'account'">
-                    <AccountConfigurationView/>
-                </div>
-
-                <div v-if="conf_page == 'groups'">
-                    <Friendsgroups/>
-                </div>
-
-                <div v-if="conf_page == 'markers'">
-                    <MarquerListConfiguraitonView></MarquerListConfiguraitonView>
-                </div>
+        <div v-if="show_pages" class="configuration-pages">
+            <div v-if="conf_page == 'general'">
+                <GeneralConfigurationView/>
             </div>
-        </transition>
+
+            <div v-if="conf_page == 'account'">
+                <AccountConfigurationView/>
+            </div>
+
+            <div v-if="conf_page == 'groups'">
+                <Friendsgroups/>
+            </div>
+
+            <div v-if="conf_page == 'markers'">
+                <MarquerListConfiguraitonView></MarquerListConfiguraitonView>
+            </div>
+        </div>
     </div>
 </template>
