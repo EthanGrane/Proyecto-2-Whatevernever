@@ -17,7 +17,7 @@ class FriendController extends Controller
     public function index()
     {
         try {
-            $friends = Friend::all(); // O puedes usar tu lógica personalizada para obtener amigos
+            $friends = Friend::all();
             return response()->json($friends, 200);
         } catch (\Exception $e) {
             return response()->json(["status" => 500, "Error" => $e->getMessage()]);
@@ -39,7 +39,7 @@ class FriendController extends Controller
         }
 
         if ($request->id_sender == $request->id_receiver) {
-            return response()->json(['message' => 'You can\'t be your own friend D:>', 'type' => 'bad'], 200);
+            return response()->json(['message' => 'You cant be your own friend', 'type' => 'bad'], 200);
         }
 
         $existingFriendship = Friend::where(function ($query) use ($request) {
@@ -53,7 +53,7 @@ class FriendController extends Controller
             ->first();
 
         if ($existingFriendship) {
-            return response()->json(['message' => 'Already sent, don\'t be annoying >:|', 'type' => 'bad'], 200);
+            return response()->json(['message' => 'Already sent', 'type' => 'bad'], 200);
         }
 
         $friendship = Friend::create([
@@ -63,7 +63,7 @@ class FriendController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Friend request sent :D',
+            'message' => 'Friend request sent',
             'type' => 'good',
             'friendship' => $friendship
         ], 201);
@@ -90,33 +90,51 @@ class FriendController extends Controller
         try {
             $friendship = Friend::findOrFail($id);
             $friendship->update($request->all());
-            return response()->json(["status" => 200, "friendship" => $friendship]);
+            return response()->json(["friendship" => $friendship], 200);
         } catch (ModelNotFoundException $e) {
-            return response()->json(["status" => 404, "Error" => "Friendship not found"]);
+            return response()->json(["Error" => "Friendship not found"], 404);
         }
     }
 
     /*
      * Delete a friend or friend request (Destroy)
      */
-    public function destroy($id)
-    {
-        try {
-            $friendship = Friend::findOrFail($id);
-            $friendship->delete();
-            return response()->json(["status" => 200, "message" => "Friendship deleted successfully"]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(["status" => 404, "Error" => "Friendship not found"]);
-        }
+    public function destroyFriendRequest(Request $request)
+{
+    $request->validate([
+        'id_sender' => 'required|exists:users,id',
+        'id_receiver' => 'required|exists:users,id',
+    ]);
+
+    $idSender = $request->query('id_sender');
+    $idReceiver = $request->query('id_receiver');
+
+    if ($idSender != auth()->id()) {
+        return response()->json(['message' => 'Error you are not authorized to do this'], 401);
     }
 
-    // Funciones personalizadas
+    if ($idSender == $idReceiver) {
+        return response()->json(['message' => 'You cant be your own friend', 'type' => 'bad'], 200);
+    }
+
+    $query = Friend::where('sender_user_id', $idSender)
+        ->where('reciver_user_id', $idReceiver)
+        ->delete();
+
+    return response()->json(['data' => $query], 200);
+}
+
+
+    /*
+     Funciones personalizadas
+     */
+
     public function showFriends(Request $request)
     {
         $search = $request->query('search');
         $query = User::query();
 
-        if ($search) {
+        if ($search) {  
             $query->where('name', 'like', "%$search%");
         }
 
@@ -147,9 +165,12 @@ class FriendController extends Controller
         return response()->json($friendRequests);
     }
 
+    /*
+     * Obtiene todos los amigos de un usuario específico
+     */
     public function ShowAllFriends(Request $request)
     {
-        $userId = $request->query('user');
+        $userId = auth()->user()->id;
         $user = User::findOrFail($userId);
 
         $friendsSent = $user->friendsSent()->where('request_status', '!=', 0)->get();
@@ -170,20 +191,21 @@ class FriendController extends Controller
         return response()->json($formattedFriends);
     }
 
-    public function deleteFriend(Request $request)
+    public function GetUsersWithFriendRequests(Request $request)
     {
-        $request->validate(['friend_id' => 'required|exists:friends,id']);
-        $user = auth()->user();
+        $userId = auth()->user()->id;
 
-        $friend = Friend::where(function ($query) use ($user) {
-            $query->where('sender_user_id', $user->id)
-                ->orWhere('reciver_user_id', $user->id);
-        })->findOrFail($request->friend_id);
+        $users = User::join('friends', 'users.id', '=', 'friends.reciver_user_id')
+        ->where('friends.sender_user_id', $userId)
+        ->select('users.id')
+        ->get();
 
-        $friend->delete();
-
-        return response()->json(['message' => 'Friend deleted successfully'], 200);
+        return response()->json($users, 200);
     }
+
+    
+    
+    
 
     public function acceptFriend(Request $request)
     {

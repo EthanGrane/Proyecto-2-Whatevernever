@@ -60,12 +60,13 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
     Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
     Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
-    Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
-    Route::post('/friends/request', [FriendController::class, 'createRequest']);
-    Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
     Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
     Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
-
+    Route::get('/friends/GetUsersWithFriendRequests', [FriendController::class, 'GetUsersWithFriendRequests']);
+    Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
+    Route::post('/friends/request', [FriendController::class, 'createRequest']);
+    Route::get('/friends/destroyRequest', [FriendController::class, 'destroyFriendRequest']);
+    
     //Friend Groups
     Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup']);
     Route::get('/friends/showMyGroups', [FriendGroupsController::class, 'showMyGroups']);
