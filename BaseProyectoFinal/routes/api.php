@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\FriendGroupsController;
 use App\Http\Controllers\Api\MarkerController;
+use App\Http\Controllers\Api\MarkerListController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -78,5 +79,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::apiResource('markers', MarkerController::class);
     Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
     Route::get('/markers/getAllMarkersFromFriendId',[MarkerController::class, 'getAllMarkersFromFriendId']);
+
+    // Markers lists
+    Route::apiResource('markersLists', MarkerListController::class);
 
 });
