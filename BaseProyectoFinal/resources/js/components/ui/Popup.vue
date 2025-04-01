@@ -13,12 +13,13 @@ const startDrag = (event) => {
   let shiftY = event.clientY - popupElement.getBoundingClientRect().top;
 
   let screenX = window.innerWidth - document.getElementById("create-marker-popup").clientWidth;
-  let screenY = window.innerHeight- document.getElementById("create-marker-popup").clientHeight - document.getElementById("nav").clientHeight;
-  let margin = 16;
+  let screenY = window.innerHeight- document.getElementById("create-marker-popup").clientHeight;
+  let marginX = 32;
+  let marginY = 64;
 
   const moveAt = (pageX, pageY) => {
-    popupElement.style.left = clamp(pageX - shiftX, margin, screenX - margin) + "px";
-    popupElement.style.top = clamp(pageY - shiftY, margin, screenY - margin) + "px";
+    popupElement.style.left = clamp(pageX - shiftX, marginX, screenX - marginX) + "px";
+    popupElement.style.top = clamp(pageY - shiftY, marginY, screenY - marginY) + "px";
   };
 
   const onMouseMove = (event) => {
