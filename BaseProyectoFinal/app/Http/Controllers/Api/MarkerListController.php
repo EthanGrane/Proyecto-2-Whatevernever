@@ -8,6 +8,7 @@ use App\Models\MarkerList;
 
 class MarkerListController extends Controller
 {
+    //Show markers lists
     public function index(Request $request) {
         try {
             $user = auth()->id();
@@ -21,6 +22,8 @@ class MarkerListController extends Controller
 
         }
     }
+
+    //Creates a maker list
     public function store(Request $request)
     {
         try {
@@ -53,13 +56,11 @@ class MarkerListController extends Controller
         }
     }
 
-    public function destroy(Request $request) {
+    //Deletes a marker list
+    public function destroy($id) {
         try {
-            $request->validate([
-                "id" => "required|int"
-            ]);
 
-            $list = MarkerList::where("id", $request->id)->where("owner_user_id", auth()->id())->first();
+            $list = MarkerList::where("id", $id)->where("owner_user_id", auth()->id())->first();
 
             if (!$list) {
                 return response()->json(['message' => 'Group not found or you are not the owner'], 404);
@@ -68,6 +69,37 @@ class MarkerListController extends Controller
             $list->delete();
             
             return response()->json(['message' => "Marker list deleted"], 200);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            return response()->json(["Error" => $th->getMessage()], 500);
+        }
+    }
+
+    public function update($id, Request $request) {
+        try {
+            $request->validate([
+                "name" => "required|string"
+            ]);
+
+            $user = auth()->id();
+
+            $list = MarkerList::where("id", $id)->first();
+
+            if (!$list) {
+                return response()->json(['message' => 'List not found'], 404);
+            }
+
+            if ($list->owner_user_id != $user) {
+                return response()->json(['message' => 'You are not the owner of this list'], 401);
+            }
+
+            $list->update([
+                "name"=>$request->name
+            ]);
+
+            return response()->json(['message' => 'Group updated'], 200);
 
         } catch (\Throwable $th) {
             //throw $th;
