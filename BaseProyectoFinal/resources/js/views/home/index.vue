@@ -2,28 +2,23 @@
 import { onMounted } from 'vue';
 import axios from 'axios';
 import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap } from "../../composables/MapUtils.js";
+import Popup from '../../components/ui/Popup.vue';
 
-onMounted(async () => 
-{
+onMounted(async () => {
     const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
     const friendsConnected = await loadUsers();
 
-    if (friendsConnected && Array.isArray(friendsConnected)) 
-    {
+    if (friendsConnected && Array.isArray(friendsConnected)) {
         SetFriends(friendsConnected);
-    }
-    else 
-    {
+    } else {
         console.error("Error: La respuesta no es un array válido.");
     }
 
     // Map
     const map = InitializeMap(center);
 
-    map.on('load', () => 
-    {
+    map.on('load', () => {
         AddMarkerToMap(-7.817, 52.659, map);
-
         ReloadMapMarkers(map);
     });
 });
@@ -39,11 +34,10 @@ async function loadUsers() {
 }
 </script>
 
-
-
 <template>
+    <div>
+        <Popup />
 
-    <div id="map">
+        <div id="map"></div>
     </div>
-    
 </template>

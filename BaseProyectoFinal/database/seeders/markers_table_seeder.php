@@ -25,14 +25,15 @@ class markers_table_seeder extends Seeder
             "Before you run away from me Before you're lost between the notes Just as you take the mic Just as you dance, dance, dance",
             "Jigsaw falling into place So there is nothing to explain You eye each other as you pass She looks back, you look back"];
 
-        foreach (range(1, 50) as $index) 
+        foreach (range(1, 150) as $index) 
         {
             DB::table('markers')->insert([
                 'name' => $faker->country(),
                 'description' => $descriptions[$index % count($descriptions)],
                 'lng' => mt_rand(-9000,3000) / 1000,
                 'lat' => mt_rand(37000,43000) / 1000,
-                'user_id' => mt_rand(1,50)
+                'user_id' => mt_rand(1,50),
+                'marker_list_id' => mt_rand(1,50)
             ]);
         }
     }

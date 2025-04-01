@@ -7,7 +7,7 @@
             </ul>
             -->
 
-        <div class="navMenu">
+        <div class="navMenu" id="nav">
             <div>
                 <router-link to="/profile">
                     <img src="/images/icon_profile.svg" alt="Profile" class="icon">

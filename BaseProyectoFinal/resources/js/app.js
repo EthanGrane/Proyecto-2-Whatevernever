@@ -76,6 +76,7 @@ import '../css/configurationStyle.css';
 import '../css/feedStyle.css';
 import '../css/mapbox.css';
 import '../css/markersStyle.css';
+import '../css/PopupStyle.css';
 
 
 const app = createApp({
