@@ -130,6 +130,12 @@ class FriendController extends Controller
      */
 
     public function showFriends(Request $request)
+
+    /*
+    //Shows all users that registred in the app
+    public function showUsers(Request $request)
+    */
+
     {
         $search = $request->query('search');
         $query = User::query();
@@ -147,7 +153,14 @@ class FriendController extends Controller
         return response()->json($friends);
     }
 
+  
     public function showMyFriends(Request $request)
+
+    /*
+    //Only show friends that recived a request
+    public function ShowrequestsRecived(Request $request)
+    */
+
     {
         $userId = auth()->user()->id;
         $user = User::findOrFail($userId);
@@ -157,6 +170,10 @@ class FriendController extends Controller
     }
 
     public function requestsSent(Request $request)
+    /*
+    //Only shows friends i send a request
+    public function ShowrequestsSent(Request $request)
+    */
     {
         $userId = $request->query('user');
         $user = User::findOrFail($userId);
@@ -168,6 +185,9 @@ class FriendController extends Controller
     /*
      * Obtiene todos los amigos de un usuario específico
      */
+
+    //Shows all people that is in a friendship with you
+
     public function ShowAllFriends(Request $request)
     {
         $userId = auth()->user()->id;
@@ -191,7 +211,13 @@ class FriendController extends Controller
         return response()->json($formattedFriends);
     }
 
+
     public function GetUsersWithFriendRequests(Request $request)
+
+    /*
+    //Delete Friendship or friend request (friendship or friend request its the same in the bbdd)
+    public function deleteFriend(Request $request)
+    */
     {
         $userId = auth()->user()->id;
 

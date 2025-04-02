@@ -8,7 +8,7 @@
     <h2>El Alejandro</h2>
     <p>Tiene el frenillo como una goma de pollo</p>
     <hr>
-    <h2>A tu madre</h2>
-    <p>Le cuelgan las pechugas</p>
+    <h2>A ta mare</h2>
+    <p>Li penjen les popes</p>
     <hr>
 </template>
