@@ -131,7 +131,8 @@ function SelectFriend(friendElement) {
         selectedFriend.style.zIndex = 0;
         selectedFriend.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${selectedFriend.dataset.originalWidth / 2}px 4px`;
 
-        if (selectedFriend == friendElement) {
+        if (selectedFriend == friendElement) 
+        {
             selectedFriend = null;
             return;
         }

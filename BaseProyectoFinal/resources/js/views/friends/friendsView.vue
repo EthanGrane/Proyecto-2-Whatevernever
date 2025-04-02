@@ -70,6 +70,7 @@
                 </div>
             </div>
             <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                
                 <div class="search-user-information-container" v-if="user.request_status == 0">
                     <div>
                         <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
@@ -79,9 +80,11 @@
                         <p class="search-user-information-username">{{ user.sender.username }}</p>
                     </div>
                 </div>
+
                 <div v-if="user.request_status == 0">
                     <button @click="acceptRequest(user.id)" class="secondary-button">{{ $t('acceptFriendRequest') }}</button>
                 </div>
+
             </div>
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
                 <h2>{{$t('withoutrequests')}}</h2>
@@ -89,6 +92,7 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import { authStore } from "../../store/auth";
@@ -100,8 +104,6 @@ import axios from 'axios';
     const loading = ref(false);
     const users = ref([]);
     const pages = ref(true);
-
-    console.log("Id usuario: " + user_id.value);
 
     async function cargarRequests() 
     {

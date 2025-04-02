@@ -1,4 +1,3 @@
-
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
@@ -11,55 +10,64 @@ const users = ref("");
 const loading = ref(true);
 const inputbusqueda = ref("");
 
-const showMessageBool = ref(false);
-const popupMessage = ref("");
-const messageType = ref("");
+const friendsRequestSended = ref([]);
 
 let timeout;
 
-function showMessage(message, type) {
-    showMessageBool.value = true;
-
-    messageType.value = type;
-    popupMessage.value = message;
-
-    setTimeout(() => {
-        showMessageBool.value = false;
-    }, 3000);
-}
-
 async function cargarUsers() {
     loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/friends/showFriends?search='+inputbusqueda.value)
-    .then(response => 
-    {
-        users.value = response.data;
-        loading.value = false;
+    axios.get('http://127.0.0.1:8000/api/friends/showFriends?search=' + inputbusqueda.value)
+        .then(response => {
+            users.value = response.data;
 
-        users.value.forEach(user => {
-            try {
-                user.image = "images/users/"+user.media[0].file_name;
-            } catch (error) {
-                user.image = "";
-            }
+            users.value.forEach(user => {
+                try {
+                    user.image = "images/users/" + user.media[0].file_name;
+                } catch (error) {
+                    user.image = "";
+                }
+            });
+
+        })
+        .catch(error => {
+            console.error("[SearchView.vue] Error:", error);
+            loading.value = false;
         });
 
-    })
-    .catch(error => 
-    {
-        console.error("[SearchView.vue] Error:", error);
-        loading.value = false;
-    });
+    axios.get('http://127.0.0.1:8000/api/friends/GetUsersWithFriendRequests')
+        .then(response => {
+            friendsRequestSended.value = response.data;
+            loading.value = false;
+        })
+        .catch(error => {
+            console.log(error);
+            loading.value = false;
+        })
 }
 
 async function sendRequest(id_reciver) {
-    let response = await axios.post('http://127.0.0.1:8000/api/friends/request', {
+    await axios.post('http://127.0.0.1:8000/api/friend', {
         "id_sender": user_id.value,
         "id_receiver": id_reciver
-    })
-
-    showMessage(response.data.message, response.data.type);
+    }).then(response => {
+        friendsRequestSended.value.push({ id: id_reciver });
+    }).catch(error => {
+        console.error(error);
+    });
 }
+
+async function deleteRequest(friend_id) {
+    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${user_id.value}&id_receiver=${friend_id}`)
+    .then(response => {
+        console.log('Friendship deleted:', response.data);
+        friendsRequestSended.value = friendsRequestSended.value.filter(friend => friend.id !== friend_id);
+    })
+    .catch(error => {
+        console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+    });
+}
+
+
 
 
 cargarUsers();
@@ -83,9 +91,10 @@ setTimeout(() => {
 
 <template>
     <div class="search-background">
-        
+
         <div>
-            <input class="search-field" v-model="inputbusqueda" @input="manejarInput" :placeholder="$t('buscadoramigos')">
+            <input class="search-field" v-model="inputbusqueda" @input="manejarInput"
+                :placeholder="$t('buscadoramigos')">
         </div>
 
         <div id="search-user-list-container">
@@ -110,31 +119,39 @@ setTimeout(() => {
             </div>
 
             <div v-for="(user, index) in users" :key="index" class="search-user-container">
+
                 <div class="search-user-information-container">
                     <div>
-                        <img :src="user.image ? user.image : '/images/ProfilePicture_6.jpg'" alt="User image" class="search-user-information-image">
-                    </div>
-                    
-                    <div class="search-user-information">
-                        <b><p class="search-user-information-name">{{ user.name }}</p></b>
-                        <p class="search-user-information-username">{{ user.username }}</p>
+                        <img :src="user.image ? user.image : '/images/ProfilePicture_6.jpg'" alt="User image"
+                            class="search-user-information-image">
                     </div>
 
+                    <div class="search-user-information">
+                        <b>
+                            <p class="search-user-information-name">{{ user.name }}</p>
+                        </b>
+                        <p class="search-user-information-username">{{ user.username }}</p>
+                    </div>
                 </div>
 
                 <div>
-                    <button @click="sendRequest(user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
+                    <button v-if="friendsRequestSended.some(friend => friend.id === user.id)"
+                        @click="deleteRequest(user.id)" class="secondary-button">
+                        {{ $t('cancel') }}
+                    </button>
 
+                    <button v-else @click="sendRequest(user.id)" class="secondary-button">
+                        {{ $t('addFriendText') }}
+                    </button>
                 </div>
+
             </div>
 
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
                 <h2>{{ $t('usernotfound') }}</h2>
             </div>
+
         </div>
-        <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
-            <h3>Info:</h3>
-            <p>{{ popupMessage }}</p>
-        </div>
+
     </div>
 </template>

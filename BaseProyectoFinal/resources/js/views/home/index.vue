@@ -3,24 +3,26 @@ import { onMounted } from 'vue';
 import axios from 'axios';
 import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap } from "../../composables/MapUtils.js";
 
-onMounted(async () => {
+onMounted(async () => 
+{
     const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
-    const map = InitializeMap(center);
-
     const friendsConnected = await loadUsers();
 
     if (friendsConnected && Array.isArray(friendsConnected)) 
     {
         SetFriends(friendsConnected);
-    } 
+    }
     else 
     {
         console.error("Error: La respuesta no es un array válido.");
     }
 
+    // Map
+    const map = InitializeMap(center);
+
     map.on('load', () => 
     {
-        AddMarkerToMap(-7.817,52.659,map);
+        AddMarkerToMap(-7.817, 52.659, map);
 
         ReloadMapMarkers(map);
     });
