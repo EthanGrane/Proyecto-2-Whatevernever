@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 class FriendController extends Controller
 {
+    //Shows all users that registred in the app
     public function showUsers(Request $request)
     {
         $search = $request->query('search');
@@ -33,7 +34,7 @@ class FriendController extends Controller
         return response()->json($friends);
     }
 
-    //Show friends that recived a request
+    //Only show friends that recived a request
     public function ShowrequestsRecived(Request $request)
     {
         $userId = $request->query('user');
@@ -48,7 +49,7 @@ class FriendController extends Controller
         );
     }
 
-    //Show friends i send a request
+    //Only shows friends i send a request
     public function ShowrequestsSent(Request $request)
     {
         $userId = $request->query('user');
@@ -62,7 +63,7 @@ class FriendController extends Controller
         );
     }
 
-    //Muestra todos tus amigos tanto los que has enviado la solicitut como los que has recivido
+    //Shows all people that is in a friendship with you
     public function ShowAllFriends(Request $request)
     {
         $userId = $request->query('user');
@@ -87,7 +88,7 @@ class FriendController extends Controller
         return response()->json($formattedFriends);
     }
 
-    //Delete Friendship or friend request (its the same in the bbdd)
+    //Delete Friendship or friend request (friendship or friend request its the same in the bbdd)
     public function deleteFriend(Request $request)
     {
         $request->validate([
