@@ -3,49 +3,50 @@
 import { ref } from 'vue';
 import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
+import { useRoute } from 'vue-router'
 
-const { updateImg } = useUsers()
+const { updateImg } = useUsers();
+const route = useRoute();
 
 const userFriendsListPopupActive = ref(false);
-const image = ref("/images/ProfilePicture_8.jpg");
-const friendnumber = ref(0);
-const userUpdatePicture = ref();
+const userPFP = ref("/images/ProfilePicture_8.jpg");
 
-const auth = authStore();
-const users = ref([]);
-const loading = ref(false);
-const user_id = ref(auth.user?.id);
+const requestedUserData = ref({});
+const requestedUserFriendList = ref([{}]);
 
-function ShowFriendListPopup() {
-    userFriendsListPopupActive.value = true;
+async function loadDataFromRequestUser() {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
+        if (response.data) {
+            requestedUserData.value = response.data;
+            getFriendsFromRequestedUser();
+        } else {
+            requestedUserData.value = {};
+        }
+    } catch (error) {
+        console.error("[ProfileView.vue] Error:", error);
+        requestedUserData.value = {};
+    }
 }
 
-async function LoadUsernameProfile()
-{
-    loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.)
+
+
+async function getFriendsFromRequestedUser() {
+    if (!requestedUserData.value.id) return; 
+
+    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + requestedUserData.value.id)
         .then(response => {
-            users.value = response.data;
-            friendnumber.value = users.value.length;
-            loading.value = false;
+            requestedUserFriendList.value = response.data || [];
+
+            console.log("getFriendsFromRequestedUser")
+            console.log(requestedUserFriendList.value);
         })
         .catch(error => {
             console.error("[ProfileView.vue] Error:", error);
-            loading.value = false;
-        })
+            requestedUserFriendList.value = [];
+        });
 }
 
-async function showMyFriends() 
-{
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + user_id.value)
-        .then(response => {
-            users.value = response.data;
-            friendnumber.value = users.value.length;
-        })
-        .catch(error => {
-            console.error("[ProfileView.vue] Error:", error);
-        })
-}
 
 async function deleteFriend(id_friendship) {
     console.log(id_friendship);
@@ -60,42 +61,37 @@ async function deleteFriend(id_friendship) {
                 console.error("[SearchView.vue] Error:", error);
             });
 
-        users.value = [];
-        setTimeout(showMyFriends, 1000);
+        setTimeout(getFriendsFromRequestedUser, 1000);
     } catch (error) {
         console.log(error);
     }
 }
 
-showMyFriends();
+loadDataFromRequestUser();
 
 </script>
 
 <template>
-    <div class="profile-background">
-        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);
-        ">
-        
-            <img :src="image" :alt="image" class="profile-info-pfp">
+    <div v-if="requestedUserData.id" class="profile-background">
+        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
-            <h1 class="profile-info-name">{{ name }}</h1>
+            <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">
 
-            <h3 class="profile-info-username">{{ username }}</h3>
+            <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
+            <h3 class="profile-info-username">{{ requestedUserData.username }}</h3>
 
             <p>{{ description }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="ShowFriendListPopup" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter')
-                }}</button>
+            <button @click="() => { userFriendsListPopupActive.value = true; }" class="secondary-button m-1">
+                <b v-if="requestedUserFriendList.length">{{ requestedUserFriendList.length }}</b> 
+                {{ $t('friendscounter') }}
+            </button>
         </div>
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
-        <!--
-        <input type="file" ref="userUpdatePicture" @change="updateImg(userUpdatePicture.files[0])" name="picture">
-        <button type="submit">Submit</button>
-        -->
 
-        <!--Amigos-->
+        <!-- Friends Popup -->
         <transition name="fade">
             <div v-if="userFriendsListPopupActive" class="friends-panel">
                 <div class="d-flex justify-content-between">
@@ -107,30 +103,13 @@ showMyFriends();
                     </div>
                 </div>
                 <div class="friendlistprofile">
-                    <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
-                        <div class="search-user-information-container">
-                            <div>
-                                <div class="search-fake-user-image"></div>
-                            </div>
-                            <div>
-                                <div class="search-fake-user-username"></div>
-
-                                <div class="d-flex flex-row">
-                                    <div class="search-fake-user-name"></div>
-                                    <div class="search-fake-user-description"></div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div>
-                            <div class="search-fake-button"></div>
-                        </div>
+                    <div v-if="requestedUserFriendList.length < 1" id="notfoundsearcherror">
+                        <h2>{{ $t('withoutfriends') }}</h2>
                     </div>
-                    <div v-for="(user, index) in users" :key="index" class="search-user-container">
+                    <div v-for="(user, index) in requestedUserFriendList" :key="index" class="search-user-container">
                         <div class="search-user-information-container" v-if="user.request_status == 1">
                             <div>
-                                <img src="/images/icon_profile.svg" alt="User image"
-                                    class="search-user-information-image">
+                                <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
                             </div>
                             <div class="search-user-information">
                                 <b>
@@ -140,15 +119,12 @@ showMyFriends();
                             </div>
                         </div>
                         <div v-if="user.request_status == 1">
-                            <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('deleteFriend')
-                                }}</button>
+                            <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('deleteFriend') }}</button>
                         </div>
-                    </div>
-                    <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                        <h2>{{ $t('withoutfriends') }}</h2>
                     </div>
                 </div>
             </div>
         </transition>
+
     </div>
 </template>

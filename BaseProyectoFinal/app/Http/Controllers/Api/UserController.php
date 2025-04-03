@@ -129,7 +129,7 @@ class UserController extends Controller
      */
     public function showUserByUsername(Request $request)
     {
-        $user = User::where('username', $request->username)->first(['name','username','desc','email']);
+        $user = User::where('username', $request->username)->first(['id','name','username','desc','email']);
         return response()->json($user,200);
     }
 }
