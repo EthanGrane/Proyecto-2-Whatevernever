@@ -2,10 +2,10 @@ import { authStore } from "../store/auth";
 
 const AuthenticatedLayout = () => import('../layouts/Authenticated.vue')
 const AuthenticatedUserLayout = () => import('../layouts/AuthenticatedUser.vue')
-const GuestLayout = ()  => import('../layouts/Guest.vue');
-const PostsIndex  = ()  => import('../views/admin/posts/Index.vue');
-const PostsCreate  = ()  => import('../views/admin/posts/Create.vue');
-const PostsEdit  = ()  => import('../views/admin/posts/Edit.vue');
+const GuestLayout = () => import('../layouts/Guest.vue');
+const PostsIndex = () => import('../views/admin/posts/Index.vue');
+const PostsCreate = () => import('../views/admin/posts/Create.vue');
+const PostsEdit = () => import('../views/admin/posts/Edit.vue');
 
 async function requireLogin(to, from, next) {
     const auth = authStore();
@@ -45,9 +45,9 @@ async function requireAdmin(to, from, next) {
     let user = auth.user;
 
     if (isLogin) {
-        if( hasAdmin(user.roles)){
+        if (hasAdmin(user.roles)) {
             next()
-        }else{
+        } else {
             next('/app')
         }
     } else {
@@ -55,15 +55,90 @@ async function requireAdmin(to, from, next) {
     }
 }
 
+async function redirectIfAuth(to, from, next) {
+    const auth = authStore();
+    let isLogin = !!auth.authenticated;
+
+    if (isLogin) {
+        next('/profile');
+    } else {
+        next();
+    }
+}
+function redirectToHome(to, from, next) {
+    next('/home');
+}
+
+
 export default [
     {
         path: '/',
-        // redirect: { name: 'login' },
+        redirect: { name: 'login' },
         component: GuestLayout,
         children: [
-
             {
                 path: '/',
+                name: 'guestHome',
+                component: () => import('../views/home/index.vue'),
+                beforeEnter: redirectToHome,
+            },       
+            {
+                path: '/testApi',
+                name: 'testApi',
+
+                component: () => import('../views/testApi/testApi.vue'),
+            },
+            {
+                path: 'posts',
+                name: 'public-posts.index',
+                component: () => import('../views/posts/index.vue'),
+            },
+            {
+                path: 'posts/:id',
+                name: 'public-posts.details',
+                component: () => import('../views/posts/details.vue'),
+            },
+            {
+                path: 'category/:id',
+                name: 'category-posts.index',
+                component: () => import('../views/category/posts.vue'),
+            },
+            {
+                path: 'login',
+                name: 'auth.login',
+                component: () => import('../views/login/Login.vue'),
+                beforeEnter: redirectIfAuth
+            },
+            {
+                path: 'register',
+                name: 'auth.register',
+                component: () => import('../views/register/index.vue'),
+                beforeEnter: redirectIfAuth
+            },
+            {
+                path: 'forgot-password',
+                name: 'auth.forgot-password',
+                component: () => import('../views/auth/passwords/Email.vue'),
+                beforeEnter: redirectIfAuth
+            },
+            {
+                path: 'reset-password/:token',
+                name: 'auth.reset-password',
+                component: () => import('../views/auth/passwords/Reset.vue'),
+                beforeEnter: redirectIfAuth
+            }
+        ]
+    },
+
+    {
+        path: '/',
+        component: AuthenticatedUserLayout,
+        name: 'app',
+        beforeEnter: requireLogin,
+        meta: { breadCrumb: 'Dashboard' },
+        children: [     
+            {
+                path: '/home',
                 name: 'home',
                 component: () => import('../views/home/index.vue'),
                 beforeEnter: requireLogin,
@@ -100,65 +175,8 @@ export default [
 
                 component: () => import('../views/feed/feedView.vue'),
                 beforeEnter: requireLogin,
-            },
-            {
-                path: '/testApi',
-                name: 'testApi',
-
-                component: () => import('../views/testApi/testApi.vue'),
-            },
-
-            {
-                path: 'posts',
-                name: 'public-posts.index',
-                component: () => import('../views/posts/index.vue'),
-            },
-            {
-                path: 'posts/:id',
-                name: 'public-posts.details',
-                component: () => import('../views/posts/details.vue'),
-            },
-            {
-                path: 'category/:id',
-                name: 'category-posts.index',
-                component: () => import('../views/category/posts.vue'),
-            },
-            {
-                path: 'login',
-                name: 'auth.login',
-                component: () => import('../views/login/Login.vue'),
-                beforeEnter: guest,
-            },
-            {
-                path: 'register',
-                name: 'auth.register',
-                component: () => import('../views/register/index.vue'),
-                beforeEnter: guest,
-            },
-            {
-                path: 'forgot-password',
-                name: 'auth.forgot-password',
-                component: () => import('../views/auth/passwords/Email.vue'),
-                beforeEnter: guest,
-            },
-            {
-                path: 'reset-password/:token',
-                name: 'auth.reset-password',
-                component: () => import('../views/auth/passwords/Reset.vue'),
-                beforeEnter: guest,
-            },
+            }
         ]
-    },
-
-    {
-        path: '/app',
-        component: AuthenticatedUserLayout,
-        // redirect: {
-        //     name: 'admin.index'
-        // },
-        name: 'app',
-        beforeEnter: requireLogin,
-        meta: { breadCrumb: 'Dashboard' }
     },
 
 
@@ -204,7 +222,7 @@ export default [
             {
                 name: 'categories',
                 path: 'categories',
-                meta: { breadCrumb: 'Categories'},
+                meta: { breadCrumb: 'Categories' },
                 children: [
                     {
                         name: 'categories.index',
@@ -217,7 +235,7 @@ export default [
                         path: 'create',
                         component: () => import('../views/admin/categories/Create.vue'),
                         meta: {
-                            breadCrumb: 'Add new category' ,
+                            breadCrumb: 'Add new category',
                             linked: false,
                         }
                     },
@@ -235,7 +253,7 @@ export default [
             {
                 name: 'permissions',
                 path: 'permissions',
-                meta: { breadCrumb: 'Permisos'},
+                meta: { breadCrumb: 'Permisos' },
                 children: [
                     {
                         name: 'permissions.index',
@@ -266,7 +284,7 @@ export default [
             {
                 name: 'users',
                 path: 'users',
-                meta: { breadCrumb: 'Usuarios'},
+                meta: { breadCrumb: 'Usuarios' },
                 children: [
                     {
                         name: 'users.index',
