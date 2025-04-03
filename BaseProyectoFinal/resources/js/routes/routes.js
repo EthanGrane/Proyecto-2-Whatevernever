@@ -57,56 +57,16 @@ async function requireAdmin(to, from, next) {
 
 export default [
     {
-        path: '/',
+        path: '/guest',
         // redirect: { name: 'login' },
         component: GuestLayout,
         children: [
-
-            {
-                path: '/',
-                name: 'home',
-                component: () => import('../views/home/index.vue'),
-                beforeEnter: requireLogin,
-            },
-            {
-                path: '/profile',
-                name: 'profile',
-                component: () => import('../views/profile/profileView.vue'),
-                beforeEnter: requireLogin,
-            },
-            {
-                path: '/search',
-                name: 'search',
-                component: () => import('../views/search/searchView.vue'),
-                beforeEnter: requireLogin,
-            },
-            {
-                path: '/friends',
-                name: 'friends',
-                component: () => import('../views/friends/friendsView.vue'),
-                beforeEnter: requireLogin,
-            },
-            {
-                path: '/configuration',
-                name: 'configuration',
-
-                component: () => import('../views/configuration/ConfigurationView.vue'),
-                beforeEnter: requireLogin,
-            },
-            {
-                path: '/feed',
-                name: 'feed',
-
-                component: () => import('../views/feed/feedView.vue'),
-                beforeEnter: requireLogin,
-            },
             {
                 path: '/testApi',
                 name: 'testApi',
 
                 component: () => import('../views/testApi/testApi.vue'),
             },
-
             {
                 path: 'posts',
                 name: 'public-posts.index',
@@ -126,38 +86,68 @@ export default [
                 path: 'login',
                 name: 'auth.login',
                 component: () => import('../views/login/Login.vue'),
-                beforeEnter: guest,
             },
             {
                 path: 'register',
                 name: 'auth.register',
                 component: () => import('../views/register/index.vue'),
-                beforeEnter: guest,
             },
             {
                 path: 'forgot-password',
                 name: 'auth.forgot-password',
                 component: () => import('../views/auth/passwords/Email.vue'),
-                beforeEnter: guest,
             },
             {
                 path: 'reset-password/:token',
                 name: 'auth.reset-password',
                 component: () => import('../views/auth/passwords/Reset.vue'),
-                beforeEnter: guest,
             },
         ]
     },
 
     {
-        path: '/app',
+        path: '/',
         component: AuthenticatedUserLayout,
         // redirect: {
         //     name: 'admin.index'
         // },
         name: 'app',
         beforeEnter: requireLogin,
-        meta: { breadCrumb: 'Dashboard' }
+        meta: { breadCrumb: 'Dashboard' },
+        children:[
+            {
+                path: '/',
+                name: 'home',
+                component: () => import('../views/home/index.vue'),
+            },
+            {
+                path: '/profile',
+                name: 'profile',
+                component: () => import('../views/profile/profileView.vue'),
+            },
+            {
+                path: '/search',
+                name: 'search',
+                component: () => import('../views/search/searchView.vue'),
+            },
+            {
+                path: '/friends',
+                name: 'friends',
+                component: () => import('../views/friends/friendsView.vue'),
+            },
+            {
+                path: '/configuration',
+                name: 'configuration',
+
+                component: () => import('../views/configuration/ConfigurationView.vue'),
+            },
+            {
+                path: '/feed',
+                name: 'feed',
+
+                component: () => import('../views/feed/feedView.vue'),
+            }
+        ]
     },
 
 
