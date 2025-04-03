@@ -140,7 +140,7 @@ setTimeout(() => {
                         {{ $t('cancel') }}
                     </button>
 
-                    <button v-else @click="sendRequest(user.id)" class="secondary-button">
+                    <button v-else @click="sendRequest(user.id)" class="secondary-button-hight">
                         {{ $t('addFriendText') }}
                     </button>
                 </div>
