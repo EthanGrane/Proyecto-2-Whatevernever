@@ -22,7 +22,7 @@ export default function useAuth() {
     const loginForm = reactive({
         email: '',
         password: '',
-        remember: false
+        remember: false,
     })
 
     const forgotForm = reactive({
