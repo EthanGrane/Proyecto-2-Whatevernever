@@ -35,9 +35,12 @@ async function loadUsers() {
 </script>
 
 <template>
-    <div>
-        <Popup />
+<div>
+    <div class="position-absolute rounded" style="width: 20vw; height: 5vw; background: linear-gradient(186deg, rgba(255,50,50,1) 61%, rgba(255,142,142,1) 100%); bottom: 12vh; right: 32px; z-index: 999;">
+    <p class="text-center">NEW MARKER</p>
+    </div>
 
         <div id="map"></div>
     </div>
+</div>
 </template>

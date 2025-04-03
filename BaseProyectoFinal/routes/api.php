@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\FriendController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\FriendGroupsController;
 use App\Http\Controllers\Api\MarkerController;
+use App\Http\Controllers\Api\MarkerListController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -57,9 +58,17 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     //API
     //Friends
     Route::apiResource('friend', FriendController::class);
-    Route::get('/friends/showFriends', [FriendController::class, 'showFriends']);
-    Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']);
-    Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']);
+    // Route::get('/friends/showFriends', [FriendController::class, 'showFriends']); Old
+    // Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']); Old
+    // Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']); Old
+
+    Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
+    Route::get('/friends/myFriends', [FriendController::class, 'ShowrequestsRecived']);
+    Route::get('/friends/requestsSend', [FriendController::class, 'ShowrequestsSent']);
+    Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
+    //Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
+    Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
+
     Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
     Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
     Route::get('/friends/GetUsersWithFriendRequests', [FriendController::class, 'GetUsersWithFriendRequests']);
@@ -80,5 +89,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::apiResource('markers', MarkerController::class);
     Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
     Route::get('/markers/getAllMarkersFromFriendId',[MarkerController::class, 'getAllMarkersFromFriendId']);
+
+    // Markers lists
+    Route::apiResource('markersLists', MarkerListController::class);
 
 });
