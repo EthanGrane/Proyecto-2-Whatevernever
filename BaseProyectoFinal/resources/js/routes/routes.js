@@ -69,9 +69,10 @@ export default [
                 beforeEnter: requireLogin,
             },
             {
-                path: '/profile',
+                path: '/profile/:username',
                 name: 'profile',
                 component: () => import('../views/profile/profileView.vue'),
+                props: true,
                 beforeEnter: requireLogin,
             },
             {

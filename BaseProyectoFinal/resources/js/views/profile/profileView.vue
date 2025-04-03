@@ -23,10 +23,10 @@ function ShowFriendListPopup() {
     userFriendsListPopupActive.value = true;
 }
 
-async function showMyFriends() 
+async function LoadProfile()
 {
     loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + user_id.value)
+    axios.get('http://127.0.0.1:8000/api/profile/allFriends?user=' + user_id.value)
         .then(response => {
             users.value = response.data;
             friendnumber.value = users.value.length;
@@ -35,6 +35,18 @@ async function showMyFriends()
         .catch(error => {
             console.error("[ProfileView.vue] Error:", error);
             loading.value = false;
+        })
+}
+
+async function showMyFriends() 
+{
+    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + user_id.value)
+        .then(response => {
+            users.value = response.data;
+            friendnumber.value = users.value.length;
+        })
+        .catch(error => {
+            console.error("[ProfileView.vue] Error:", error);
         })
 }
 

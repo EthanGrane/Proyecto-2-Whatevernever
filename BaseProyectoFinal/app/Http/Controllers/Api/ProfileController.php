@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -37,4 +38,33 @@ class ProfileController extends Controller
 
         return $this->successResponse($user, 'User found');
     }
+
+    public function getProfileByUsername($username)
+    {
+        // Buscar el usuario por su nombre de usuario
+        $user = User::where('username', $username)->first();
+    
+        // Si no se encuentra el usuario, retornar un error
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+    
+        // Si el usuario es encontrado, devolver la información
+        $avatar = '';
+        if ($user->media->isNotEmpty()) {
+            $avatar = $user->media->first()->original_url;
+        }
+    
+        $user->avatar = $avatar;
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'User found',
+            'data' => $user
+        ]);
+    }
+
 }
