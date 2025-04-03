@@ -98,6 +98,8 @@ setTimeout(() => {
         </div>
 
         <div id="search-user-list-container">
+
+            <!-- Fake search results for Loading -->
             <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
                 <div class="search-user-information-container">
                     <div>
@@ -118,7 +120,9 @@ setTimeout(() => {
                 </div>
             </div>
 
-            <div v-for="(user, index) in users" :key="index" class="search-user-container">
+            <!-- Search results -->
+
+            <a v-for="(user, index) in users" :key="index" :href="'profile/' + user.username" class="search-user-container" style="color: white;">
 
                 <div class="search-user-information-container">
                     <div>
@@ -145,7 +149,7 @@ setTimeout(() => {
                     </button>
                 </div>
 
-            </div>
+            </a>
 
             <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
                 <h2>{{ $t('usernotfound') }}</h2>
