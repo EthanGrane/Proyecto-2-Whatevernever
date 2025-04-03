@@ -21,9 +21,6 @@ Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('
 
 Route::group(['middleware' => 'auth:sanctum'], function () 
 {
-    Route::apiResource('users', UserController::class);
-
-    Route::post('users/updateimg', [UserController::class, 'updateimg']); //Listar
 
     Route::apiResource('posts', PostControllerAdvance::class);
     Route::apiResource('categories', CategoryController::class);
@@ -35,8 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::apiResource('permissions', PermissionController::class);
 
     Route::get('category-list', [CategoryController::class, 'getList']);
-    Route::get('/user', [ProfileController::class, 'user']);
-    Route::put('/user', [ProfileController::class, 'update']);
+
 
     Route::get('abilities', function (Request $request) {
         return $request->user()->roles()->with('permissions')
@@ -56,6 +52,16 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('get-post/{id}', [PostControllerAdvance::class, 'getPost']);
 
     //API
+    // Users
+    Route::apiResource('users', UserController::class);
+    Route::post('/users/updateimg', [UserController::class, 'updateimg']); //Listar
+
+    Route::get('/user', [ProfileController::class, 'user']);
+    Route::put('/user', [ProfileController::class, 'update']);
+
+    // My User functions
+    Route::get('/user/showUserByUsername', [UserController::class, 'showUserByUsername']);
+
     //Friends
     Route::apiResource('friend', FriendController::class);
 

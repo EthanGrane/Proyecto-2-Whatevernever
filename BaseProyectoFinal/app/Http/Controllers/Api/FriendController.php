@@ -23,7 +23,7 @@ class FriendController extends Controller
             return response()->json(["status" => 500, "Error" => $e->getMessage()]);
         }
     }
-
+    
     /*
      * Creates a new friend request (Store)
      */

@@ -8,9 +8,6 @@ const { updateImg } = useUsers()
 
 const userFriendsListPopupActive = ref(false);
 const image = ref("/images/ProfilePicture_8.jpg");
-const name = ref(authStore().user?.name);
-const username = ref(authStore().user?.username);
-const description = ref(authStore().user?.desc);
 const friendnumber = ref(0);
 const userUpdatePicture = ref();
 
@@ -23,10 +20,10 @@ function ShowFriendListPopup() {
     userFriendsListPopupActive.value = true;
 }
 
-async function LoadProfile()
+async function LoadUsernameProfile()
 {
     loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/profile/allFriends?user=' + user_id.value)
+    axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.)
         .then(response => {
             users.value = response.data;
             friendnumber.value = users.value.length;
