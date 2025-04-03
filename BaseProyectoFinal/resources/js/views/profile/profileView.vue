@@ -19,11 +19,12 @@ const users = ref([]);
 const loading = ref(false);
 const user_id = ref(auth.user?.id);
 
-function verAmigos() {
+function ShowFriendListPopup() {
     userFriendsListPopupActive.value = true;
 }
 
-async function showMyFriends() {
+async function showMyFriends() 
+{
     loading.value = true;
     axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + user_id.value)
         .then(response => {
@@ -73,8 +74,8 @@ showMyFriends();
             <h3 class="profile-info-username">{{ username }}</h3>
 
             <p>{{ description }}</p>
-            <button class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="verAmigos" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter')
+            <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
+            <button @click="ShowFriendListPopup" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter')
                 }}</button>
         </div>
         <div class="profile-markers-list">
