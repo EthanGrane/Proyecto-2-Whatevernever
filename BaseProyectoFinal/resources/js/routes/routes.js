@@ -294,8 +294,6 @@ export default [
                     }
                 ]
             },
-
-            //TODO Organizar rutas
             {
                 name: 'roles.index',
                 path: 'roles',
