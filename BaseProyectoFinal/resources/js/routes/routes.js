@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { authStore } from "../store/auth";
 
 const AuthenticatedLayout = () => import('../layouts/Authenticated.vue')
@@ -17,6 +18,15 @@ async function requireLogin(to, from, next) {
         next('/login')
     }
 }
+
+async function redirectToUserProfile(to, from, next) {
+    const auth = authStore();
+    const user = auth.user;
+    const username = user ? user.username : null;
+
+    next(`/profile/` + username);
+}
+
 
 function hasAdmin(roles) {
     for (let rol of roles) {
@@ -141,40 +151,39 @@ export default [
                 path: '/home',
                 name: 'home',
                 component: () => import('../views/home/index.vue'),
-                beforeEnter: requireLogin,
             },
+            {
+                path: '/profile',
+                name: 'profileRedirect',
+                beforeEnter: redirectToUserProfile,
+            },          
             {
                 path: '/profile/:username',
                 name: 'profile',
                 component: () => import('../views/profile/profileView.vue'),
                 props: true,
-                beforeEnter: requireLogin,
-            },
+            },            
             {
                 path: '/search',
                 name: 'search',
                 component: () => import('../views/search/searchView.vue'),
-                beforeEnter: requireLogin,
             },
             {
                 path: '/friends',
                 name: 'friends',
                 component: () => import('../views/friends/friendsView.vue'),
-                beforeEnter: requireLogin,
             },
             {
                 path: '/configuration',
                 name: 'configuration',
 
                 component: () => import('../views/configuration/ConfigurationView.vue'),
-                beforeEnter: requireLogin,
             },
             {
                 path: '/feed',
                 name: 'feed',
 
                 component: () => import('../views/feed/feedView.vue'),
-                beforeEnter: requireLogin,
             }
         ]
     },
