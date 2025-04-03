@@ -57,7 +57,7 @@ async function requireAdmin(to, from, next) {
 
 export default [
     {
-        path: '/guest',
+        path: '/',
         // redirect: { name: 'login' },
         component: GuestLayout,
         children: [
