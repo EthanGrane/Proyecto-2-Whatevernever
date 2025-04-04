@@ -12,7 +12,7 @@ const userFriendsListPopupActive = ref(false);
 const userPFP = ref("/images/ProfilePicture_8.jpg");
 
 const requestedUserData = ref({});
-const requestedUserFriendList = ref();
+const requestedUserFriendList = ref([]);
 
 async function loadDataFromRequestUser() {
     try {
