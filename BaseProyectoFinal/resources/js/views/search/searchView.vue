@@ -5,7 +5,6 @@ import { authStore } from "../../store/auth";
 
 const usersList = ref([]);
 const inputbusqueda = ref("");
-
 const friendsRequestSended = ref([]);
 
 async function cargarUsers() {
@@ -15,9 +14,11 @@ async function cargarUsers() {
 
             // Provisional
             usersList.value.forEach(user => {
-                try {
+                try 
+                {
                     user.image = "images/users/" + user.media[0].file_name;
-                } catch (error) {
+                } catch (error) 
+                {
                     user.image = "";
                 }
             });
@@ -36,7 +37,8 @@ async function cargarUsers() {
         })
 }
 
-async function sendRequest(id_reciver) {
+async function sendRequest(id_reciver) 
+{
     await axios.post('http://127.0.0.1:8000/api/friend', {
         "id_sender": authStore().user.id,
         "id_receiver": id_reciver

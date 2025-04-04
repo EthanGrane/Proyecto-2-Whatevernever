@@ -176,7 +176,7 @@ class FriendController extends Controller
 
     public function ShowAllFriends(Request $request)
     {
-        $userId = auth()->user()->id;
+        $userId = $request->query('user_id');
         $user = User::findOrFail($userId);
 
         $friendsSent = $user->friendsSent()->where('request_status', '!=', 0)->get();

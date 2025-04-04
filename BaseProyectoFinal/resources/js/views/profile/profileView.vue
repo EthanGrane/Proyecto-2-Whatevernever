@@ -12,7 +12,7 @@ const userFriendsListPopupActive = ref(false);
 const userPFP = ref("/images/ProfilePicture_8.jpg");
 
 const requestedUserData = ref({});
-const requestedUserFriendList = ref([{}]);
+const requestedUserFriendList = ref();
 
 async function loadDataFromRequestUser() {
     try {
@@ -34,12 +34,9 @@ async function loadDataFromRequestUser() {
 async function getFriendsFromRequestedUser() {
     if (!requestedUserData.value.id) return; 
 
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + requestedUserData.value.id)
+    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user_id=' + requestedUserData.value.id)
         .then(response => {
             requestedUserFriendList.value = response.data || [];
-
-            console.log("getFriendsFromRequestedUser")
-            console.log(requestedUserFriendList.value);
         })
         .catch(error => {
             console.error("[ProfileView.vue] Error:", error);
@@ -72,7 +69,7 @@ loadDataFromRequestUser();
 </script>
 
 <template>
-    <div v-if="requestedUserData.id" class="profile-background">
+    <div v-if="requestedUserData.id && requestedUserFriendList.length" class="profile-background">
         <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
             <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">
@@ -83,7 +80,7 @@ loadDataFromRequestUser();
             <p>{{ description }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
             <button @click="() => { userFriendsListPopupActive.value = true; }" class="secondary-button m-1">
-                <b v-if="requestedUserFriendList.length">{{ requestedUserFriendList.length }}</b> 
+                <b>{{ requestedUserFriendList.length }}</b> 
                 {{ $t('friendscounter') }}
             </button>
         </div>
