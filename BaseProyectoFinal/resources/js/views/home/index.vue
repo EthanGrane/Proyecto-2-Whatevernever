@@ -36,7 +36,7 @@ async function loadUsers() {
 
 <template>
     <div>
-        <Popup v-if="false" />
+        <Popup v-if="true" />
 
         <div id="map"></div>
     </div>

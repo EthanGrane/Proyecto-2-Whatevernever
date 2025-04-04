@@ -79,7 +79,7 @@ loadDataFromRequestUser();
 
             <p>{{ description }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="() => { userFriendsListPopupActive.value = true; }" class="secondary-button m-1">
+            <button @click="() => { userFriendsListPopupActive = true; }" class="secondary-button m-1">
                 <b>{{ requestedUserFriendList.length }}</b> 
                 {{ $t('friendscounter') }}
             </button>
