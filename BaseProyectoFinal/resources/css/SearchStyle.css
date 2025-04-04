@@ -6,7 +6,7 @@
 }
 
 .search-field {
-    width: 75vw;
+    width: 65vw;
     margin-bottom: 32px;
 
     border-radius: 42px;
@@ -19,7 +19,7 @@
 
 
 #search-user-list-container {
-    width: 75%;
+    width: 60%;
     margin: auto;
     padding-bottom: 4rem;
 }
@@ -37,8 +37,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     width: 100%;
-    margin-bottom: 32px;
+    height: 6rem;
+
+    margin: 8px;
     padding: 16px;
 
     border-radius: 16px;
@@ -46,7 +49,7 @@
 
 .search-user-container:hover 
 {
-    background-color: rgb(15, 15, 15) !important;
+    background-color: var(--background4) !important;
 }
 
 .search-user-information-container {
@@ -57,23 +60,24 @@
 }
 
 .search-user-information-container img {
-    height: 87px;
-    width: 87px;
+    height: 5rem;
+    width: 5rem;
     border-radius: 100%;
 }
 
 .search-user-information-name 
 {
-    font-size: x-large;
+    font-size: large;
     font-weight: 500;
 }
 
 .search-user-information-username {
-    text-align: center;
     border-radius: 50px;
     background-color: var(--text);
     color: var(--background1);
     padding: 0px 10px;
+
+    width: auto;
 }
 
 .search-fake-user-image {

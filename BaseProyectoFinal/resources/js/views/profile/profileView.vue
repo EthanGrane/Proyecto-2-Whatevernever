@@ -75,7 +75,7 @@ loadDataFromRequestUser();
             <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">
 
             <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
-            <h3 class="profile-info-username">{{ requestedUserData.username }}</h3>
+            <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
 
             <p>{{ description }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>

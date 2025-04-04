@@ -30,8 +30,8 @@ class markers_table_seeder extends Seeder
             DB::table('markers')->insert([
                 'name' => $faker->country(),
                 'description' => $descriptions[$index % count($descriptions)],
-                'lng' => mt_rand(-9000,3000) / 1000,
-                'lat' => mt_rand(37000,43000) / 1000,
+                'lat' => mt_rand(-90000, 90000) / 1000,
+                'lng' => mt_rand(-180000, 180000) / 1000,
                 'user_id' => mt_rand(1,50),
                 'marker_list_id' => mt_rand(1,50)
             ]);

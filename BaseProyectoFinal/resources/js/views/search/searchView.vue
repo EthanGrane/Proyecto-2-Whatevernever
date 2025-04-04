@@ -104,7 +104,6 @@ cargarUsers();
             </div>
 
             <!-- Search results -->
-
             <a v-for="(user, index) in usersList" :key="index" :href="'profile/' + user.username"
                 class="search-user-container" style="color: white;">
 
@@ -114,21 +113,21 @@ cargarUsers();
                             class="search-user-information-image">
                     </div>
 
-                    <div class="search-user-information">
+                    <div>
                         <b>
                             <p class="search-user-information-name">{{ user.name }}</p>
                         </b>
-                        <p class="search-user-information-username">{{ user.username }}</p>
+                        <span class="search-user-information-username">@{{ user.username }}</span>
                     </div>
                 </div>
 
                 <div>
                     <button v-if="friendsRequestSended.some(friend => friend.id === user.id)"
-                        @click.stop.prevent="deleteRequest(user.id)" class="secondary-button">
+                        @click.stop.prevent="deleteRequest(user.id)" class="secondary-button danger-button-hover" style="min-width: 7rem;">
                         {{ $t('cancel') }}
                     </button>
 
-                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button">
+                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button primary-button-hover" style="min-width: 6rem;">
                         {{ $t('addFriendText') }}
                     </button>
                 </div>
