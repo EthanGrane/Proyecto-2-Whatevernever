@@ -77,7 +77,7 @@ loadDataFromRequestUser();
             <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
             <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
 
-            <p>{{ description }}</p>
+            <p>{{ requestedUserData.desc }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
             <button @click="() => { userFriendsListPopupActive = true; }" class="secondary-button m-1">
                 <b>{{ requestedUserFriendList.length }}</b> 
@@ -89,7 +89,7 @@ loadDataFromRequestUser();
         </div>
 
         <!-- Friends Popup -->
-        <transition name="fade">
+        <!-- <transition name="fade">
             <div v-if="userFriendsListPopupActive" class="friends-panel">
                 <div class="d-flex justify-content-between">
                     <div>
@@ -121,7 +121,7 @@ loadDataFromRequestUser();
                     </div>
                 </div>
             </div>
-        </transition>
+        </transition> -->
 
     </div>
 </template>
