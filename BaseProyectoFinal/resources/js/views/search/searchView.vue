@@ -3,24 +3,18 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { authStore } from "../../store/auth";
 
-const auth = authStore();
-const user_id = ref(auth.user?.id);
-
-const users = ref("");
-const loading = ref(true);
+const usersList = ref([]);
 const inputbusqueda = ref("");
 
 const friendsRequestSended = ref([]);
 
-let timeout;
-
 async function cargarUsers() {
-    loading.value = true;
     axios.get('http://127.0.0.1:8000/api/friends/showFriends?search=' + inputbusqueda.value)
         .then(response => {
-            users.value = response.data;
+            usersList.value = response.data;
 
-            users.value.forEach(user => {
+            // Provisional
+            usersList.value.forEach(user => {
                 try {
                     user.image = "images/users/" + user.media[0].file_name;
                 } catch (error) {
@@ -31,23 +25,20 @@ async function cargarUsers() {
         })
         .catch(error => {
             console.error("[SearchView.vue] Error:", error);
-            loading.value = false;
         });
 
     axios.get('http://127.0.0.1:8000/api/friends/GetUsersWithFriendRequests')
         .then(response => {
             friendsRequestSended.value = response.data;
-            loading.value = false;
         })
         .catch(error => {
             console.log(error);
-            loading.value = false;
         })
 }
 
 async function sendRequest(id_reciver) {
     await axios.post('http://127.0.0.1:8000/api/friend', {
-        "id_sender": user_id.value,
+        "id_sender": authStore().user.id,
         "id_receiver": id_reciver
     }).then(response => {
         friendsRequestSended.value.push({ id: id_reciver });
@@ -57,36 +48,26 @@ async function sendRequest(id_reciver) {
 }
 
 async function deleteRequest(friend_id) {
-    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${user_id.value}&id_receiver=${friend_id}`)
-    .then(response => {
-        console.log('Friendship deleted:', response.data);
-        friendsRequestSended.value = friendsRequestSended.value.filter(friend => friend.id !== friend_id);
-    })
-    .catch(error => {
-        console.error('There was an error deleting the friendship:', error.response?.data || error.message);
-    });
+    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
+        .then(response => {
+            console.log('Friendship deleted:', response.data);
+            friendsRequestSended.value = friendsRequestSended.value.filter(friend => friend.id !== friend_id);
+        })
+        .catch(error => {
+            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+        });
 }
 
+function manejarInput() {
+    if (inputbusqueda.value === '') {
+        usersList.value = [];
+    }
 
+    cargarUsers();
+}
 
 
 cargarUsers();
-function manejarInput() {
-    clearTimeout(timeout);
-
-    timeout = setTimeout(() => {
-        cargarUsers();
-    }, 500);
-}
-
-// Call
-
-// DEBUG DELAY (BORRAR EN PORDUCCION)
-setTimeout(() => {
-    cargarUsers();
-}, 2000);
-
-
 </script>
 
 <template>
@@ -100,7 +81,7 @@ setTimeout(() => {
         <div id="search-user-list-container">
 
             <!-- Fake search results for Loading -->
-            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
+            <div v-if="usersList.length === 0" v-for="n in 4" :key="n" class="search-user-container">
                 <div class="search-user-information-container">
                     <div>
                         <div class="search-fake-user-image"></div>
@@ -122,7 +103,8 @@ setTimeout(() => {
 
             <!-- Search results -->
 
-            <a v-for="(user, index) in users" :key="index" :href="'profile/' + user.username" class="search-user-container" style="color: white;">
+            <a v-for="(user, index) in usersList" :key="index" :href="'profile/' + user.username"
+                class="search-user-container" style="color: white;">
 
                 <div class="search-user-information-container">
                     <div>
@@ -140,18 +122,18 @@ setTimeout(() => {
 
                 <div>
                     <button v-if="friendsRequestSended.some(friend => friend.id === user.id)"
-                        @click="deleteRequest(user.id)" class="secondary-button">
+                        @click.stop.prevent="deleteRequest(user.id)" class="secondary-button">
                         {{ $t('cancel') }}
                     </button>
 
-                    <button v-else @click="sendRequest(user.id)" class="secondary-button">
+                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button">
                         {{ $t('addFriendText') }}
                     </button>
                 </div>
 
             </a>
 
-            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
+            <div v-if="usersList.length === 0 && inputbusqueda !== ''" id="notfoundsearcherror">
                 <h2>{{ $t('usernotfound') }}</h2>
             </div>
 
