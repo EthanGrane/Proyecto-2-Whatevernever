@@ -4,13 +4,13 @@ import { onMounted, ref } from 'vue';
 import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
+import Popover from 'primevue/popover';
+
 
 const { updateImg } = useUsers();
 const route = useRoute();
 
-const userFriendsListPopupActive = ref(false);
 const userPFP = ref("/images/ProfilePicture_8.jpg");
-
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
 
@@ -32,7 +32,7 @@ async function loadDataFromRequestUser() {
 
 
 async function getFriendsFromRequestedUser() {
-    if (!requestedUserData.value.id) return; 
+    if (!requestedUserData.value.id) return;
 
     axios.get('http://127.0.0.1:8000/api/friends/allFriends?user_id=' + requestedUserData.value.id)
         .then(response => {
@@ -64,9 +64,15 @@ async function deleteFriend(id_friendship) {
     }
 }
 
-onMounted( async () => {
+onMounted(async () => {
     loadDataFromRequestUser();
 })
+
+// PrimeVue Popover template code
+const op = ref();
+const toggle = (event) => {
+    op.value.toggle(event);
+}
 
 </script>
 
@@ -81,8 +87,8 @@ onMounted( async () => {
 
             <p>{{ requestedUserData.desc }}</p>
             <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="() => { userFriendsListPopupActive = true; }" class="secondary-button m-1">
-                <b>{{ requestedUserFriendList.length }}</b> 
+            <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
+                <b>{{ requestedUserFriendList.length }}</b>
                 {{ $t('friendscounter') }}
             </button>
         </div>
@@ -91,39 +97,27 @@ onMounted( async () => {
         </div>
 
         <!-- Friends Popup -->
-        <!-- <transition name="fade">
-            <div v-if="userFriendsListPopupActive" class="friends-panel">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h3 class="">{{ $t('friendscounter') }}</h3>
-                    </div>
-                    <div>
-                        <button @click="userFriendsListPopupActive = false" class="closse-friend-panel">X</button>
-                    </div>
-                </div>
-                <div class="friendlistprofile">
-                    <div v-if="requestedUserFriendList.length < 1" id="notfoundsearcherror">
-                        <h2>{{ $t('withoutfriends') }}</h2>
-                    </div>
-                    <div v-for="(user, index) in requestedUserFriendList" :key="index" class="search-user-container">
-                        <div class="search-user-information-container" v-if="user.request_status == 1">
-                            <div>
-                                <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
-                            </div>
-                            <div class="search-user-information">
-                                <b>
-                                    <p class="search-user-information-name">{{ user.user.name }}</p>
-                                </b>
-                                <p class="search-user-information-username">{{ user.user.username }}</p>
-                            </div>
-                        </div>
-                        <div v-if="user.request_status == 1">
-                            <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('deleteFriend') }}</button>
-                        </div>
-                    </div>
+        <Popover ref="op">
+            <div class="flex flex-col gap-4" style="overflow-y: scroll; height: 25vh;">
+                <div>
+                    <ul class="list-none p-0 m-0 flex flex-col">
+                        <li v-for="user in requestedUserFriendList" :key="user.name"
+                            class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border">
+
+                            <a :href="'/profile/' + user.user.username">
+                                <span class="search-user-information-name">
+                                    {{ user.user.name }}
+                                </span>
+                                <div class="search-user-information-username">
+                                    @{{ user.user.username }}
+                                </div>
+                            </a>
+
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </transition> -->
+        </Popover>
 
     </div>
 </template>

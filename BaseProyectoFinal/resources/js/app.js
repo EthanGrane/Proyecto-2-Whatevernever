@@ -60,6 +60,7 @@ import Tooltip from 'primevue/tooltip';
 import FloatLabel from 'primevue/floatlabel';
 import Popover from 'primevue/popover'
 
+
 /*STYLES */
 /*
 import "primeflex/primeflex.css";
@@ -78,6 +79,7 @@ import '../css/feedStyle.css';
 import '../css/mapbox.css';
 import '../css/markersStyle.css';
 import '../css/PopupStyle.css';
+import '../css/PrimeVuePopoverStyle.css';
 
 
 const app = createApp({
@@ -162,7 +164,6 @@ app.component('Editor', Editor);
 app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
 app.component('MeterGroup', MeterGroup);
-app.component('Popover', Popover)
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
