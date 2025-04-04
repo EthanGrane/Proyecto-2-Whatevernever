@@ -1,6 +1,6 @@
 <!-- SCRIPT -->
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
@@ -64,7 +64,9 @@ async function deleteFriend(id_friendship) {
     }
 }
 
-loadDataFromRequestUser();
+onMounted( async () => {
+    loadDataFromRequestUser();
+})
 
 </script>
 
@@ -87,6 +89,7 @@ loadDataFromRequestUser();
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
+        <div v-ripple class="p-3" style="border: 1px solid rgba(156, 39, 176, 0.3); --p-ripple-background: rgba(156, 39, 176, 0.3)">Purple</div>
 
         <!-- Friends Popup -->
         <!-- <transition name="fade">
