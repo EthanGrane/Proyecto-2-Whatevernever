@@ -89,7 +89,6 @@ onMounted( async () => {
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
-        <div v-ripple class="p-3" style="border: 1px solid rgba(156, 39, 176, 0.3); --p-ripple-background: rgba(156, 39, 176, 0.3)">Purple</div>
 
         <!-- Friends Popup -->
         <!-- <transition name="fade">
