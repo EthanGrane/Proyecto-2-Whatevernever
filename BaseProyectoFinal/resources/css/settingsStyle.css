@@ -1,25 +1,34 @@
-.settings-background {
+.settings-background 
+{
     display: flex;
     justify-content: space-between;
 
+    width: 100%;
+    margin: auto;
+    padding-right: 32px !important;
 }
 
-.settings-console {
-    width: 40vw;
+.settings-side-menu {
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 2vw;
+
+    width: 30vw;
     height: 80vh;
 }
 
-.settings-console button{
+.settings-side-menu button{
     width: 100%;
-    height: 8vh;
+    height: auto;
+
+    padding: 8px !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+    
     font-weight: bold;
-    font-size: 150%;
-    padding: 0.2rem;
-    border-radius: 100px;
+    font-size: large;
+    border-radius: 32px;
 }
 
 .settings-pages {
@@ -27,7 +36,19 @@
     padding: 2vw;
 }
 
-.sign-out-button {
-    margin-top: auto;
-    width: 50% !important;
+.settings-option-title
+{
+    font-size: large;
+    font-weight: 700;
+
+    margin: 0;
+}
+
+.settings-option-description
+{
+    font-size: small;
+    font-weight: 300;
+
+    margin: 0;
+    margin-left: 8px;
 }

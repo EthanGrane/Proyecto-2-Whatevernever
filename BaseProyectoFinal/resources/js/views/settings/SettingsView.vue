@@ -22,25 +22,27 @@ function changePage(page) {
 
 <template>
     <div class="settings-background">
-        <div class="settings-console">
-            <button class="secondary-button" @click="changePage('general')" >{{ $t('generalSettingsButton') }}</button>
-            <button class="secondary-button" @click="changePage('account')" >{{ $t('accountSettingsButton') }}</button>
-            <button class="secondary-button" @click="changePage('groups')" >{{ $t('groupsSettingsButton') }}</button>
-            <button class="secondary-button" @click="changePage('markers')" >{{ $t('markersSettingsButton') }}</button>
+        <div class="settings-side-menu">
+            <button class="secondary-button" @click="changePage('general')">{{ $t('generalSettingsButton') }}</button>
+            <button class="secondary-button" @click="changePage('account')">{{ $t('accountSettingsButton') }}</button>
+            <button class="secondary-button" @click="changePage('groups')">{{ $t('groupsSettingsButton') }}</button>
+            <button class="secondary-button" @click="changePage('markers')">{{ $t('markersSettingsButton') }}</button>
 
-            <button class="secondary-button sign-out-button" @click="logout" >{{ $t('signoutbutton') }}</button>
+            <button class="secondary-button mt-auto w-75 danger-button-hover" style="padding: 8px !important;"
+                @click="logout">{{ $t('signoutbutton') }}
+            </button>
         </div>
         <div v-if="show_pages" class="settings-pages">
             <div v-if="conf_page == 'general'">
-                <GeneralSettingsView/>
+                <GeneralSettingsView />
             </div>
 
             <div v-if="conf_page == 'account'">
-                <AccountSettingsView/>
+                <AccountSettingsView />
             </div>
 
             <div v-if="conf_page == 'groups'">
-                <Friendsgroups/>
+                <Friendsgroups />
             </div>
 
             <div v-if="conf_page == 'markers'">
