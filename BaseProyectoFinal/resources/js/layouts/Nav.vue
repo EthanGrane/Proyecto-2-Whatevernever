@@ -32,7 +32,7 @@
                 </router-link>
             </div>
             <div>
-                <router-link to="/configuration">
+                <router-link to="/settings">
                     <img src="/images/settings.svg" alt="Setings image" class="icon">
                     <p>Settings</p>
                 </router-link>

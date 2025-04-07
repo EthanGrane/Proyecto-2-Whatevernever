@@ -1,5 +1,5 @@
 <script setup>
-    import LocaleSwitcher from "../components/LocaleSwitcher.vue";
+    import LocaleSwitcher from "../LocaleSwitcher.vue";
 </script>
 
 <template>
