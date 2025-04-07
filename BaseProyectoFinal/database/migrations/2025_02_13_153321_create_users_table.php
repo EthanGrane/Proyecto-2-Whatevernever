@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->double('last_lng')->nullable();
             $table->double('last_lat')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

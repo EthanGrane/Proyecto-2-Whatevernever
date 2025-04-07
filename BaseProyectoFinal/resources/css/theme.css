@@ -101,6 +101,7 @@ header img {
     background-color: var(--background3);
 }
 
+
 .danger-button
 {
     background-color: var(--danger) !important;
@@ -130,6 +131,25 @@ header img {
 .primary-button-background-hover:hover
 {
     background-color: var(--primary-hover) !important;
+  
+.secondary-button-hight {
+    transition: 500ms;
+    background-color: var(--background1);
+    border-radius: 20px;
+    color: var(--text);
+    border: 2px solid var(--background4) !important;
+
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    border: none;
+}
+
+.secondary-button-hight:hover {
+    transition: 500ms;
+    background-color: var(--background3);
+    border: 2px solid var(--background1) !important;
 }
 
 .titleLogo {

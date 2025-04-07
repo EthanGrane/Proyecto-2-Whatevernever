@@ -51,9 +51,11 @@ async function loadMarkers()
 </script>
 
 <template>
+
     <div>
         <Popup v-if="true" />
 
         <div id="map"></div>
+
     </div>
 </template>
