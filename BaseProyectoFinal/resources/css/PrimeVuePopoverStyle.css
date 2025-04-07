@@ -1,4 +1,23 @@
-.p-popover-content
-{
-    background-color: black !important;
+.p-popover-content {
+    background-color: white !important;
+
+    border-radius: 8px;
+
+    width: 45vh;
+}
+
+.p-popover {
+    border-color: white !important;
+}
+
+.p-popover:before {
+    border-bottom-color: white !important;
+}
+
+.p-popover::after {
+    border-bottom-color: white !important;
+}
+
+.popover-li-hover:hover {
+    background-color: rgb(228, 228, 228) !important;
 }

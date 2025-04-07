@@ -45,23 +45,16 @@ async function getFriendsFromRequestedUser() {
 }
 
 
-async function deleteFriend(id_friendship) {
-    console.log(id_friendship);
-    try {
-        axios.post('http://127.0.0.1:8000/api/friends/delete', {
-            "friend_id": id_friendship,
+async function deleteRequest(friend_id) {
+    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
+        .then(response => {
+            console.log('Friendship deleted:', response.data);
+            console.log(requestedUserFriendList.value);
+            requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
         })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.error("[SearchView.vue] Error:", error);
-            });
-
-        setTimeout(getFriendsFromRequestedUser, 1000);
-    } catch (error) {
-        console.log(error);
-    }
+        .catch(error => {
+            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+        });
 }
 
 onMounted(async () => {
@@ -98,18 +91,33 @@ const toggle = (event) => {
 
         <!-- Friends Popup -->
         <Popover ref="op">
-            <div class="flex flex-col gap-4" style="overflow-y: scroll; height: 25vh;">
+            <div class="flex flex-col gap-4" style="
+            overflow-y: scroll; height: 25vh; scrollbar-width: thin; scrollbar-color: black white;
+            ">
                 <div>
                     <ul class="list-none p-0 m-0 flex flex-col">
+                        <li>
+                            <h4 class="m-0 p-0" style="color: #000000;">
+                                Friends
+                            </h4>
+                        </li>
                         <li v-for="user in requestedUserFriendList" :key="user.name"
-                            class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-border">
-
+                            class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-2 popover-li-hover">
                             <a :href="'/profile/' + user.user.username">
-                                <span class="search-user-information-name">
-                                    {{ user.user.name }}
-                                </span>
-                                <div class="search-user-information-username">
-                                    @{{ user.user.username }}
+                                <div class="d-flex flex-column">
+                                    <span class="search-user-information-name" style="color: #000000;">
+                                        {{ user.user.name }}
+                                    </span>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="search-user-information-username"
+                                            style="color: white; background-color: #000000; width: fit-content;">
+                                            @{{ user.user.username }}
+                                        </span>
+                                        <button @click.stop.prevent="deleteRequest(user.user.id)"
+                                            v-if="requestedUserData.id == authStore().user.id" class="btn m-0 ml-auto danger-button-hover">
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </a>
 
