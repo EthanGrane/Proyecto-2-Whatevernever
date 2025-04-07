@@ -3,6 +3,16 @@
     --background2: #212121;
     --background3: #707070;
     --background4: #1A1A1A;
+
+    --positive: #00C109;
+    --positive-hover: #107d16;
+
+    --danger:#F74A40;
+    --danger-hover:#b5322b;
+
+    --primary:#FFD534;
+    --primary-hover:#c3a634;
+
     --text: #FFFFFF;
 }
 
@@ -60,13 +70,13 @@ header img {
 }
 
 .primary-button {
-    background-color: white !important;
-    color: black !important;
+    background-color: white;
+    color: black;
     font-weight: 500;
-    padding: 10px !important;
-    border-radius: 20px !important;
-    border-width: 0 !important;
-    text-decoration: none !important;
+    padding: 10px;
+    border-radius: 20px;
+    border-width: 0;
+    text-decoration: none;
 }
 
 .primary-button:hover {
@@ -75,7 +85,7 @@ header img {
 
 .secondary-button {
     transition: 500ms;
-    background-color: var(--background4);
+    background-color: var(--background2);
     border-radius: 16px;
     color: white;
 
@@ -87,10 +97,41 @@ header img {
 }
 
 .secondary-button:hover {
-    transition: 500ms;
+    transition: 200ms;
     background-color: var(--background3);
 }
 
+
+.danger-button
+{
+    background-color: var(--danger) !important;
+}
+
+.danger-button:hover
+{
+    background-color: var(--danger-hover) !important;
+}
+
+.danger-button-hover:hover
+{
+    color: white !important;
+    background-color: var(--danger-hover) !important;
+}
+
+.primary-button-background:hover
+{
+    background-color: var(--primary) !important;
+}
+
+.primary-button-background:hover
+{
+    background-color: var(--primary-hover) !important;
+}
+
+.primary-button-background-hover:hover
+{
+    background-color: var(--primary-hover) !important;
+  
 .secondary-button-hight {
     transition: 500ms;
     background-color: var(--background1);

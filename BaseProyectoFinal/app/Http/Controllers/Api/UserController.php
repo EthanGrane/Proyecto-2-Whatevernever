@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
     public function index()
     {
         $orderColumn = request('order_column', 'created_at');
@@ -121,7 +122,14 @@ class UserController extends Controller
         $user->delete();
 
         return response()->noContent();
+    }    
+
+    /*
+     *
+     */
+    public function showUserByUsername(Request $request)
+    {
+        $user = User::where('username', $request->username)->first(['id','name','username','desc','email']);
+        return response()->json($user,200);
     }
-
-
 }

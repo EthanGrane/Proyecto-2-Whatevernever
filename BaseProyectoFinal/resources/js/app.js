@@ -58,6 +58,8 @@ import InputIcon from 'primevue/inputicon';
 import MeterGroup from 'primevue/metergroup';
 import Tooltip from 'primevue/tooltip';
 import FloatLabel from 'primevue/floatlabel';
+import Popover from 'primevue/popover'
+
 
 /*STYLES */
 /*
@@ -76,6 +78,8 @@ import '../css/configurationStyle.css';
 import '../css/feedStyle.css';
 import '../css/mapbox.css';
 import '../css/markersStyle.css';
+import '../css/PopupStyle.css';
+import '../css/PrimeVuePopoverStyle.css';
 
 
 const app = createApp({

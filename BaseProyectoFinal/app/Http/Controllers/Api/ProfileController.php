@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -37,4 +38,5 @@ class ProfileController extends Controller
 
         return $this->successResponse($user, 'User found');
     }
+
 }

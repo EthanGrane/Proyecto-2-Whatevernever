@@ -1,144 +1,131 @@
 <!-- SCRIPT -->
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
+import { useRoute } from 'vue-router'
+import Popover from 'primevue/popover';
 
-const { updateImg } = useUsers()
 
-const userFriendsListPopupActive = ref(false);
-const image = ref("/images/ProfilePicture_8.jpg");
-const name = ref(authStore().user?.name);
-const username = ref(authStore().user?.username);
-const description = ref(authStore().user?.desc);
-const friendnumber = ref(0);
-const userUpdatePicture = ref();
+const { updateImg } = useUsers();
+const route = useRoute();
 
-const auth = authStore();
-const users = ref([]);
-const loading = ref(false);
-const user_id = ref(auth.user?.id);
+const userPFP = ref("/images/ProfilePicture_8.jpg");
+const requestedUserData = ref({});
+const requestedUserFriendList = ref([]);
 
-function verAmigos() {
-    userFriendsListPopupActive.value = true;
-}
-
-async function showMyFriends() {
-    loading.value = true;
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user=' + user_id.value)
-        .then(response => {
-            users.value = response.data;
-            friendnumber.value = users.value.length;
-            loading.value = false;
-        })
-        .catch(error => {
-            console.error("[ProfileView.vue] Error:", error);
-            loading.value = false;
-        })
-}
-
-async function deleteFriend(id_friendship) {
-    console.log(id_friendship);
+async function loadDataFromRequestUser() {
     try {
-        axios.post('http://127.0.0.1:8000/api/friends/delete', {
-            "friend_id": id_friendship,
-        })
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.error("[SearchView.vue] Error:", error);
-            });
-
-        users.value = [];
-        setTimeout(showMyFriends, 1000);
+        const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
+        if (response.data) {
+            requestedUserData.value = response.data;
+            getFriendsFromRequestedUser();
+        } else {
+            requestedUserData.value = {};
+        }
     } catch (error) {
-        console.log(error);
+        console.error("[ProfileView.vue] Error:", error);
+        requestedUserData.value = {};
     }
 }
 
-showMyFriends();
+
+
+async function getFriendsFromRequestedUser() {
+    if (!requestedUserData.value.id) return;
+
+    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user_id=' + requestedUserData.value.id)
+        .then(response => {
+            requestedUserFriendList.value = response.data || [];
+        })
+        .catch(error => {
+            console.error("[ProfileView.vue] Error:", error);
+            requestedUserFriendList.value = [];
+        });
+}
+
+
+async function deleteRequest(friend_id) {
+    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
+        .then(response => {
+            console.log('Friendship deleted:', response.data);
+            console.log(requestedUserFriendList.value);
+            requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
+        })
+        .catch(error => {
+            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+        });
+}
+
+onMounted(async () => {
+    loadDataFromRequestUser();
+})
+
+// PrimeVue Popover template code
+const op = ref();
+const toggle = (event) => {
+    op.value.toggle(event);
+}
 
 </script>
 
 <template>
-    <div class="profile-background">
-        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);
-        ">
-        
-            <img :src="image" :alt="image" class="profile-info-pfp">
+    <div v-if="requestedUserData.id && requestedUserFriendList.length" class="profile-background">
+        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
-            <h1 class="profile-info-name">{{ name }}</h1>
+            <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">
 
-            <h3 class="profile-info-username">{{ username }}</h3>
+            <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
+            <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
 
-            <p>{{ description }}</p>
-            <button class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button @click="verAmigos" class="secondary-button m-1"><b>{{ friendnumber }}</b> {{ $t('friendscounter')
-                }}</button>
+            <p>{{ requestedUserData.desc }}</p>
+            <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
+            <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
+                <b>{{ requestedUserFriendList.length }}</b>
+                {{ $t('friendscounter') }}
+            </button>
         </div>
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
-        <!--
-        <input type="file" ref="userUpdatePicture" @change="updateImg(userUpdatePicture.files[0])" name="picture">
-        <button type="submit">Submit</button>
-        -->
 
-        <!--Amigos-->
-        <transition name="fade">
-            <div v-if="userFriendsListPopupActive" class="friends-panel">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h3 class="">{{ $t('friendscounter') }}</h3>
-                    </div>
-                    <div>
-                        <button @click="userFriendsListPopupActive = false" class="closse-friend-panel">X</button>
-                    </div>
-                </div>
-                <div class="friendlistprofile">
-                    <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
-                        <div class="search-user-information-container">
-                            <div>
-                                <div class="search-fake-user-image"></div>
-                            </div>
-                            <div>
-                                <div class="search-fake-user-username"></div>
-
-                                <div class="d-flex flex-row">
-                                    <div class="search-fake-user-name"></div>
-                                    <div class="search-fake-user-description"></div>
+        <!-- Friends Popup -->
+        <Popover ref="op">
+            <div class="flex flex-col gap-4" style="
+            overflow-y: scroll; height: 25vh; scrollbar-width: thin; scrollbar-color: black white;
+            ">
+                <div>
+                    <ul class="list-none p-0 m-0 flex flex-col">
+                        <li>
+                            <h4 class="m-0 p-0" style="color: #000000;">
+                                Friends
+                            </h4>
+                        </li>
+                        <li v-for="user in requestedUserFriendList" :key="user.name"
+                            class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-2 popover-li-hover">
+                            <a :href="'/profile/' + user.user.username">
+                                <div class="d-flex flex-column">
+                                    <span class="search-user-information-name" style="color: #000000;">
+                                        {{ user.user.name }}
+                                    </span>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="search-user-information-username"
+                                            style="color: white; background-color: #000000; width: fit-content;">
+                                            @{{ user.user.username }}
+                                        </span>
+                                        <button @click.stop.prevent="deleteRequest(user.user.id)"
+                                            v-if="requestedUserData.id == authStore().user.id" class="btn m-0 ml-auto danger-button-hover">
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
+                            </a>
 
-                            </div>
-                        </div>
-                        <div>
-                            <div class="search-fake-button"></div>
-                        </div>
-                    </div>
-                    <div v-for="(user, index) in users" :key="index" class="search-user-container">
-                        <div class="search-user-information-container" v-if="user.request_status == 1">
-                            <div>
-                                <img src="/images/icon_profile.svg" alt="User image"
-                                    class="search-user-information-image">
-                            </div>
-                            <div class="search-user-information">
-                                <b>
-                                    <p class="search-user-information-name">{{ user.user.name }}</p>
-                                </b>
-                                <p class="search-user-information-username">{{ user.user.username }}</p>
-                            </div>
-                        </div>
-                        <div v-if="user.request_status == 1">
-                            <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('deleteFriend')
-                                }}</button>
-                        </div>
-                    </div>
-                    <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                        <h2>{{ $t('withoutfriends') }}</h2>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </transition>
+        </Popover>
+
     </div>
 </template>

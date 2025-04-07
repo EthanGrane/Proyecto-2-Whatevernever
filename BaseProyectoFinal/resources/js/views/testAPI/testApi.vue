@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const responses = ref([]);
 const requestMethod = ref('GET');
-const requestUrl = ref('');
+const requestUrl = ref('http://127.0.0.1:8000/api/');
 const requestData = ref('');
 
 async function sendRequest() {

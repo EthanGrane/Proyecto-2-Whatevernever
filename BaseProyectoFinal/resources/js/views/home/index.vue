@@ -1,18 +1,20 @@
 <script setup>
 import { onMounted } from 'vue';
 import axios from 'axios';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap } from "../../composables/MapUtils.js";
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers } from "../../composables/MapUtils.js";
+import Popup from '../../components/ui/Popup.vue';
 
-onMounted(async () => 
-{
+onMounted(async () => {
     const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
     const friendsConnected = await loadUsers();
+    const allMarkers = await loadMarkers();
 
     if (friendsConnected && Array.isArray(friendsConnected)) 
     {
         SetFriends(friendsConnected);
-    }
-    else 
+        SetMarkers(allMarkers);
+    } 
+    else
     {
         console.error("Error: La respuesta no es un array válido.");
     }
@@ -22,8 +24,6 @@ onMounted(async () =>
 
     map.on('load', () => 
     {
-        AddMarkerToMap(-7.817, 52.659, map);
-
         ReloadMapMarkers(map);
     });
 });
@@ -37,13 +37,25 @@ async function loadUsers() {
         return [];
     }
 }
+
+async function loadMarkers() 
+{
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/markers/');
+        return response.data;
+    } catch (error) {
+        console.error("[SearchView.vue] Error al cargar marcadores:", error);
+        return [];
+    }
+}
 </script>
 
-
-
 <template>
-<div>
-    <div id="map">
+
+    <div>
+        <Popup v-if="true" />
+
+        <div id="map"></div>
+
     </div>
-</div>
 </template>

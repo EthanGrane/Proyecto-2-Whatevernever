@@ -27,6 +27,17 @@ class user_table_seeder extends Seeder
             'desc' => "Soy Admin",
         ]);
 
+        DB::table('users')->insert([
+            'username' => "graneethan",
+            'name' => "graneethan",
+            'email' => "graneethan@Admin.com",
+            'password' => Hash::make('password'),
+            'last_lng' => 40.720,
+            'last_lat' => -74.016,
+            'desc' => "Soy Admin",
+        ]);
+
+
         foreach (range(1, 50) as $index) 
         {
             DB::table('users')->insert([
