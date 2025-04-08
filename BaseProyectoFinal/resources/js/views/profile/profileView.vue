@@ -5,6 +5,7 @@ import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
+import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
 
 
 const { updateImg } = useUsers();
@@ -103,23 +104,30 @@ const toggle = (event) => {
                         </li>
                         <li v-for="user in requestedUserFriendList" :key="user.name"
                             class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-2 popover-li-hover">
-                            <a :href="'/profile/' + user.user.username">
+                            <div>
                                 <div class="d-flex flex-column">
                                     <span class="search-user-information-name" style="color: #000000;">
-                                        {{ user.user.name }}
+                                        <a :href="'/profile/' + user.user.username" style="color: black !important;">
+                                            {{ user.user.name }}
+                                        </a>
                                     </span>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="search-user-information-username"
-                                            style="color: white; background-color: #000000; width: fit-content;">
+                                        <span class="search-user-information-username" style="color: white; background-color: #000000; width: fit-content;">
+                                            <a
+                                            :href="'/profile/' + user.user.username" style="color: white !important;">
+
                                             @{{ user.user.username }}
+                                            </a>
                                         </span>
-                                        <button @click.stop.prevent="deleteRequest(user.user.id)"
-                                            v-if="requestedUserData.id == authStore().user.id" class="btn m-0 ml-auto danger-button-hover">
-                                            Delete
-                                        </button>
+
+                                        <ConfirmButtonPopup name="Delete" header="Delete Friend"
+                                            positive_option="Delete Friend" positive_severity="danger"
+                                            button_class="danger-button border-0"
+                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
+
                                     </div>
                                 </div>
-                            </a>
+                            </div>
 
                         </li>
                     </ul>
