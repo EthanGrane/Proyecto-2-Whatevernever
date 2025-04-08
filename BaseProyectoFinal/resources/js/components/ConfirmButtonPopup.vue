@@ -2,6 +2,10 @@
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
+/*
+ * Para recojer el valor hay que usar @confirmed = ((result)=>{}); (bool    )
+ */
+
 const confirm = useConfirm();
 const toast = useToast();
 
@@ -38,6 +42,7 @@ const props = defineProps({
 });
 
 const dialog = () => {
+    console.log("Open dialog aaaaaaaaaaaaaaaaa")
     return new Promise((resolve) => {
         confirm.require({
             message: 'Are you sure you want to proceed?',
@@ -70,6 +75,6 @@ const dialog = () => {
     <Toast />
     <ConfirmDialog></ConfirmDialog>
 
-    <Button @click="dialog()" :class="props.button_class">{{ props.name }}</Button>
+    <Button  @click="dialog()" :class="props.button_class">{{ props.name }}</Button>
 
 </template>
