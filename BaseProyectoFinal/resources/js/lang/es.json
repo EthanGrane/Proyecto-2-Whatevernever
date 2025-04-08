@@ -56,5 +56,7 @@
     "signoutbutton" : "Cerrar session",
     "kickuserfromgroup": "Expulsar",
     "deletebutton": "Borrar",
-    "markersconfigurationbutton": "Listas de Marcadores"
+    "markersconfigurationbutton": "Listas de Marcadores",
+    "friends_in_this_group": "Amigos en este grupo",
+    "do_you_want_to_add_someone": "Quieres añadir a alguien?"
 }

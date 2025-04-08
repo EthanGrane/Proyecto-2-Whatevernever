@@ -141,37 +141,3 @@
         opacity: 0.5;
     }
 }
-
-.search-popup-message-bad {
-    position: fixed;
-    top: 50%;
-    left: 37%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: var(--background1);
-    box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 20px;
-    font-size: 200%;
-    animation: shake 0.5s ease-in-out 1;
-}
-
-.search-popup-message-good {
-    position: fixed;
-    top: 50%;
-    left: 37%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: var(--background1);
-    box-shadow: 0 0 50px rgba(103, 255, 80, 0.6);
-    padding: 20px;
-    border-radius: 20px;
-    font-size: 200%;
-    animation: shake 0.5s ease-in-out 1;
-}

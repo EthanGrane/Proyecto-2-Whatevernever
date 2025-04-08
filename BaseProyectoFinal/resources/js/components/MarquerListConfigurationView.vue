@@ -92,7 +92,7 @@ showLists();
                 </div>
                 <div class="friend-groups-admin-delete-button">
                     <button class="secondary-button" @click="updateMenu(item.id)"><img class="mod-menu-button-image" src="images/settings.svg"></button>
-                    <button class="secondary-button" @click="deleteList(item.id)">Drop</button>
+                    <button class="secondary-button danger-button-hover" @click="deleteList(item.id)">Drop</button>
                 </div>
             </div>
         </div>

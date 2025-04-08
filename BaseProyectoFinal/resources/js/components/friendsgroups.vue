@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { authStore } from '../store/auth';
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const groupname = ref("");
 const myGroups = ref([]);
@@ -19,6 +22,22 @@ const popupMessage = ref("");
 const messageType = ref("");
 
 function showMessage(message, type) {
+    let adapt_type = "";
+
+    if (type == "good") {
+        adapt_type = "success";
+    } else if (type == "bad") {
+        adapt_type = "error";
+    } else {
+        adapt_type = "warn";
+        console.log(message);
+    }
+
+    toast.add({ severity: adapt_type, summary: 'Info', detail: message, life: 3000 });
+
+    /*
+    clearTimeout();
+
     showMessageBool.value = true;
 
     messageType.value = type;
@@ -26,7 +45,8 @@ function showMessage(message, type) {
 
     setTimeout(() => {
         showMessageBool.value = false;
-    }, 1000);
+    }, 3000);
+    */
 }
 
 async function CreateGroup(name) {
@@ -77,7 +97,7 @@ async function ShowMyGroups() {
 }
 
 async function showMyFriends() {
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user='+user_id.value)
+    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user_id='+user_id.value)
     .then(response => {
         users.value = response.data;
     })
@@ -179,7 +199,30 @@ ShowMyGroups();
                     </div>
                     <div class="friend-groups-admin-delete-button">
                         <button @click="friendAddMenu(item.id)" class="secondary-button">Admin</button>
-                        <button @click="dropGroup(item.id)" class="secondary-button">{{ $t('deletebutton') }}</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="secondary-button danger-button-hover" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            {{ $t('deletebutton') }}
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Seguro que quieres borrar este grupo?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        No podras desacer esta operacion
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <p>{{ item.id }}</p>
+                                        <button type="button" data-bs-dismiss="modal" @click="dropGroup(item.id)" class="btn btn-primary secondary-button">{{ $t('deletebutton') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,8 +241,7 @@ ShowMyGroups();
         <!--Add friend to group menu-->
         <transition name="fade">
             <div v-if="addingFriendToGroup != null" class="friendlistgroups">
-                <hr>
-                <p>Friends in this group</p>
+                <h3>{{ $t('friends_in_this_group') }}</h3>
 
                 <div>
                     <div v-for="(user, index) in friendsInGroup" :key="index" class="search-user-container">
@@ -213,27 +255,29 @@ ShowMyGroups();
                             </div>
                         </div>
                         <div>
-                            <button @click="expulseFriendFromGroup(user.id)" class="secondary-button">{{ $t('kickuserfromgroup') }}</button>
+                            <button @click="expulseFriendFromGroup(user.id)" class="secondary-button danger-button-hover">{{ $t('kickuserfromgroup') }}</button>
                         </div>
                     </div>
                 </div>
 
                 <hr>
-                <p>Do you want to add someone?</p>
+                <h3>{{ $t('do_you_want_to_add_someone') }}</h3>
                 
                 <div>
-                    <div v-for="(user, index) in users" :key="index" class="search-user-container">
-                        <div class="search-user-information-container" v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
-                            <div>
-                                <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
+                    <div v-for="(user, index) in users" :key="index">
+                        <div class="search-user-container" v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
+                            <div class="search-user-information-container" v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
+                                <div>
+                                    <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
+                                </div>
+                                <div class="search-user-information">
+                                    <b><p class="search-user-information-name">{{ user.user.name }}</p></b>
+                                    <p class="search-user-information-username">{{ user.user.username }}</p>
+                                </div>
                             </div>
-                            <div class="search-user-information">
-                                <b><p class="search-user-information-name">{{ user.user.name }}</p></b>
-                                <p class="search-user-information-username">{{ user.user.username }}</p>
+                            <div v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
+                                <button @click="addFriendToGroup(user.user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
                             </div>
-                        </div>
-                        <div v-if="user.request_status == 1 && !friendsInGroup.some(f => f.username === user.user.username)">
-                            <button @click="addFriendToGroup(user.user.id)" class="secondary-button">{{ $t('addFriendText') }}</button>
                         </div>
                     </div>
                 </div>
@@ -242,10 +286,12 @@ ShowMyGroups();
         </transition>
         
         <!--Atention message-->
-        <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
+        <!-- <div v-if="showMessageBool" :class="[messageType == 'good' ? 'search-popup-message-good' : 'search-popup-message-bad']">
             <h3>Info:</h3>
             <p>{{ popupMessage }}</p>
-        </div>
+        </div> -->
+        <Toast />
+
         <div class="create-group-button-configuration">
             <div>
                 <input placeholder="Group name..." class="secondary-button" v-model="groupname"><button class="secondary-button" @click="CreateGroup(groupname)">Create Group</button>
