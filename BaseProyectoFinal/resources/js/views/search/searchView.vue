@@ -61,11 +61,13 @@ async function deleteRequest(friend_id) {
 }
 
 function manejarInput() {
+    clearTimeout();
+
     if (inputbusqueda.value === '') {
         usersList.value = [];
     }
 
-    cargarUsers();
+    setTimeout(cargarUsers, 500);
 }
 
 

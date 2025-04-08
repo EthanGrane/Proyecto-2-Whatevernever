@@ -67,10 +67,12 @@ const toggle = (event) => {
     op.value.toggle(event);
 }
 
+console.log(requestedUserData.id);
+console.log(requestedUserFriendList.length);
 </script>
 
 <template>
-    <div v-if="requestedUserData.id && requestedUserFriendList.length" class="profile-background">
+    <div v-if="requestedUserData.id " class="profile-background"><!-- && requestedUserFriendList.length -->
         <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
             <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">

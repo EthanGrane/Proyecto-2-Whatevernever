@@ -49,8 +49,8 @@
 .friendlistgroups {
     position: absolute;
     top: 10%;
-    left: 0%;
-    width: 100vw;
+    left: 10vw;
+    width: 80vw;
     height: 80vh;
     background-color: var(--background2);
     padding: 20px;
