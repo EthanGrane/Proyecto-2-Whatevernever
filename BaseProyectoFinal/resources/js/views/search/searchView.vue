@@ -127,7 +127,7 @@ cargarUsers();
                         {{ $t('cancel') }}
                     </button>
 
-                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button-hight primary-button-hover" style="min-width: 6rem;">
+                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button primary-button-hover" style="min-width: 6rem;">
 
                         {{ $t('addFriendText') }}
                     </button>
