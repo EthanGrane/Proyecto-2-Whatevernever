@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, GetMapCenterCoordinates, OnMapDblClick } from "../../composables/MapUtils.js";
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, GetMapCenterCoordinates, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
 import Popup from '../../components/Popup.vue';
 
 const popupVisible = ref(true);
@@ -22,11 +22,19 @@ onMounted(async () => {
     // Map
     const map = InitializeMap(center);
     map.on('load', () => {
+
         OnMapDblClick((e) => {
             popupVisible.value = true;
         });
 
         ReloadMapMarkers(map);
+
+        map.on('move', () => {
+            ShowMarkerOnMapCenter();
+        });
+        map.on('zoom', () => {
+            ShowMarkerOnMapCenter();
+        });
     });
 });
 

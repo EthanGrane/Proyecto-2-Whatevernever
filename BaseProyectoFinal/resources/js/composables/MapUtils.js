@@ -2,6 +2,7 @@ let map = null;
 let friendList = [];
 let markerList = [];
 let selectedFriend = null;
+let centerMarker = null;
 
 export function InitializeMap(centerLngLon) {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
@@ -43,37 +44,32 @@ export function AddFriendMarkerToMap(lng, lat, name, profilePicture, map) {
     ReloadMapMarkers(map);
 }
 
-export function SetFriends(_friendList) 
-{
+export function SetFriends(_friendList) {
     friendList.length = 0;
     friendList.push(..._friendList);
 }
 
-export function SetMarkers(_markerList) 
-{
+export function SetMarkers(_markerList) {
     markerList.length = 0;
     markerList.push(..._markerList);
 }
 
-export function ReloadMapMarkers(map) 
-{
+export function ReloadMapMarkers(map) {
     const markersOnView = document.querySelectorAll('.marker');
     markersOnView.forEach(marker => marker.remove());
 
-    for (let index = 0; index < friendList.length; index++) 
-    {
+    for (let index = 0; index < friendList.length; index++) {
         const friend = friendList[index];
         AddFriendToMap(map, friend);
     }
 
-    for (let index = 0; index < markerList.length; index++) 
-        {
-            const marker = markerList[index];
-            AddMarkerToMap(map, marker);
-        }
+    for (let index = 0; index < markerList.length; index++) {
+        const marker = markerList[index];
+        AddMarkerToMap(map, marker);
+    }
 }
 
-export function GetMapCenterCoordinates()
+export function GetMapCenterCoordinates() 
 {
     // https://docs.mapbox.com/mapbox-gl-js/api/map/#map#getcenter
     return map.getCenter();
@@ -88,8 +84,7 @@ export function OnMapDblClick(callback) {
 }
 
 
-function AddFriendToMap(map, friend)
-{
+function AddFriendToMap(map, friend) {
     const element = document.createElement('div');
 
     const sizeReduction = Math.floor(Math.random() * 32);
@@ -117,24 +112,20 @@ function AddFriendToMap(map, friend)
         .addTo(map);
 }
 
-export function AddMarkerToMap(map, marker) 
-{
+export function AddMarkerToMap(map, marker) {
     const element = document.createElement('div');
-
-    const width = 32;
-    const height = 32;
 
     element.className = 'map-marker';
     element.style.backgroundImage = `url(/images/emoji_pinRed.png)`;
-    element.style.width = `${width}px`;
-    element.style.height = `${height}px`;
+    element.style.width = `${32}px`;
+    element.style.height = `${32}px`;
     element.style.backgroundSize = 'contain';
     element.style.borderRadius = '100%';
     element.style.backgroundRepeat = 'no-repeat';
     element.style.backgroundPosition = 'center';
 
-    element.dataset.originalWidth = width;
-    element.dataset.originalHeight = height;
+    element.dataset.originalWidth = 32;
+    element.dataset.originalHeight = 32;
 
     element.addEventListener('click', () => {
         FlyToPosition(marker.lng, marker.lat, map);
@@ -146,6 +137,37 @@ export function AddMarkerToMap(map, marker)
 
 }
 
+export function ShowMarkerOnMapCenter() {
+    if (centerMarker == null) {
+        const element = document.createElement('div');
+
+        element.className = 'map-marker';
+        element.style.backgroundImage = `url(/images/emoji_pinRed.png)`;
+        element.style.width = `${32}px`;
+        element.style.height = `${32}px`;
+        element.style.backgroundSize = 'contain';
+        element.style.borderRadius = '100%';
+        element.style.backgroundRepeat = 'no-repeat';
+        element.style.backgroundPosition = 'center';
+
+        element.dataset.originalWidth = 32;
+        element.dataset.originalHeight = 32;
+        centerMarker = element;
+    }
+    
+    const center = GetMapCenterCoordinates();
+    if (!center) {
+        console.log("Center is null");
+        return;
+    }
+
+    console.log("Center: ");
+    console.log(center);
+
+    new mapboxgl.Marker(centerMarker)
+        .setLngLat([center.lng, center.lat])  // Use center.lng and center.lat here
+        .addTo(map);
+}
 
 function SelectFriend(friendElement) {
     if (selectedFriend !== null || selectedFriend == friendElement) {
@@ -154,8 +176,7 @@ function SelectFriend(friendElement) {
         selectedFriend.style.zIndex = 0;
         selectedFriend.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${selectedFriend.dataset.originalWidth / 2}px 4px`;
 
-        if (selectedFriend == friendElement) 
-        {
+        if (selectedFriend == friendElement) {
             selectedFriend = null;
             return;
         }
