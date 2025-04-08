@@ -15,9 +15,7 @@ const show_pages = ref(true);
 function changePage(page) {
 
     conf_page.value = page;
-
 }
-
 </script>
 
 <template>
@@ -46,7 +44,7 @@ function changePage(page) {
             </div>
 
             <div v-if="conf_page == 'markers'">
-                <MarkerListSettingsView></MarkerListSettingsView>
+                <MarkerListSettingsView />
             </div>
         </div>
     </div>
