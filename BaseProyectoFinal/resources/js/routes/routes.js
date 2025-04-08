@@ -174,10 +174,10 @@ export default [
                 component: () => import('../views/friends/friendsView.vue'),
             },
             {
-                path: '/configuration',
-                name: 'configuration',
+                path: '/settings',
+                name: 'settings',
 
-                component: () => import('../views/configuration/ConfigurationView.vue'),
+                component: () => import('../views/settings/SettingsView.vue'),
             },
             {
                 path: '/feed',

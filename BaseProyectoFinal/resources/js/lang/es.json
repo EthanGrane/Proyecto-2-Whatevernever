@@ -50,11 +50,13 @@
     "deleteFriend": "Eliminar",
     "lastprofile-markers-list": "Ultimos marcadores",
     "withoutfriends": "Sin amigos :'(",
-    "generalconfigurationbutton": "General",
-    "accountconfigurationbutton": "Cuenta",
-    "groupsconfigurationbutton": "Grupos",
+
+    "generalSettingsButton": "General",
+    "accountSettingsButton": "Cuenta",
+    "groupsSettingsButton": "Lista de Grupos",
+    "markersSettingsButton": "Listas de Marcadores",
+
     "signoutbutton" : "Cerrar session",
     "kickuserfromgroup": "Expulsar",
-    "deletebutton": "Borrar",
-    "markersconfigurationbutton": "Listas de Marcadores"
+    "deletebutton": "Borrar"
 }
