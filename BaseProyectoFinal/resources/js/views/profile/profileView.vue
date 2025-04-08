@@ -5,6 +5,7 @@ import { authStore } from '../../store/auth';
 import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
+import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
 
 
 const { updateImg } = useUsers();
