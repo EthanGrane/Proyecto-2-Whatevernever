@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
-import { authStore } from '../store/auth';
+import { authStore } from '../../../store/auth';
 import { useToast } from "primevue/usetoast";
 
 const toast = useToast();
@@ -16,6 +16,7 @@ const user_id = ref(auth.user?.id);
 
 const addingFriendToGroup = ref(null);
 const friendsInGroup = ref([]);
+const groupToDelete = ref();
 
 const showMessageBool = ref(false);
 const popupMessage = ref("");
@@ -67,7 +68,7 @@ async function CreateGroup(name) {
     }
 }
 
-async function dropGroup(id) {
+async function dropGroup(id = groupToDelete.valueOf) {
     try {
         let response = await axios.post("http://127.0.0.1:8000/api/friends/dropGroup", {
             id_group: id
@@ -192,7 +193,7 @@ ShowMyGroups();
         -->
         <div class="created-joined-groups">
             <div class="groups-divs">
-                <h3>{{ $t('groupsconfigurationbutton') }}</h3>
+                <h3>{{ $t('groupsSettingsButton') }}</h3>
                 <div v-for="(item, index) in myGroups" :key="index" class="search-group-container">
                     <div>
                         <b><p>{{ item.name }}</p></b>
@@ -200,7 +201,7 @@ ShowMyGroups();
                     <div class="friend-groups-admin-delete-button">
                         <button @click="friendAddMenu(item.id)" class="secondary-button">Admin</button>
                         <!-- Button trigger modal -->
-                        <button type="button" class="secondary-button danger-button-hover" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button @click="groupToDelete = item.id" type="button" class="secondary-button danger-button-hover" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             {{ $t('deletebutton') }}
                         </button>
 
@@ -218,7 +219,7 @@ ShowMyGroups();
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                         <p>{{ item.id }}</p>
-                                        <button type="button" data-bs-dismiss="modal" @click="dropGroup(item.id)" class="btn btn-primary secondary-button">{{ $t('deletebutton') }}</button>
+                                        <button type="button" data-bs-dismiss="modal" @click="dropGroup()" class="btn btn-primary secondary-button">{{ $t('deletebutton') }}</button>
                                     </div>
                                 </div>
                             </div>
