@@ -61,5 +61,7 @@
     "signoutbutton" : "Sign Out",
     "kickuserfromgroup": "Kick",
     "deletebutton": "Delete",
-    "markersconfigurationbutton": "Markers Lists"
+    "markersconfigurationbutton": "Markers Lists",
+    "friends_in_this_group": "Friends in this group",
+    "do_you_want_to_add_someone": "Do you want to add someone?"
 }

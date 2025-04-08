@@ -85,14 +85,14 @@ showLists();
 <template>
     <div class="marker-list-configuration-background">
         <div class="marker-list">
-            <h2>{{ $t('markersconfigurationbutton') }}</h2>
+            <h2>{{ $t('markersSettingsButton') }}</h2>
             <div v-for="(item, index) in myLists" :key="index" class="search-group-container">
                 <div>
                     <b><p>{{ item.name }}</p></b>
                 </div>
                 <div class="friend-groups-admin-delete-button">
                     <button class="secondary-button" @click="updateMenu(item.id)"><img class="mod-menu-button-image" src="images/settings.svg"></button>
-                    <button class="secondary-button" @click="deleteList(item.id)">Drop</button>
+                    <button class="secondary-button danger-button-hover" @click="deleteList(item.id)">Drop</button>
                 </div>
             </div>
         </div>
