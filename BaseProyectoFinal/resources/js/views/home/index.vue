@@ -1,8 +1,10 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers } from "../../composables/MapUtils.js";
-import Popup from '../../components/ui/Popup.vue';
+import Popup from '../../components/Popup.vue';
+
+const popupVisible = ref(true);
 
 onMounted(async () => {
     const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
@@ -53,7 +55,7 @@ async function loadMarkers()
 <template>
 
     <div>
-        <Popup v-if="true" />
+        <Popup v-model:visible="popupVisible"/>
 
         <div id="map"></div>
 

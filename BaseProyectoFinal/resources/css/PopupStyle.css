@@ -1,7 +1,8 @@
 .popup {
-    background: black;
-    color: white;
-  
+    background: black !important;
+    color: white !important;
+    border: 0 !important;
+
     padding: 20px;
     border-radius: 16px;
   
@@ -63,9 +64,8 @@
   }
   
   .popup-footer {
-    margin-top: auto;
+    margin: 8px;
     text-align: center;
-    padding-top: 10px;
   }
 
   .popup-list-item
@@ -83,14 +83,15 @@
   .popup-list-item-active
   {
     border-radius: 100%;
-    width: 16px;
-    height: 16px;
+    width: 16px !important;
+    height: 16px !important;
+
+    box-sizing: border-box !important;
+
     background-color: #FFD534;
 
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: auto;
-    margin-right: 16px;
+    margin: auto;
+    padding: 0;
   }
 
   .popup-fade-bottom {
