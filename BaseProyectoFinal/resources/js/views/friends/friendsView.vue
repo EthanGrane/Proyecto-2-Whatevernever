@@ -37,7 +37,7 @@
                     </div>
                     <div class="search-user-information">
                         <b><p class="search-user-information-name">{{ user.reciver.name }}</p></b>
-                        <p class="search-user-information-username">{{ user.reciver.username }}</p>
+                        <p class="search-user-information-username">@{{ user.reciver.username }}</p>
                     </div>
                 </div>
                 <div v-if="user.request_status == 0">
@@ -77,7 +77,7 @@
                     </div>
                     <div class="search-user-information">
                         <b><p class="search-user-information-name">{{ user.sender.name }}</p></b>
-                        <p class="search-user-information-username">{{ user.sender.username }}</p>
+                        <p class="search-user-information-username">@{{ user.sender.username }}</p>
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@ import axios from 'axios';
     async function cargarRequests() 
     {
         loading.value = true;
-        axios.get('http://127.0.0.1:8000/api/friends/myFriends?user='+user_id.value)
+        await axios.get('http://127.0.0.1:8000/api/friends/myFriends?user='+user_id.value)
         .then(response => {
             users.value = response.data;
             //users.value = response.data.map(request => request.sender);
@@ -122,7 +122,7 @@ import axios from 'axios';
 
     async function LoadRequestsSend() {
         loading.value = true;
-        axios.get('http://127.0.0.1:8000/api/friends/requestsSend?user='+user_id.value)
+        await axios.get('http://127.0.0.1:8000/api/friends/requestsSend?user='+user_id.value)
         .then(response => {
             users.value = response.data;
 
@@ -148,18 +148,18 @@ import axios from 'axios';
 
     async function acceptRequest(id_friendship) {
         try {
-            axios.post('http://127.0.0.1:8000/api/friends/accept', {
+            await axios.post('http://127.0.0.1:8000/api/friends/accept', {
                 "id": id_friendship,
             })
             .then(response => {
                 console.log(response);
+                users.value = [];
+                cargarRequests();
             })
             .catch(error => {
                 console.error("[SearchView.vue] Error:", error);
             });
 
-            users.value = [];
-            setTimeout(cargarRequests, 1000);
         } catch (error) {
             console.log(error);
         }
@@ -167,18 +167,17 @@ import axios from 'axios';
 
     async function deleteFriend(id_friendship) {
         try {
-            axios.post('http://127.0.0.1:8000/api/friends/delete', {
+            await axios.post('http://127.0.0.1:8000/api/friends/delete', {
                 "friend_id": id_friendship,
             })
             .then(response => {
                 console.log(response);
+                users.value = [];
+                LoadRequestsSend();
             })
             .catch(error => {
                 console.error("[SearchView.vue] Error:", error);
             });
-
-            users.value = [];
-            setTimeout(LoadRequestsSend, 1000);
         } catch (error) {
             console.log(error);
         }

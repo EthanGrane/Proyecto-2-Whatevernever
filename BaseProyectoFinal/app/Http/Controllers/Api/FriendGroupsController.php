@@ -30,19 +30,23 @@ class FriendGroupsController extends Controller
     }
 
     public function dropGroup(Request $request) {
-        $request->validate([
-            'id_group' => 'required|int',
-        ]);
-
-        $group = FriendGroup::find($request->id_group);
-
-        if (!$group) {
-            return response()->json(['message' => 'This Group doesn\'t exist', 'type' => 'bad']);
+        try {
+            $request->validate([
+                'id_group' => 'required|int',
+            ]);
+    
+            $group = FriendGroup::find($request->id_group);
+    
+            if (!$group) {
+                return response()->json(['message' => 'This Group doesn\'t exist', 'type' => 'bad']);
+            }
+    
+            $group->delete();
+    
+            return response()->json(['message' => 'Group deleted', 'type' => 'good']);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => $th, 'type' => 'warn']);
         }
-
-        $group->delete();
-
-        return response()->json(['message' => 'Group deleted', 'type' => 'good']);
     }
 
     //Show auth user groups

@@ -205,6 +205,54 @@ header img {
     80% { transform: rotate(10deg); }
 }
 
+@keyframes opening
+{
+    0% {transform: scale(0%);}
+    30% {transform: scale(100%);}
+    80% {transform: scale(100%);}
+    100% {transform: scale(0%);}
+}
+
 hr {
     border: 1px solid var(--background3);
+}
+
+.modal-dialog {
+    color: var(--background1);
+}
+
+.search-popup-message-bad {
+    position: fixed;
+    top: 50%;
+    left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--background1);
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 200%;
+    animation: opening 3s ease-in-out 1;
+    overflow: hidden;
+}
+
+.search-popup-message-good {
+    position: fixed;
+    top: 50%;
+    left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--background1);
+    box-shadow: 0 0 50px rgba(103, 255, 80, 0.6);
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 200%;
+    animation: opening 3s ease-in-out 1;
+    overflow: hidden;
 }

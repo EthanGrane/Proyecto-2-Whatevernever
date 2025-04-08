@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import Friendsgroups from '../../components/friendsgroups.vue';
-import GeneralSettingsView from '../../components/settings_components/GeneralSettingsView.vue';
-import AccountSettingsView from '../../components/settings_components/AccountSettingsView.vue';
-import MarkerListSettingsView from '../../components/settings_components/MarkerListSettingsView.vue';
+import Friendsgroups from './pages/friendsgroups.vue';
+import GeneralSettingsView from './pages/GeneralSettingsView.vue';
+import AccountSettingsView from './pages/AccountSettingsView.vue';
+import MarkerListSettingsView from './pages/MarkerListSettingsView.vue';
 
 import useAuth from "@/composables/auth";
 
