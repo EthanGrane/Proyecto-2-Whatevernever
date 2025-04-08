@@ -5,7 +5,7 @@ import LocaleSwitcher from "../../../components/LocaleSwitcher.vue";
 <template>
     <h2>Configuracion General</h2>
 
-    <div style="margin-left: 32px !important;">
+        <div style="margin-left: 32px !important;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <span>
                 <p class="settings-option-title">Language</p>

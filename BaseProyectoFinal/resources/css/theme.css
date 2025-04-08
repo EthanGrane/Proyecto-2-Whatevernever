@@ -62,43 +62,48 @@ header img {
     animation: shake 0.6s ease-in-out 1;
 }
 
-.inter {
+.inter 
+{
     font-family: "Inter", serif;
     font-optical-sizing: auto;
     font-weight: 100;
     font-style: normal;
 }
 
-.primary-button {
-    background-color: white;
-    color: black;
-    font-weight: 500;
-    padding: 10px;
-    border-radius: 20px;
-    border-width: 0;
-    text-decoration: none;
+.primary-button 
+{
+    background-color: white !important;
+    color: black !important;
+    font-weight: 500 !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+    border-width: 0 !important;
+    text-decoration: none !important;
 }
 
-.primary-button:hover {
+.primary-button:hover 
+{
     background-color: rgb(223, 223, 223) !important;
 }
 
-.secondary-button {
-    transition: 500ms;
-    background-color: var(--background2);
-    border-radius: 16px;
-    color: white;
+.secondary-button 
+{
+    transition: 500ms !important;
+    background-color: var(--background2) !important;
+    border-radius: 16px !important;
+    color: white !important;
 
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
 
-    border: none;
+    border: none !important;
 }
 
-.secondary-button:hover {
+.secondary-button:hover 
+{
     transition: 200ms;
-    background-color: var(--background3);
+    background-color: var(--background3) !important;
 }
 
 
@@ -132,35 +137,17 @@ header img {
 {
     background-color: var(--primary-hover) !important;
 }
-  
-.secondary-button-hight {
-    transition: 500ms;
-    background-color: var(--background1);
-    border-radius: 20px;
-    color: var(--text);
-    border: 2px solid var(--background4) !important;
 
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
-
-    border: none;
-}
-
-.secondary-button-hight:hover {
-    transition: 500ms;
-    background-color: var(--background3);
-    border: 2px solid var(--background1) !important;
-}
-
-.titleLogo {
+.titleLogo 
+{
     color: var(--text);
     text-align: center;
     padding-top: 2rem;
     padding-bottom: -2rem;
 }
 
-#map {
+#map 
+{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -170,12 +157,15 @@ header img {
 
 /*Barra de scroll*/
 /* Amplada */
+
 ::-webkit-scrollbar {
     width: 0.8rem;
+
 }
 
 /* Fons */
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track 
+{
     background: var(--background1);
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
@@ -184,7 +174,8 @@ header img {
 }
 
 /* barra */
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb 
+{
     background: var(--background2);
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
@@ -193,14 +184,16 @@ header img {
 }
 
 /* Cambio de color al pasar el mouse */
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover 
+{
     background: var(--background3);
 }
 
 
 /*Transicion entre paginas*/
 /*         */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active, .fade-leave-active 
+{
     transition: opacity 0.4s ease-in;
 }
 
