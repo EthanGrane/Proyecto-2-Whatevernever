@@ -8,14 +8,20 @@
   
     width: 25vw;
     min-width: 326px;
-    min-height: 50vh;
   
-    position: absolute;
     display: flex;
     flex-direction: column;
   
     z-index: 999;
   }
+
+  .popup.bottom-popup {
+    position: fixed !important;
+    bottom: 64px !important;
+    right: 8px !important;
+    margin: 0 auto !important;
+}
+
   
   .popup-header {
     cursor: move;
@@ -101,5 +107,4 @@
     right: 0;
     height: 25px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1));
-    pointer-events: none;
   }

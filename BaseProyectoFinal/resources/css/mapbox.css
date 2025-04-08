@@ -3,3 +3,8 @@
     top: 5vh !important;
     z-index: 100;
 }
+
+.mapboxgl-ctrl-bottom-left
+{
+    bottom: 64px !important;
+}

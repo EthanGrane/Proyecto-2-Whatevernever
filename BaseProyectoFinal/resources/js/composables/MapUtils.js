@@ -17,13 +17,6 @@ export function InitializeMap(centerLngLon) {
         center: [centerLngLon.lon, centerLngLon.lng],
     });
 
-    // Hide Controls
-    map.addControl(new mapboxgl.NavigationControl({
-        showCompass: false,
-        showZoom: true,
-        visualizePitch: true,
-    }), 'bottom-right');
-
     map.addControl(
         new mapboxgl.GeolocateControl({
             positionOptions: {
@@ -34,8 +27,11 @@ export function InitializeMap(centerLngLon) {
         })
     );
 
+    map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+
     // Disable some Intreaction Handles
-    map['dragRotate'].disable();
+    // map['dragRotate'].disable();
+
 
 
     return map;
@@ -75,6 +71,20 @@ export function ReloadMapMarkers(map)
             const marker = markerList[index];
             AddMarkerToMap(map, marker);
         }
+}
+
+export function GetMapCenterCoordinates()
+{
+    // https://docs.mapbox.com/mapbox-gl-js/api/map/#map#getcenter
+    return map.getCenter();
+}
+
+export function OnMapDblClick(callback) {
+    if (!map) return;
+
+    map.on('dblclick', (e) => {
+        callback(e);
+    });
 }
 
 

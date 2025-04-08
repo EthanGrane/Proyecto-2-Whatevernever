@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers } from "../../composables/MapUtils.js";
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, GetMapCenterCoordinates, OnMapDblClick } from "../../composables/MapUtils.js";
 import Popup from '../../components/Popup.vue';
 
 const popupVisible = ref(true);
@@ -11,21 +11,21 @@ onMounted(async () => {
     const friendsConnected = await loadUsers();
     const allMarkers = await loadMarkers();
 
-    if (friendsConnected && Array.isArray(friendsConnected)) 
-    {
+    if (friendsConnected && Array.isArray(friendsConnected)) {
         SetFriends(friendsConnected);
         SetMarkers(allMarkers);
-    } 
-    else
-    {
+    }
+    else {
         console.error("Error: La respuesta no es un array válido.");
     }
 
     // Map
     const map = InitializeMap(center);
+    map.on('load', () => {
+        OnMapDblClick((e) => {
+            popupVisible.value = true;
+        });
 
-    map.on('load', () => 
-    {
         ReloadMapMarkers(map);
     });
 });
@@ -40,8 +40,7 @@ async function loadUsers() {
     }
 }
 
-async function loadMarkers() 
-{
+async function loadMarkers() {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/markers/');
         return response.data;
@@ -50,14 +49,14 @@ async function loadMarkers()
         return [];
     }
 }
+
 </script>
 
 <template>
 
     <div>
-        <Popup v-model:visible="popupVisible"/>
+        <Popup v-model:visible="popupVisible" />
 
         <div id="map"></div>
-
     </div>
 </template>

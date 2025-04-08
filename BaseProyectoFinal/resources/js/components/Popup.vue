@@ -23,10 +23,10 @@ function NextPopupIndex() {
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" class="popup">
+  <Dialog :position="bottom" v-model:visible="visible" class="popup bottom-popup">
 
     <div class="w-100 text-center popup-header">
-      <h2 style="font-weight: 800; cursor: move;">New Marker</h2>
+      <h2 style="font-weight: 800;">New Marker</h2>
     </div>
 
     <!-- Post Info (Name, Description) -->
