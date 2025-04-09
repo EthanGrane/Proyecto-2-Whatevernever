@@ -2,32 +2,29 @@ import { createI18n } from 'vue-i18n'
 import { langStore } from "@/store/lang";
 
 let i18n;
+
 export async function installI18n(app) {
-    console.log(langStore().locale)
-    const i18na = createI18n({
+    const store = langStore();
+    i18n = createI18n({
         legacy: false,
         globalInjection: true,
-        locale: langStore().locale, // set locale
-        fallbackLocale: 'es', // set fallback locale
+        locale: store.locale,
+        fallbackLocale: 'ca',
         messages: {}
     });
-    i18n = i18na;
+    
     app.use(i18n);
-    loadMessages(langStore().locale);
+    await loadMessages(store.locale);
     return i18n;
 }
 
-/**
- * @param {String} locale
- */
-export async function loadMessages (locale) {
-    if (Object.keys(i18n.global.getLocaleMessage(locale)).length === 0) {
-        const messages = await import(/* webpackChunkName: '' */ `../lang/${locale}.json`);
-        i18n.global.setLocaleMessage(locale, messages);
-    }
-    if (i18n.locale !== locale) {
-        i18n.locale = locale
+export async function loadMessages(locale) {
+    try {
+        const messages = await import(`../lang/${locale}.json`);
+        i18n.global.setLocaleMessage(locale, messages.default || messages);
         i18n.global.locale.value = locale;
+    } catch (error) {
+        console.error(`Failed to load messages for ${locale}:`, error);
     }
 };
 

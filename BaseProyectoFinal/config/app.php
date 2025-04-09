@@ -92,9 +92,8 @@ return [
     'locale' => 'en',
     'locales' => [
         'en' => 'EN',
-        'bn' => 'BN',
+        'ca' => 'CAT',
         'es' => 'ES',
-        'fr' => 'FR',
     ],
 
     /*
