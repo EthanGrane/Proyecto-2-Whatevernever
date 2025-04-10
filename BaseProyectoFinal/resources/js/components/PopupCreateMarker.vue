@@ -1,23 +1,48 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import Dialog from 'primevue/dialog';
+import { GetMapCenterCoordinates, HideCenterMarker, AddMarker, ReloadMapMarkers } from "../composables/MapUtils";
+
+const popupIndex = ref(0);
+const markerData = ref({ name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 });
 
 const props = defineProps({
   visible: Boolean,
 });
 const emit = defineEmits(['update:visible']);
 
-
 const visible = computed({
   get: () => props.visible,
-  set: (val) => emit('update:visible', val)
+  set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker() } }
 });
-
-const popupIndex = ref(0);
 
 function NextPopupIndex() {
   popupIndex.value += 1;
   popupIndex.value = popupIndex.value % 3;
+}
+
+function CreateNewMarker() {
+  const center = GetMapCenterCoordinates();
+
+  markerData.value.id = 999;
+  markerData.value.marker_list_id = 999;
+  markerData.value.user_id = 103;
+  markerData.value.lng = center.lng;
+  markerData.value.lat = center.lat;
+
+  try {
+
+  }
+  catch (e) {
+
+  }
+
+  AddMarker(markerData.value);
+  ReloadMapMarkers();
+
+  markerData.value = { name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 };
+  visible.value = false;
+  popupIndex.value = 0;
 }
 
 </script>
@@ -32,11 +57,11 @@ function NextPopupIndex() {
     <!-- Post Info (Name, Description) -->
     <div v-if="popupIndex == 0" id="popup-newMarker-name" class="w-100 d-flex flex-column flex-grow-1">
       <label for="marker-name" style="font-weight: 600; font-size: large">Name</label>
-      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="name">
+      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name">
 
       <label for="marker-description" style="font-weight: 600; font-size: large;">Description</label>
-      <textarea id="marker-description" v-model="description" class="popup-input" placeholder="Description Here!"
-        style="height: 128px; width: 100%; resize: none;"></textarea>
+      <textarea id="marker-description" v-model="markerData.description" class="popup-input"
+        placeholder="Description Here!" style="height: 128px; width: 100%; resize: none;"></textarea>
     </div>
 
     <!-- Select Marker List -->
@@ -70,14 +95,14 @@ function NextPopupIndex() {
     </div>
 
     <div class="popup-footer">
-      <button class="btn popup-button" @click="NextPopupIndex()">Next</button>
+      <button v-if="popupIndex != 2" class="btn popup-button" @click="NextPopupIndex()">Next</button>
+      <button v-else class="btn popup-button" @click="CreateNewMarker()">Finish</button>
     </div>
   </Dialog>
 </template>
 
 <style>
-.p-dialog-header
-{
+.p-dialog-header {
   padding: 0 !important;
 
   position: absolute;
@@ -85,20 +110,17 @@ function NextPopupIndex() {
   left: 8px;
 }
 
-.p-button
-{
+.p-button {
   background-color: var(--background2) !important;
-  color:white  !important;
+  color: white !important;
 }
 
-.p-button:hover
-{
+.p-button:hover {
   background-color: white !important;
-  color:black  !important;
+  color: black !important;
 }
 
-.p-dialog-content
-{
+.p-dialog-content {
   padding-bottom: 0 !important;
   height: 100% !important;
 }

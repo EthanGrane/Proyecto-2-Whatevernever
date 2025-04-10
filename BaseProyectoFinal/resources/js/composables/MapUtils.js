@@ -4,10 +4,11 @@ let markerList = [];
 let selectedFriend = null;
 let centerMarker = null;
 
-export function InitializeMap(centerLngLon) {
+export function InitializeMap() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
-
     const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
+
+    const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Madrid (default)
 
     // Render Map on div
     map = new mapboxgl.Map({
@@ -15,9 +16,9 @@ export function InitializeMap(centerLngLon) {
         style: mapStyle,
         projection: 'globe',
         zoom: 5,
-        center: [centerLngLon.lon, centerLngLon.lng],
+        center: [center.lng, center.lat],
+        doubleClickZoom: false
     });
-
     map.addControl(
         new mapboxgl.GeolocateControl({
             positionOptions: {
@@ -32,8 +33,6 @@ export function InitializeMap(centerLngLon) {
 
     // Disable some Intreaction Handles
     // map['dragRotate'].disable();
-
-
 
     return map;
 }
@@ -51,10 +50,29 @@ export function SetFriends(_friendList) {
 
 export function SetMarkers(_markerList) {
     markerList.length = 0;
-    markerList.push(..._markerList);
+
+    _markerList.forEach(marker => {
+        AddMarker(marker);
+    });
 }
 
-export function ReloadMapMarkers(map) {
+export function AddMarker(markerData) {
+    if (markerData.id &&
+        markerData.lat &&
+        markerData.lng &&
+        markerData.name &&
+        markerData.description &&
+        markerData.marker_list_id &&
+        markerData.user_id) {
+        markerList.push(markerData);
+    }
+    else {
+        console.error("Marker Data invalid: ", markerData);
+    }
+}
+
+
+export function ReloadMapMarkers() {
     const markersOnView = document.querySelectorAll('.marker');
     markersOnView.forEach(marker => marker.remove());
 
@@ -69,8 +87,7 @@ export function ReloadMapMarkers(map) {
     }
 }
 
-export function GetMapCenterCoordinates() 
-{
+export function GetMapCenterCoordinates() {
     // https://docs.mapbox.com/mapbox-gl-js/api/map/#map#getcenter
     return map.getCenter();
 }
@@ -140,34 +157,73 @@ export function AddMarkerToMap(map, marker) {
 export function ShowMarkerOnMapCenter() {
     if (centerMarker == null) {
         const element = document.createElement('div');
+        const pin_element = document.createElement('div');
+        const pin_shadow = document.createElement('div');
+        element.appendChild(pin_shadow);
+        element.appendChild(pin_element);
 
+        // Main div (parent)
         element.className = 'map-marker';
-        element.style.backgroundImage = `url(/images/emoji_pinRed.png)`;
-        element.style.width = `${32}px`;
-        element.style.height = `${32}px`;
-        element.style.backgroundSize = 'contain';
+        element.style.width = `${48}px`;
+        element.style.height = `${48}px`;
         element.style.borderRadius = '100%';
-        element.style.backgroundRepeat = 'no-repeat';
-        element.style.backgroundPosition = 'center';
 
-        element.dataset.originalWidth = 32;
-        element.dataset.originalHeight = 32;
-        centerMarker = element;
+        // Pin
+        pin_element.style.position = 'absolute';
+        pin_element.style.left = '0';
+        pin_element.style.right = '0';
+        pin_element.style.margin = '0 auto';
+        pin_element.style.top = '50%';
+        pin_element.style.backgroundImage = `url(/images/emoji_pinRed.png)`;
+        pin_element.style.backgroundSize = 'contain';
+        pin_element.style.backgroundRepeat = 'no-repeat';
+        pin_element.style.backgroundPosition = 'center';
+        pin_element.style.width = '100%';
+        pin_element.style.height = '100%';
+        pin_element.style.transform = 'translateY(-50%)';
+
+        // Shadow
+        pin_shadow.style.position = 'absolute';
+        pin_shadow.style.left = '0';
+        pin_shadow.style.right = '0';
+        pin_shadow.style.margin = '0 auto';
+        pin_shadow.style.top = '50%';
+        pin_shadow.style.backgroundImage = `url(/images/pin_shadow.png)`;
+        pin_shadow.style.backgroundSize = 'contain';
+        pin_shadow.style.backgroundRepeat = 'no-repeat';
+        pin_shadow.style.backgroundPosition = 'center';
+        pin_shadow.style.width = '100%';
+        pin_shadow.style.height = '100%';
+
+        element.dataset.originalWidth = 48;
+        element.dataset.originalHeight = 48;
+        const center = GetMapCenterCoordinates();
+
+        centerMarker = new mapboxgl.Marker(element)
+            .setLngLat([center.lng, center.lat])
+            .addTo(map);
     }
-    
+
     const center = GetMapCenterCoordinates();
     if (!center) {
         console.log("Center is null");
         return;
     }
 
-    console.log("Center: ");
-    console.log(center);
-
-    new mapboxgl.Marker(centerMarker)
-        .setLngLat([center.lng, center.lat])  // Use center.lng and center.lat here
-        .addTo(map);
+    if (centerMarker) {
+        centerMarker.getElement().style.display = "block";
+        centerMarker.setLngLat([center.lng, center.lat]);
+    }
+    else
+        console.error("Center marker is null");
 }
+
+export function HideCenterMarker() {
+    if (centerMarker && centerMarker.getElement()) {
+        centerMarker.getElement().style.display = "none";
+    }
+}
+
 
 function SelectFriend(friendElement) {
     if (selectedFriend !== null || selectedFriend == friendElement) {

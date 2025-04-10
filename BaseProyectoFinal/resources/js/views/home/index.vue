@@ -1,13 +1,14 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, GetMapCenterCoordinates, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
-import Popup from '../../components/Popup.vue';
 
-const popupVisible = ref(true);
+// MaboxGL Compostable
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
+import PopupCreateMarker from '../../components/PopupCreateMarker.vue';
+
+const popupVisible = ref(false);
 
 onMounted(async () => {
-    const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
     const friendsConnected = await loadUsers();
     const allMarkers = await loadMarkers();
 
@@ -20,22 +21,29 @@ onMounted(async () => {
     }
 
     // Map
-    const map = InitializeMap(center);
+    const map = InitializeMap();
     map.on('load', () => {
-
         OnMapDblClick((e) => {
+            ShowMarkerOnMapCenter();
             popupVisible.value = true;
         });
 
         ReloadMapMarkers(map);
 
         map.on('move', () => {
-            ShowMarkerOnMapCenter();
+            HandleCenterMarker();
         });
         map.on('zoom', () => {
-            ShowMarkerOnMapCenter();
+            HandleCenterMarker();
         });
     });
+
+    function HandleCenterMarker() {
+        if (popupVisible.value == true)
+            ShowMarkerOnMapCenter();
+        else
+            HideCenterMarker();
+    }
 });
 
 async function loadUsers() {
@@ -63,7 +71,7 @@ async function loadMarkers() {
 <template>
 
     <div>
-        <Popup v-model:visible="popupVisible" />
+        <PopupCreateMarker v-model:visible="popupVisible" />
 
         <div id="map"></div>
     </div>
