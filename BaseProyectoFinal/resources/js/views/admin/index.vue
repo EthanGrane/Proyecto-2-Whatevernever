@@ -1,7 +1,7 @@
 <template>
 
     <div class="grid">
-<!--        <div class="col-12 lg:col-6 xl:col-3">-->
+       <!-- <div class="col-12 lg:col-6 xl:col-3">-->
 <!--            <div class="card mb-0">-->
 <!--                <div class="flex justify-content-between mb-3">-->
 
@@ -227,11 +227,12 @@
 <!--                </ul>-->
 <!--            </div>-->
 
-<!--        </div>-->
+<!--        </div> -->
     </div>
 </template>
 
 <script setup>
+console.log("Hola que tal");
 </script>
 
 <style scoped>

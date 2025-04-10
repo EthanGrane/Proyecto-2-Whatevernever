@@ -19,21 +19,21 @@ class CreateAdminUserSeeder extends Seeder
     public function run()
     {
         $user = User::firstOrCreate([
-            'id' => 1,
+            'id' => 999999,
             'name' => 'David',
-            'surname1' => 'Herrera',
-            'alias' => 'dherrera',
+            'username' => 'dherrera',
             'email' => 'admin@demo.com',
             'password' => bcrypt('12345678'),
+            'desc' => 'Soy admin',
         ]);
 
         $user = User::firstOrCreate([
             'id' => 100000,
             'name' => 'Ethan',
-            'surname1' => 'Grane',
-            'alias' => 'egrane',
+            'username' => 'egrane',
             'email' => 'egrane@demo.com',
             'password' => bcrypt('12345678'),
+            'desc' => 'Soy admin',
         ]);
 
         $role = Role::create(['name' => 'admin']);
@@ -54,13 +54,14 @@ class CreateAdminUserSeeder extends Seeder
         $user->assignRole([$role->id]);
 
         $user = User::create([
-            'id' => 2,
+            'id' => 9888888,
             'name' => 'User',
-            'surname1' => 'User',
-            'alias' => 'user',
+            'username' => 'user',
             'email' => 'user@demo.com',
-            'password' => bcrypt('12345678')
+            'password' => bcrypt('12345678'),
+            'desc' => 'Soy admin',
         ]);
+
         $user->assignRole([$role2->id]);
 
     }

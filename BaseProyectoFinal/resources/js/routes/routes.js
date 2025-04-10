@@ -192,9 +192,9 @@ export default [
     {
         path: '/admin',
         component: AuthenticatedLayout,
-        // redirect: {
-        //     name: 'admin.index'
-        // },
+        redirect: {
+            name: 'admin.index'
+        },
         beforeEnter: requireAdmin,
         meta: { breadCrumb: 'Dashboard' },
         children: [

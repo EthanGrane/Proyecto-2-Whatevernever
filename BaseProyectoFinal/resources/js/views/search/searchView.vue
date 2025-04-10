@@ -12,11 +12,12 @@ async function cargarUsers() {
         .then(response => {
             usersList.value = response.data;
 
-            // Provisional
+            // Cargar la imagen del usuario
             usersList.value.forEach(user => {
                 try 
                 {
-                    user.image = "images/users/" + user.media[0].file_name;
+                    user.image = user.media_url ? user.media_url.split("localhost/")[1] : "";
+
                 } catch (error) 
                 {
                     user.image = "";
@@ -111,7 +112,7 @@ cargarUsers();
 
                 <div class="search-user-information-container">
                     <div>
-                        <img :src="user.image ? user.image : '/images/ProfilePicture_6.jpg'" alt="User image"
+                        <img :src="user.image ? user.image : '/images/default_pf.jpg'" alt="User image"
                             class="search-user-information-image">
                     </div>
 

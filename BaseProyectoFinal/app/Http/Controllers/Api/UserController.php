@@ -103,7 +103,7 @@ class UserController extends Controller
         }
     }
 
-
+    /*
     public function updateimg(Request $request)
     {
         $user = auth()->user();
@@ -115,6 +115,23 @@ class UserController extends Controller
         $user =  User::with('media')->find($user->id);
         return  $user;
     }
+    */
+    public function updateimg(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:65536', // max 65MB
+        ]);
+
+        $user = auth()->user();
+
+        // Elimina la imagen anterior
+        $user->clearMediaCollection('users');
+
+        $user->addMediaFromRequest('image')->toMediaCollection('users');
+
+        return response()->json(['message' => 'Imagen actualizada']);
+    }
+
 
     public function destroy(User $user)
     {
@@ -130,6 +147,10 @@ class UserController extends Controller
     public function showUserByUsername(Request $request)
     {
         $user = User::where('username', $request->username)->first(['id','name','username','desc','email']);
+
+        $media = $user->getFirstMedia('users');
+        $user->media_url = $media ? $media->getUrl() : null;
+
         return response()->json($user,200);
     }
 }
