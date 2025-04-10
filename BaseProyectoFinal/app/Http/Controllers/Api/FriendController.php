@@ -143,7 +143,8 @@ class FriendController extends Controller
         $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
 
         foreach ($friends as $friend) {
-            $friend->getFirstMedia('users');
+            $media = $friend->getFirstMedia('users');
+            $friend->media_url = $media ? $media->getUrl() : null;
         }
 
         return response()->json($friends);
