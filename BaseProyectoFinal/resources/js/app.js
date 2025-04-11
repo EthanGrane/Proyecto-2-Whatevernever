@@ -66,8 +66,8 @@ import SpeedDial from 'primevue/speeddial';
 
 /*STYLES */
 
-import "primeflex/primeflex.css";
-import 'sweetalert2/dist/sweetalert2.min.css';
+// import "primeflex/primeflex.css";
+// import 'sweetalert2/dist/sweetalert2.min.css';
 import "primeicons/primeicons.css";
 
 import '../css/theme.css';
