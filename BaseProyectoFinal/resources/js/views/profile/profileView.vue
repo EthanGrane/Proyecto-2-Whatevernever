@@ -20,7 +20,6 @@ async function loadDataFromRequestUser() {
         const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
         if (response.data) {
             requestedUserData.value = response.data;
-            console.log(response);
             let foto = (response.data.media_url ? response.data.media_url.split("localhost/")[1] : "");
             if (response.data.media_url == null) {
                 userPFP.value = "/images/default_pf.jpg";
@@ -38,8 +37,6 @@ async function loadDataFromRequestUser() {
     }
 }
 
-
-
 async function getFriendsFromRequestedUser() {
     if (!requestedUserData.value.id) return;
 
@@ -53,12 +50,9 @@ async function getFriendsFromRequestedUser() {
         });
 }
 
-
 async function deleteRequest(friend_id) {
     axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
         .then(response => {
-            console.log('Friendship deleted:', response.data);
-            console.log(requestedUserFriendList.value);
             requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
         })
         .catch(error => {
@@ -75,13 +69,10 @@ const op = ref();
 const toggle = (event) => {
     op.value.toggle(event);
 }
-
-console.log(requestedUserData.id);
-console.log(requestedUserFriendList.length);
 </script>
 
 <template>
-    <div v-if="requestedUserData.id " class="profile-background"><!-- && requestedUserFriendList.length -->
+    <div v-if="requestedUserData.id" class="profile-background">
         <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
             <img :src="userPFP" alt="Profile Image" class="profile-info-pfp">
@@ -90,11 +81,16 @@ console.log(requestedUserFriendList.length);
             <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
 
             <p>{{ requestedUserData.desc }}</p>
-            <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
-            <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
-                <b>{{ requestedUserFriendList.length }}</b>
-                {{ $t('friendscounter') }}
-            </button>
+
+            <span>
+                <button v-if="true" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
+
+                <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
+                    <b>{{ requestedUserFriendList.length }}</b>
+                    {{ $t('friendscounter') }}
+                </button>
+            </span>
+            
         </div>
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
@@ -103,8 +99,7 @@ console.log(requestedUserFriendList.length);
         <!-- Friends Popup -->
         <Popover ref="op">
             <div class="flex flex-col gap-4" style="
-            overflow-y: scroll; height: 25vh; scrollbar-width: thin; scrollbar-color: black white;
-            ">
+            overflow-y: scroll; height: 25vh; scrollbar-width: thin; scrollbar-color: black white;">
                 <div>
                     <ul class="list-none p-0 m-0 flex flex-col">
                         <li>
@@ -112,6 +107,7 @@ console.log(requestedUserFriendList.length);
                                 Friends
                             </h4>
                         </li>
+
                         <li v-for="user in requestedUserFriendList" :key="user.name"
                             class="flex items-center gap-2 px-2 py-3 hover:bg-emphasis cursor-pointer rounded-2 popover-li-hover">
                             <div>
@@ -122,11 +118,12 @@ console.log(requestedUserFriendList.length);
                                         </a>
                                     </span>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="search-user-information-username" style="color: white; background-color: #000000; width: fit-content;">
-                                            <a
-                                            :href="'/profile/' + user.user.username" style="color: white !important;">
+                                        <span class="search-user-information-username"
+                                            style="color: white; background-color: #000000; width: fit-content;">
+                                            <a :href="'/profile/' + user.user.username"
+                                                style="color: white !important;">
 
-                                            @{{ user.user.username }}
+                                                @{{ user.user.username }}
                                             </a>
                                         </span>
 
@@ -134,16 +131,17 @@ console.log(requestedUserFriendList.length);
                                             positive_option="Delete Friend" positive_severity="danger"
                                             button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
-
                                     </div>
                                 </div>
                             </div>
 
                         </li>
                     </ul>
+
                 </div>
             </div>
         </Popover>
+
 
     </div>
 </template>
