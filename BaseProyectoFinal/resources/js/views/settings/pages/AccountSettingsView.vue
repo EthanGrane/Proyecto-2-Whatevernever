@@ -9,6 +9,7 @@ const color = ref();
 const imageFile = ref(null);
 const fileInput = ref(null);
 const new_username = ref();
+const new_description = ref();
 
 const triggerFileInput = () => {
     fileInput.value.click();
@@ -67,6 +68,21 @@ async function updateUsername(username) {
         console.log(error);
     }
 }
+
+async function updateDescription(desc) {
+    try {
+        const response = await axios.post("http://127.0.0.1:8000/api/users/updatedescription", {
+            'desc': desc,
+        })
+
+        showMessage("Description updated", "good");
+        console.log(response);
+
+    } catch (error) {
+        showMessage("Error while updating description", "bad");
+        console.log(error);
+    }
+}
 </script>
 
 <template>
@@ -100,19 +116,36 @@ async function updateUsername(username) {
 
         <!-- Otros campos -->
         <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span>
-            <p class="settings-option-title">Modificar nombre de perfil</p>
-            <p class="settings-option-description">
-            Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-            </p>
-        </span>
-        <div class="secondary-button">
-            <input placeholder="New name" v-model="new_username">
-            <button @click="updateUsername(new_username)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-                <span>(icon)</span>
-                Change
-            </button>
+            <span>
+                <p class="settings-option-title">Modificar nombre de perfil</p>
+                <p class="settings-option-description">
+                Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
+                </p>
+            </span>
+            <div class="secondary-button">
+                <input placeholder="New name" v-model="new_username">
+                <button @click="updateUsername(new_username)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                    <span>(icon)</span>
+                    Change
+                </button>
+            </div>
         </div>
+        <hr />
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>
+                <p class="settings-option-title">Modificar descripcion de usuario</p>
+                <p class="settings-option-description">
+                Cambiar descripcion para que la vean otros usuarios.
+                </p>
+            </span>
+            <div class="secondary-button">
+                <input placeholder="New description" v-model="new_description">
+                <button @click="updateDescription(new_description)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                    <span>(icon)</span>
+                    Change
+                </button>
+            </div>
         </div>
         <hr />
 

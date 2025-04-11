@@ -155,4 +155,20 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Username updated']);
     }
+
+    public function updateUserDescription(Request $request) {
+        $id = auth()->id();
+
+        $user = User::where('id', $id)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found']);
+        }
+
+        $user->update([
+            "desc"=>$request->desc
+        ]);
+
+        return response()->json(['message' => 'Description updated']);
+    }
 }
