@@ -57,18 +57,19 @@ export function SetMarkers(_markerList) {
 }
 
 export function AddMarker(markerData) {
-    if (markerData.id &&
-        markerData.lat &&
-        markerData.lng &&
+    if (
+        markerData.id !== undefined &&
+        markerData.lat !== undefined &&
+        markerData.lng !== undefined &&
         markerData.name &&
         markerData.description &&
-        markerData.marker_list_id &&
-        markerData.user_id) {
+        markerData.user_id !== undefined
+    ) {
         markerList.push(markerData);
-    }
-    else {
+    } else {
         console.error("Marker Data invalid: ", markerData);
     }
+
 }
 
 

@@ -1,7 +1,12 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { authStore } from '../store/auth';
 import Dialog from 'primevue/dialog';
 import { GetMapCenterCoordinates, HideCenterMarker, AddMarker, ReloadMapMarkers } from "../composables/MapUtils";
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
 
 const popupIndex = ref(0);
 const markerData = ref({ name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 });
@@ -13,7 +18,7 @@ const emit = defineEmits(['update:visible']);
 
 const visible = computed({
   get: () => props.visible,
-  set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker() } }
+  set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker(); } }
 });
 
 function NextPopupIndex() {
@@ -21,34 +26,56 @@ function NextPopupIndex() {
   popupIndex.value = popupIndex.value % 3;
 }
 
-function CreateNewMarker() {
+function ValidateAndNext() {
+  if (popupIndex.value === 0) {
+    if (!markerData.value.name || !markerData.value.description) {
+      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life:2000 });
+      return;
+    }
+  }
+
+  NextPopupIndex();
+}
+
+function CreateNewMarker() 
+{
   const center = GetMapCenterCoordinates();
 
-  markerData.value.id = 999;
-  markerData.value.marker_list_id = 999;
-  markerData.value.user_id = 103;
+  markerData.value.user_id = authStore().user.id;
   markerData.value.lng = center.lng;
   markerData.value.lat = center.lat;
 
-  try {
+  axios.post('/api/markers', {
+    name: markerData.value.name,
+    description: markerData.value.description,
+    lng: markerData.value.lng,
+    lat: markerData.value.lat,
+    marker_list_id: markerData.value.marker_list_id,
+    user_id: markerData.value.user_id
+  })
+    .then(res => {
+      console.log('Marcador creado:', res.data);
 
-  }
-  catch (e) {
+      markerData.value.id = res.data.marker.id;
+      AddMarker(markerData.value);
+      ReloadMapMarkers();
 
-  }
+      markerData.value = { name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 };
+      visible.value = false;
+      popupIndex.value = 0;
+    })
+    .catch(err => {
+      console.error('Error al crear marcador:', err.response.data)
+    });
 
-  AddMarker(markerData.value);
-  ReloadMapMarkers();
-
-  markerData.value = { name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 };
-  visible.value = false;
-  popupIndex.value = 0;
 }
-
 </script>
 
 <template>
-  <Dialog :position="bottom" v-model:visible="visible" class="popup bottom-popup">
+  <Toast />
+
+  <Dialog :position="bottom" v-model:visible="visible" @hide="HideCenterMarker(); popupIndex = 0;"
+    class="popup bottom-popup">
 
     <div class="w-100 text-center popup-header">
       <h2 style="font-weight: 800;">New Marker</h2>
@@ -89,13 +116,12 @@ function CreateNewMarker() {
     <!-- Summary -->
     <div v-if="popupIndex == 2" id="popup-newMarker-summary" class="w-100 d-flex flex-column flex-grow-1">
       <h2 class="m-1">🌉 San Francisco Travel</h2>
-      <h3 class="m-1">My Fav Park</h3>
-      <p style="margin-left: 16px !important;">Esto es una descripcion de ejemplo sobre este marcador maravilloso el
-        cual he marcado para poder tener marcada la ubicacion de este maravilloso parque.</p>
+      <h3 class="m-1">{{ markerData.name }}</h3>
+      <p style="margin-left: 16px !important;">{{ markerData.description }}</p>
     </div>
 
     <div class="popup-footer">
-      <button v-if="popupIndex != 2" class="btn popup-button" @click="NextPopupIndex()">Next</button>
+      <button v-if="popupIndex != 2" class="btn popup-button" @click="ValidateAndNext()">Next</button>
       <button v-else class="btn popup-button" @click="CreateNewMarker()">Finish</button>
     </div>
   </Dialog>
@@ -123,5 +149,22 @@ function CreateNewMarker() {
 .p-dialog-content {
   padding-bottom: 0 !important;
   height: 100% !important;
+}
+
+.p-toast-message-error
+{
+  background: black !important;
+  border: 0 !important;
+
+}
+
+.p-toast-summary
+{
+  font-weight: 800 !important;
+}
+
+.p-toast-detail
+{
+  color: white !important;
 }
 </style>
