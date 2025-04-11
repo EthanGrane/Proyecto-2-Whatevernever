@@ -184,7 +184,14 @@ export default [
                 name: 'feed',
 
                 component: () => import('../views/feed/feedView.vue'),
-            }
+            },
+            {
+                path: '/dummy',
+                name: 'Dummy',
+                component: {
+                    template: '<div></div>' // un componente vacío o temporal
+                }
+            },
         ]
     },
 

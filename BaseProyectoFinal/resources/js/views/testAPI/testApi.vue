@@ -53,5 +53,6 @@ async function sendRequest() {
                 <strong>{{ res.method }} - {{ res.url }}</strong>\n{{ res.data }}
             </pre>
         </div>
+        <router-link to="/admin">Admin page</router-link>
     </div>
 </template>
