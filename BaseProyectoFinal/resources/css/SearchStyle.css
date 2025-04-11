@@ -18,8 +18,8 @@
 }
 
 
-#search-user-list-container {
-    width: 60%;
+.search-user-list-container {
+    width: 60vw;
     margin: auto;
     padding-bottom: 4rem;
 }

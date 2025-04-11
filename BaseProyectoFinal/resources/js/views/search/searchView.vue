@@ -14,12 +14,10 @@ async function cargarUsers() {
 
             // Cargar la imagen del usuario
             usersList.value.forEach(user => {
-                try 
-                {
+                try {
                     user.image = user.media_url ? user.media_url.split("localhost/")[1] : "";
 
-                } catch (error) 
-                {
+                } catch (error) {
                     user.image = "";
                 }
             });
@@ -38,8 +36,7 @@ async function cargarUsers() {
         })
 }
 
-async function sendRequest(id_reciver) 
-{
+async function sendRequest(id_reciver) {
     await axios.post('http://127.0.0.1:8000/api/friend', {
         "id_sender": authStore().user.id,
         "id_receiver": id_reciver
@@ -71,19 +68,17 @@ function manejarInput() {
     setTimeout(cargarUsers, 500);
 }
 
-
 cargarUsers();
 </script>
 
 <template>
     <div class="search-background">
-
         <div>
             <input class="search-field" v-model="inputbusqueda" @input="manejarInput"
                 :placeholder="$t('buscadoramigos')">
         </div>
 
-        <div id="search-user-list-container">
+        <div class="search-user-list-container">
 
             <!-- Fake search results for Loading -->
             <div v-if="usersList.length === 0" v-for="n in 4" :key="n" class="search-user-container">
@@ -126,11 +121,13 @@ cargarUsers();
 
                 <div>
                     <button v-if="friendsRequestSended.some(friend => friend.id === user.id)"
-                        @click.stop.prevent="deleteRequest(user.id)" class="secondary-button danger-button-hover" style="min-width: 7rem;">
+                        @click.stop.prevent="deleteRequest(user.id)" class="secondary-button danger-button-hover"
+                        style="min-width: 7rem;">
                         {{ $t('cancel') }}
                     </button>
 
-                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button button-hover" style="min-width: 6rem;">
+                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="secondary-button button-hover"
+                        style="min-width: 6rem;">
 
                         {{ $t('addFriendText') }}
                     </button>
@@ -146,3 +143,25 @@ cargarUsers();
 
     </div>
 </template>
+
+<style>
+@media (max-width: 520px) 
+{
+    .search-user-list-container 
+    {
+        width: 100% !important;
+        margin: 8px !important;
+    }
+
+    .search-background
+    {
+        margin: 8px !important;
+    }
+
+    .search-field
+    {
+        width: 90vw !important;
+        margin: 16px !important; 
+    }
+}
+</style>
