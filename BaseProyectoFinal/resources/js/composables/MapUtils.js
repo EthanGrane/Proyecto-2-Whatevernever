@@ -185,6 +185,7 @@ export function ShowMarkerOnMapCenter() {
         pin_element.style.width = '100%';
         pin_element.style.height = '100%';
         pin_element.style.transform = 'translateY(-50%)';
+        pin_element.style.zIndex = 999;
 
         // Shadow
         pin_shadow.style.position = 'absolute';

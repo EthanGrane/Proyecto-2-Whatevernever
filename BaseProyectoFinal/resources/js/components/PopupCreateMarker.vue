@@ -10,6 +10,7 @@ const toast = useToast();
 
 const popupIndex = ref(0);
 const markerData = ref({ name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 });
+const defaultMarkerData = { name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 };
 
 const props = defineProps({
   visible: Boolean,
@@ -21,19 +22,15 @@ const visible = computed({
   set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker(); } }
 });
 
-function NextPopupIndex() 
-{
+function NextPopupIndex() {
   popupIndex.value += 1;
   popupIndex.value = popupIndex.value % 3;
 }
 
-function ValidateAndNext() 
-{
-  if (popupIndex.value === 0) 
-  {
-    if (!markerData.value.name || !markerData.value.description) 
-    {
-      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life:2000 });
+function ValidateAndNext() {
+  if (popupIndex.value === 0) {
+    if (!markerData.value.name || !markerData.value.description) {
+      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life: 2000 });
       return;
     }
   }
@@ -41,8 +38,7 @@ function ValidateAndNext()
   NextPopupIndex();
 }
 
-function CreateNewMarker() 
-{
+function CreateNewMarker() {
   const center = GetMapCenterCoordinates();
 
   markerData.value.user_id = authStore().user.id;
@@ -61,22 +57,26 @@ function CreateNewMarker()
     .then(res => {
       console.log('Marcador creado:', res.data);
       console.log(res);
-      
+
       markerData.value.id = res.data.marker.id;
       AddMarker(markerData.value);
       ReloadMapMarkers();
+
+      popupIndex.value = 0;
+      markerData.value = defaultMarkerData;
+      emit('update:visible', false);
+      HideCenterMarker();
     })
     .catch(err => {
       console.error('Error al crear marcador:', err.response.data)
     });
-
 }
 </script>
 
 <template>
   <Toast />
 
-  <Dialog :position="bottom" v-model:visible="visible" @hide="HideCenterMarker(); popupIndex = 0;"
+  <Dialog position="bottom" v-model:visible="visible" @hide="() => { HideCenterMarker(); popupIndex.value = 0; }"
     class="popup bottom-popup">
 
     <div class="w-100 text-center popup-header">
@@ -153,20 +153,17 @@ function CreateNewMarker()
   height: 100% !important;
 }
 
-.p-toast-message-error
-{
+.p-toast-message-error {
   background: black !important;
   border: 0 !important;
 
 }
 
-.p-toast-summary
-{
+.p-toast-summary {
   font-weight: 800 !important;
 }
 
-.p-toast-detail
-{
+.p-toast-detail {
   color: white !important;
 }
 </style>
