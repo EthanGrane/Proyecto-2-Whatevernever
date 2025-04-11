@@ -85,7 +85,6 @@ showLists();
 <template>
     <div class="marker-list-configuration-background">
         <div class="marker-list">
-            <h2>{{ $t('markersSettingsButton') }}</h2>
             <div v-for="(item, index) in myLists" :key="index" class="search-group-container">
                 <div>
                     <b><p>{{ item.name }}</p></b>

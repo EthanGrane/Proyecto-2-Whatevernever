@@ -9,3 +9,12 @@
     bottom: 64px !important;
 }
 
+.mapboxgl-ctrl-attrib-inner
+{
+    display: none;
+}
+
+.mapboxgl-ctrl-logo
+{
+    display: none !important;
+}

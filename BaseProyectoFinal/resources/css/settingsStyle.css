@@ -5,7 +5,7 @@
 
     width: 100%;
     margin: auto;
-    padding-right: 32px !important;
+    margin-right: 8px !important;
 }
 
 .settings-side-menu {
@@ -14,7 +14,6 @@
     gap: 20px;
     padding: 2vw;
 
-    width: 30vw;
     height: 80vh;
 }
 

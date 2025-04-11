@@ -64,9 +64,12 @@ export function AddMarker(markerData) {
         markerData.name &&
         markerData.description &&
         markerData.user_id !== undefined
-    ) {
+    ) 
+    {
         markerList.push(markerData);
-    } else {
+    } 
+    else 
+    {
         console.error("Marker Data invalid: ", markerData);
     }
 
@@ -193,6 +196,7 @@ export function ShowMarkerOnMapCenter() {
         pin_element.style.width = '100%';
         pin_element.style.height = '100%';
         pin_element.style.transform = 'translateY(-50%)';
+        pin_element.style.zIndex = 999;
 
         // Shadow
         pin_shadow.style.position = 'absolute';
