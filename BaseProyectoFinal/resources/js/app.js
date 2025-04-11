@@ -61,14 +61,15 @@ import FloatLabel from 'primevue/floatlabel';
 
 import Popover from 'primevue/popover'
 import ConfirmDialog from 'primevue/confirmdialog';
+import SpeedDial from 'primevue/speeddial';
 
 
 /*STYLES */
-/*
+
 import "primeflex/primeflex.css";
-import "primeicons/primeicons.css";
 import 'sweetalert2/dist/sweetalert2.min.css';
-*/
+import "primeicons/primeicons.css";
+
 import '../css/theme.css';
 import '../css/loginRegisterStyles.css';
 import '../css/footerStyles.css';
@@ -81,7 +82,7 @@ import '../css/feedStyle.css';
 import '../css/mapbox.css';
 import '../css/markersStyle.css';
 import '../css/PopupStyle.css';
-import '../css/PrimeVuePopoverStyle.css';
+import '../css/PrimeVueStyles.css';
 
 
 const app = createApp({

@@ -192,7 +192,6 @@ ShowMyGroups();
         -->
         <div class="created-joined-groups">
             <div class="groups-divs">
-                <h3>{{ $t('groupsSettingsButton') }}</h3>
                 <div v-for="(item, index) in myGroups" :key="index" class="search-group-container">
                     <div>
                         <b><p>{{ item.name }}</p></b>

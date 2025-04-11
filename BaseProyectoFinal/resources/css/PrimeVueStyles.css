@@ -1,3 +1,17 @@
+/*
+ * Toggle
+ */
+.p-toggleswitch-slider {
+    background: var(--background3) !important;
+}
+
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+    background: var(--primary) !important;
+}
+
+/*
+ * Popover
+ */
 .p-popover-content {
     background-color: white !important;
 

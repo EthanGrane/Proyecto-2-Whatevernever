@@ -40,9 +40,9 @@ const handleFileChange = async (e) => {
 
     try {
         const response = await axios.post("http://127.0.0.1:8000/api/users/updateimg", formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
         });
         showMessage("Image updated", "good");
     } catch (err) {
@@ -53,73 +53,63 @@ const handleFileChange = async (e) => {
 </script>
 
 <template>
-    <h2>Configuración Cuenta</h2>
-
-    <div style="margin-left: 32px !important;">
+    <div>
         <!-- Actualizar imagen -->
         <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span>
-            <p class="settings-option-title">Modificar foto de perfil</p>
-            <p class="settings-option-description">
-            Cambiar imagen con la que los otros usuarios pueden asociarte.
-            </p>
-        </span>
-        <button
-            class="btn secondary-button"
-            style="padding-left: 32px !important; padding-right: 32px !important;"
-            @click="triggerFileInput">
-            <span>(icon)</span>
-            Change
-        </button>
-        <input
-            type="file"
-            accept="image/*"
-            ref="fileInput"
-            @change="handleFileChange"
-            style="display: none;"
-        />
+            <span>
+                <p class="settings-option-title">Modificar foto de perfil</p>
+                <p class="settings-option-description">
+                    Cambiar imagen con la que los otros usuarios pueden asociarte.
+                </p>
+            </span>
+            <Button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;"
+                @click="triggerFileInput">
+                <span>(icon)</span>
+                Change
+            </Button>
+            <input type="file" accept="image/*" ref="fileInput" @change="handleFileChange" style="display: none;" />
         </div>
         <hr />
 
         <!-- Otros campos -->
         <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span>
-            <p class="settings-option-title">Modificar nombre de perfil</p>
-            <p class="settings-option-description">
-            Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-            </p>
-        </span>
-        <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-            <span>(icon)</span>
-            Change
-        </button>
+            <span>
+                <p class="settings-option-title">Modificar nombre de perfil</p>
+                <p class="settings-option-description">
+                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
+                </p>
+            </span>
+            <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                <span>(icon)</span>
+                Change
+            </button>
         </div>
         <hr />
 
         <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span>
-            <p class="settings-option-title">Modificar contraseña</p>
-            <p class="settings-option-description">
-            Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-            </p>
-        </span>
-        <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-            <span>(icon)</span>
-            Change
-        </button>
+            <span>
+                <p class="settings-option-title">Modificar contraseña</p>
+                <p class="settings-option-description">
+                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
+                </p>
+            </span>
+            <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                <span>(icon)</span>
+                Change
+            </button>
         </div>
         <hr />
 
         <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span>
-            <p class="settings-option-title">Modificar color de cuenta</p>
-            <p class="settings-option-description">
-            Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-            </p>
-        </span>
-        <div class="card flex justify-center">
-            <ColorPicker v-model="color" format="hex" style="background: fixed !important;" />
-        </div>
+            <span>
+                <p class="settings-option-title">Modificar color de cuenta</p>
+                <p class="settings-option-description">
+                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
+                </p>
+            </span>
+            <div class="card flex justify-center">
+                <ColorPicker v-model="color" format="hex" style="background: fixed !important;" />
+            </div>
         </div>
         <hr />
         <Toast />
