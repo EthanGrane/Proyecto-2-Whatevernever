@@ -62,6 +62,7 @@ async function deleteRequest(friend_id) {
 
 onMounted(async () => {
     loadDataFromRequestUser();
+    checkFriendStatus();
 })
 
 // PrimeVue Popover template code
@@ -69,6 +70,16 @@ const op = ref();
 const toggle = (event) => {
     op.value.toggle(event);
 }
+
+const friendRequestStatus = ref(false);
+function checkFriendStatus() {
+    const currentUserId = authStore().user.id;
+
+    const isFriend = requestedUserFriendList.value.some(friend => friend.user.id === currentUserId);
+
+    friendRequestStatus.value = !isFriend;
+}
+
 </script>
 
 <template>
@@ -82,7 +93,12 @@ const toggle = (event) => {
 
             <p>{{ requestedUserData.desc }}</p>
 
-            <span>
+            <span class="m-1">
+                <Button class="primary-button" v-if="friendRequestStatus" label="Add Friend" />
+                <Button class="secondary-button danger-button-hover" v-else label="UnFriend" />
+            </span>
+
+            <span class="m-1">
                 <button v-if="true" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
 
                 <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
@@ -127,9 +143,10 @@ const toggle = (event) => {
                                             </a>
                                         </span>
 
-                                        <ConfirmButtonPopup name="Delete" header="Delete Friend"
-                                            positive_option="Delete Friend" positive_severity="danger"
-                                            button_class="danger-button border-0"
+
+                                        <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
+                                            name="Delete" header="Delete Friend" positive_option="Delete Friend"
+                                            positive_severity="danger" button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
                                     </div>
                                 </div>
