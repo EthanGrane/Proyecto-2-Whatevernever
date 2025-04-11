@@ -8,6 +8,8 @@ const toast = useToast();
 const color = ref();
 const imageFile = ref(null);
 const fileInput = ref(null);
+const new_username = ref();
+const new_description = ref();
 
 const triggerFileInput = () => {
     fileInput.value.click();
@@ -15,8 +17,6 @@ const triggerFileInput = () => {
 
 function showMessage(message, type) {
     let adapt_type = "";
-
-    console.log("Pito");
 
     if (type == "good") {
         adapt_type = "success";
@@ -44,12 +44,45 @@ const handleFileChange = async (e) => {
                 "Content-Type": "multipart/form-data",
             },
         });
+
+        console.log(response);
+
         showMessage("Image updated", "good");
     } catch (err) {
         console.error(err);
         showMessage("Error while uploading image", "bad");
     }
 };
+
+async function updateUsername(username) {
+    try {
+        const response = await axios.post("http://127.0.0.1:8000/api/users/updateusername", {
+            'username': username,
+        })
+
+        showMessage("Name updated", "good");
+        console.log(response);
+
+    } catch (error) {
+        showMessage("Error while updating name", "bad");
+        console.log(error);
+    }
+}
+
+async function updateDescription(desc) {
+    try {
+        const response = await axios.post("http://127.0.0.1:8000/api/users/updatedescription", {
+            'desc': desc,
+        })
+
+        showMessage("Description updated", "good");
+        console.log(response);
+
+    } catch (error) {
+        showMessage("Error while updating description", "bad");
+        console.log(error);
+    }
+}
 </script>
 
 <template>
@@ -76,13 +109,34 @@ const handleFileChange = async (e) => {
             <span>
                 <p class="settings-option-title">Modificar nombre de perfil</p>
                 <p class="settings-option-description">
-                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
+                Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
                 </p>
             </span>
-            <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-                <span>(icon)</span>
-                Change
-            </button>
+            <div class="secondary-button">
+                <input placeholder="New name" v-model="new_username">
+                <button @click="updateUsername(new_username)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                    <span>(icon)</span>
+                    Change
+                </button>
+            </div>
+        </div>
+        <hr />
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>
+                <p class="settings-option-title">Modificar descripcion de usuario</p>
+                <p class="settings-option-description">
+                Cambiar descripcion para que la vean otros usuarios.
+                </p>
+            </span>
+            <div class="secondary-button">
+                <input placeholder="New description" v-model="new_description">
+                <button @click="updateDescription(new_description)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
+                    <span>(icon)</span>
+                    Change
+                </button>
+            </div>
+
         </div>
         <hr />
 

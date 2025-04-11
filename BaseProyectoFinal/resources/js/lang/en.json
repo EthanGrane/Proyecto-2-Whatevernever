@@ -63,5 +63,8 @@
     "markersSettingsButton": "Markers Lists",
     "signoutbutton" : "Log Out",
     "kickuserfromgroup": "Kick",
-    "deletebutton": "Delete"
+    "deletebutton": "Delete",
+    "username": "Username",
+    "notregisted": "You don't have a acount? Register!",
+    "already_registered": "Already have a acount? Login!"
 }

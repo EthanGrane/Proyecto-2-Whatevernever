@@ -9,10 +9,10 @@
 
         <div class="navMenu" id="nav">
             <div>
-                <router-link to="/profile">
+                <div @click="handleNav('/profile')" style="cursor: pointer;">
                     <img src="/images/icon_profile.svg" alt="Profile" class="icon">
                     {{ $t('profile') }}
-                </router-link>
+                </div>
             </div>
             <div>
                 <router-link to="/feed">
@@ -73,4 +73,19 @@ import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 import { authStore } from "../store/auth";
 
 const { processing, logout } = useAuth();
+
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+
+//No enseñar en la presentacion, era la unica forma de que funcionara
+function handleNav(targetPath) {
+    console.log(route.path)
+    if (route.path.includes(targetPath)) {
+        window.location.href = "/profile";
+    } else {
+        router.push(targetPath);
+    }
+}
 </script>
