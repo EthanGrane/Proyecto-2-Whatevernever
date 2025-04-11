@@ -109,8 +109,19 @@ function AddFriendToMap(map, friend) {
     const width = 64 - sizeReduction;
     const height = 64 - sizeReduction;
 
+    let userPFP = "";
+    let foto = (friend.media_url ? friend.media_url.split("localhost/")[1] : "");
+
+    if (friend.media_url == null) {
+        userPFP = "/images/default_pf.jpg";
+    } else {
+        userPFP = "/" + foto;
+    }
+
+    console.log("Imagen perfil: " + userPFP);
+
     element.className = 'map-marker';
-    element.style.backgroundImage = `url(/images/ProfilePicture_${Math.floor(Math.random() * 10)}.jpg)`;
+    element.style.backgroundImage = `url("${userPFP}")`;
     element.style.width = `${width}px`;
     element.style.height = `${height}px`;
     element.style.backgroundSize = '100%';

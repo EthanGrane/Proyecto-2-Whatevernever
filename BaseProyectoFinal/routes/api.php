@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     // Users
     Route::apiResource('users', UserController::class);
     Route::post('/users/updateimg', [UserController::class, 'updateimg']); //Listar
+    Route::post('/users/updateusername', [UserController::class, 'updateUserUsername']);
 
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);

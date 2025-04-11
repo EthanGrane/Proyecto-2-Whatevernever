@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-start">
 
         <div class="w-50 vh-100 d-flex justify-content-center align-items-center d-none d-md-flex">
-            <div class="w-75 h-100 m-auto" style="background-color: var(--background4);">
+            <div class="w-75 h-100 m-auto advertisment-menu" style="background-color: var(--background4);">
                 <h2 class="brandName w-100 text-center pt-5">{{ $t('brandName') }}.</h2>
             </div>
         </div>
@@ -78,6 +78,8 @@
                                         </div>
                                     </div>
                                     <router-link :to="{name: 'auth.forgot-password'}">{{ $t('forgot_password')}}</router-link>
+                                    <br>
+                                    <router-link :to="{name: 'auth.register'}">{{ $t('notregisted') }}</router-link>
                                 </form>
                             </div>
                         </div>

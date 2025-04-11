@@ -88,8 +88,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->surname1 = $request->surname1;
-        $user->surname2 = $request->surname2;
+        $user->username = $request->surname1;
 
         if(!empty($request->password)) {
             $user->password = Hash::make($request->password) ?? $user->password;
@@ -103,19 +102,6 @@ class UserController extends Controller
         }
     }
 
-    /*
-    public function updateimg(Request $request)
-    {
-        $user = auth()->user();
-        if($request->hasFile('picture')) 
-        {
-            $user->media()->delete();
-            $media = $user->addMediaFromRequest('picture')->preservingOriginal()->toMediaCollection('images/users');
-        }
-        $user =  User::with('media')->find($user->id);
-        return  $user;
-    }
-    */
     public function updateimg(Request $request)
     {
         $request->validate([
@@ -152,5 +138,21 @@ class UserController extends Controller
         $user->media_url = $media ? $media->getUrl() : null;
 
         return response()->json($user,200);
+    }
+
+    public function updateUserUsername(Request $request) {
+        $id = auth()->id();
+
+        $user = User::where('id', $id)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found']);
+        }
+
+        $user->update([
+            "name"=>$request->username
+        ]);
+
+        return response()->json(['message' => 'Username updated']);
     }
 }

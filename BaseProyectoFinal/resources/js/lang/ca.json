@@ -63,5 +63,8 @@
     "markersSettingsButton": "Llistes de marques",
     "signoutbutton": "Tanca sessió",
     "kickuserfromgroup": "Expulsa",
-    "deletebutton": "Esborra"
+    "deletebutton": "Esborra",
+    "username": "Nom d'usuari",
+    "notregisted": "No tens una conta? Registret!",
+    "already_registered": "Ja estas registrat? Inicia sessio!"
 }

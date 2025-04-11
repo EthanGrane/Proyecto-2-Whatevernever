@@ -63,5 +63,8 @@
     "markersSettingsButton": "Listas de Marcadores",
     "signoutbutton" : "Cerrar session",
     "kickuserfromgroup": "Expulsar",
-    "deletebutton": "Borrar"
+    "deletebutton": "Borrar",
+    "username": "Nombre de usuario",
+    "notregisted": "No tienes cuenta? Registrate!",
+    "already_registered": "Ya tienes cuenta? Inicia session!"
 }
