@@ -1,31 +1,49 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers } from "../../composables/MapUtils.js";
-import Popup from '../../components/ui/Popup.vue';
+
+// MaboxGL Compostable
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
+import PopupCreateMarker from '../../components/PopupCreateMarker.vue';
+
+const popupVisible = ref(false);
 
 onMounted(async () => {
-    const center = { lng: 41.4113279581609, lon: 2.02690062977777 };
     const friendsConnected = await loadUsers();
     const allMarkers = await loadMarkers();
 
-    if (friendsConnected && Array.isArray(friendsConnected)) 
-    {
+    if (friendsConnected && Array.isArray(friendsConnected)) {
         SetFriends(friendsConnected);
         SetMarkers(allMarkers);
-    } 
-    else
-    {
+    }
+    else {
         console.error("Error: La respuesta no es un array válido.");
     }
 
     // Map
-    const map = InitializeMap(center);
+    const map = InitializeMap();
+    map.on('load', () => {
+        OnMapDblClick((e) => {
+            ShowMarkerOnMapCenter();
+            popupVisible.value = true;
+        });
 
-    map.on('load', () => 
-    {
         ReloadMapMarkers(map);
+
+        map.on('move', () => {
+            HandleCenterMarker();
+        });
+        map.on('zoom', () => {
+            HandleCenterMarker();
+        });
     });
+
+    function HandleCenterMarker() {
+        if (popupVisible.value == true)
+            ShowMarkerOnMapCenter();
+        else
+            HideCenterMarker();
+    }
 });
 
 async function loadUsers() {
@@ -38,8 +56,7 @@ async function loadUsers() {
     }
 }
 
-async function loadMarkers() 
-{
+async function loadMarkers() {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/markers/');
         return response.data;
@@ -48,14 +65,14 @@ async function loadMarkers()
         return [];
     }
 }
+
 </script>
 
 <template>
 
     <div>
-        <Popup v-if="true" />
+        <PopupCreateMarker v-model:visible="popupVisible" />
 
         <div id="map"></div>
-
     </div>
 </template>

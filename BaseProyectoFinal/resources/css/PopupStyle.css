@@ -1,20 +1,27 @@
 .popup {
-    background: black;
-    color: white;
-  
+    background: black !important;
+    color: white !important;
+    border: 0 !important;
+
     padding: 20px;
     border-radius: 16px;
   
     width: 25vw;
     min-width: 326px;
-    min-height: 50vh;
   
-    position: absolute;
     display: flex;
     flex-direction: column;
   
     z-index: 999;
   }
+
+  .popup.bottom-popup {
+    position: fixed !important;
+    bottom: 64px !important;
+    right: 8px !important;
+    margin: 0 auto !important;
+}
+
   
   .popup-header {
     cursor: move;
@@ -63,9 +70,8 @@
   }
   
   .popup-footer {
-    margin-top: auto;
+    margin: 8px;
     text-align: center;
-    padding-top: 10px;
   }
 
   .popup-list-item
@@ -83,14 +89,15 @@
   .popup-list-item-active
   {
     border-radius: 100%;
-    width: 16px;
-    height: 16px;
+    width: 16px !important;
+    height: 16px !important;
+
+    box-sizing: border-box !important;
+
     background-color: #FFD534;
 
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: auto;
-    margin-right: 16px;
+    margin: auto;
+    padding: 0;
   }
 
   .popup-fade-bottom {
@@ -100,5 +107,4 @@
     right: 0;
     height: 25px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1));
-    pointer-events: none;
   }
