@@ -90,7 +90,7 @@ class MarkerController extends Controller
                 "description" => "required|string",
                 "lng" => "required|numeric",
                 "lat" => "required|numeric",
-                "marker_list_id" => "required|integer",
+                "marker_list_id" => "nullable|integer",
                 "user_id" => "required|integer"
             ]);
 

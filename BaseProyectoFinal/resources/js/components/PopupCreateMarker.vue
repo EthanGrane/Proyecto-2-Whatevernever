@@ -9,7 +9,7 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 
 const popupIndex = ref(0);
-const markerData = ref({ name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 });
+const markerData = ref({ name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 });
 
 const props = defineProps({
   visible: Boolean,
@@ -21,14 +21,18 @@ const visible = computed({
   set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker(); } }
 });
 
-function NextPopupIndex() {
+function NextPopupIndex() 
+{
   popupIndex.value += 1;
   popupIndex.value = popupIndex.value % 3;
 }
 
-function ValidateAndNext() {
-  if (popupIndex.value === 0) {
-    if (!markerData.value.name || !markerData.value.description) {
+function ValidateAndNext() 
+{
+  if (popupIndex.value === 0) 
+  {
+    if (!markerData.value.name || !markerData.value.description) 
+    {
       toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life:2000 });
       return;
     }
@@ -51,18 +55,16 @@ function CreateNewMarker()
     lng: markerData.value.lng,
     lat: markerData.value.lat,
     marker_list_id: markerData.value.marker_list_id,
-    user_id: markerData.value.user_id
+    user_id: markerData.value.user_id,
+    marker_list_id: markerData.value.marker_list_id ?? null
   })
     .then(res => {
       console.log('Marcador creado:', res.data);
-
+      console.log(res);
+      
       markerData.value.id = res.data.marker.id;
       AddMarker(markerData.value);
       ReloadMapMarkers();
-
-      markerData.value = { name: "", description: "", marker_list_id: "", lng: 0.0, lat: 0.0 };
-      visible.value = false;
-      popupIndex.value = 0;
     })
     .catch(err => {
       console.error('Error al crear marcador:', err.response.data)

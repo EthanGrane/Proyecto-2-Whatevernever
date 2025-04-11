@@ -64,9 +64,12 @@ export function AddMarker(markerData) {
         markerData.name &&
         markerData.description &&
         markerData.user_id !== undefined
-    ) {
+    ) 
+    {
         markerList.push(markerData);
-    } else {
+    } 
+    else 
+    {
         console.error("Marker Data invalid: ", markerData);
     }
 
