@@ -90,7 +90,7 @@ const toggle = (event) => {
                     {{ $t('friendscounter') }}
                 </button>
             </span>
-            
+
         </div>
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
@@ -127,7 +127,9 @@ const toggle = (event) => {
                                             </a>
                                         </span>
 
-                                        <ConfirmButtonPopup name="Delete" header="Delete Friend"
+                                        <ConfirmButtonPopup 
+                                            v-if="authStore().user.id == requestedUserData.id"
+                                            name="Delete" header="Delete Friend"
                                             positive_option="Delete Friend" positive_severity="danger"
                                             button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
