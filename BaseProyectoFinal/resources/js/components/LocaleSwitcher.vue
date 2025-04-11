@@ -28,9 +28,18 @@ const i18n = useI18n({useScope: "global"});
 const locale = computed(() => langStore().locale)
 const locales = computed(() => langStore().locales)
 
+/*
 function setLocale(locale) {
     if (i18n.locale !== locale) {
         langStore().setLocale(locale);
+    }
+}
+*/
+
+async function setLocale(newLocale) {
+    if (locale.value !== newLocale) {
+        await loadMessages(newLocale);
+        langStore().setLocale(newLocale);
     }
 }
 

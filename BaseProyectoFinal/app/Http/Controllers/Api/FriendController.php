@@ -143,7 +143,8 @@ class FriendController extends Controller
         $friends = $query->orderBy('name', 'asc')->get(['id', 'name', 'username', 'last_lng', 'last_lat']);
 
         foreach ($friends as $friend) {
-            $friend->getFirstMedia('users');
+            $media = $friend->getFirstMedia('users');
+            $friend->media_url = $media ? $media->getUrl() : null;
         }
 
         return response()->json($friends);
@@ -184,11 +185,11 @@ class FriendController extends Controller
 
         $allFriends = $friendsSent->merge($friendsReceived);
 
-        $formattedFriends = $allFriends->map(function ($friend) {
+        $formattedFriends = $allFriends->map(function ($friend) use ($user) {
             return [
                 'id' => $friend->id,
                 'request_status' => $friend->request_status,
-                'user' => $friend->sender_user_id == auth()->id() ? $friend->reciver : $friend->sender,
+                'user' => $friend->sender_user_id == $user->id ? $friend->reciver : $friend->sender,
                 'created_at' => $friend->created_at,
                 'updated_at' => $friend->updated_at,
             ];
@@ -197,7 +198,7 @@ class FriendController extends Controller
         return response()->json($formattedFriends);
     }
 
-    //pon un puto comentario porfa
+    //Obtains friends that i send a request
     public function GetUsersWithFriendRequests(Request $request)
     {
         $userId = auth()->user()->id;

@@ -1,4 +1,9 @@
 {
+    "verify_email": "Verificar email",
+    "send_verification_link": "Enviar link de verificacion",
+    "resend_verification_link": "¿ Renviar link de verificacion ?",
+    "failed_to_verify_email": "Incapaz de verificar el mail.",
+    "verify_email_address": "Te hemos enviado un correo con un link de recuperacion.",
     "welcome_starter_title": "Bienvenido a Laravel 10 + Vue 3",
     "ok": "De Acuerdo",
     "cancel": "Cancelar",
@@ -52,12 +57,10 @@
     "withoutfriends": "Sin amigos :'(",
     "friends_in_this_group": "Amigos en el grupo",
     "do_you_want_to_add_someone": "Quieres añadir a alguien?",
-
     "generalSettingsButton": "General",
     "accountSettingsButton": "Cuenta",
     "groupsSettingsButton": "Lista de Grupos",
     "markersSettingsButton": "Listas de Marcadores",
-
     "signoutbutton" : "Cerrar session",
     "kickuserfromgroup": "Expulsar",
     "deletebutton": "Borrar"

@@ -163,9 +163,10 @@ header img {
 
 /*Barra de scroll*/
 /* Amplada */
-::-webkit-scrollbar 
-{
-    width: 1.1rem;
+
+::-webkit-scrollbar {
+    width: 0.8rem;
+
 }
 
 /* Fons */
@@ -174,6 +175,8 @@ header img {
     background: var(--background1);
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 /* barra */
@@ -182,6 +185,8 @@ header img {
     background: var(--background2);
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 /* Cambio de color al pasar el mouse */

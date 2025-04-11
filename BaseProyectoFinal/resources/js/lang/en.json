@@ -55,13 +55,13 @@
     "lastprofile-markers-list": "Last Marker",
     "deleteFriend": "Eliminate",
     "withoutfriends": "Without friends :'(",
-    "generalconfigurationbutton": "General",
-    "accountconfigurationbutton": "Account",
-    "groupsconfigurationbutton": "Groups",
-    "signoutbutton" : "Sign Out",
-    "kickuserfromgroup": "Kick",
-    "deletebutton": "Delete",
-    "markersconfigurationbutton": "Markers Lists",
     "friends_in_this_group": "Friends in this group",
-    "do_you_want_to_add_someone": "Do you want to add someone?"
+    "do_you_want_to_add_someone": "Do you want to add someone?",
+    "generalSettingsButton": "General",
+    "accountSettingsButton": "Account",
+    "groupsSettingsButton": "Groups Lists",
+    "markersSettingsButton": "Markers Lists",
+    "signoutbutton" : "Log Out",
+    "kickuserfromgroup": "Kick",
+    "deletebutton": "Delete"
 }

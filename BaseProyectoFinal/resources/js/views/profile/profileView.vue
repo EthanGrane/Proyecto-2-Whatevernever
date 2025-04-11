@@ -11,7 +11,7 @@ import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
 const { updateImg } = useUsers();
 const route = useRoute();
 
-const userPFP = ref("/images/ProfilePicture_8.jpg");
+const userPFP = ref("");
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
 
@@ -20,6 +20,14 @@ async function loadDataFromRequestUser() {
         const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
         if (response.data) {
             requestedUserData.value = response.data;
+            console.log(response);
+            let foto = (response.data.media_url ? response.data.media_url.split("localhost/")[1] : "");
+            if (response.data.media_url == null) {
+                userPFP.value = "/images/default_pf.jpg";
+            } else {
+                userPFP.value = "/" + foto;
+            }
+
             getFriendsFromRequestedUser();
         } else {
             requestedUserData.value = {};
@@ -68,13 +76,15 @@ const toggle = (event) => {
     op.value.toggle(event);
 }
 
+console.log(requestedUserData.id);
+console.log(requestedUserFriendList.length);
 </script>
 
 <template>
-    <div v-if="requestedUserData.id && requestedUserFriendList.length" class="profile-background">
+    <div v-if="requestedUserData.id " class="profile-background"><!-- && requestedUserFriendList.length -->
         <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
 
-            <img :src="userPFP" :alt="userPFP" class="profile-info-pfp">
+            <img :src="userPFP" alt="Profile Image" class="profile-info-pfp">
 
             <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
             <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
