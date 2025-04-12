@@ -146,7 +146,6 @@ function checkFriendStatus() {
 
                                         <ConfirmButtonPopup 
                                             v-if="authStore().user.id == requestedUserData.id"
-                                            v-if="authStore().user.id == requestedUserData.id"
                                             name="Delete" header="Delete Friend" positive_option="Delete Friend"
                                             positive_severity="danger" button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
