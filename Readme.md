@@ -58,7 +58,7 @@ php artisan vendor:publish
 ```
 
 #### Configurar carpeta storage
-```
+```bash
 php artisan storage:link
 ```
 
