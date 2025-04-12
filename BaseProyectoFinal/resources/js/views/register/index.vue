@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-start">
-        <!-- Lado izquierdo para imagen o branding -->
+
         <div class="w-50 vh-100 d-flex justify-content-center align-items-center d-none d-md-flex">
             <div class="w-75 h-100 m-auto advertisment-menu" style="background-color: var(--background4);">
                 <h2 class="brandName w-100 text-center pt-5">{{ $t('brandName') }}.</h2>
@@ -15,8 +15,9 @@
                             <div class="card-body iniciosession">
                                 <h2 class="mb-4">{{ $t('register') }}</h2>
                                 <form @submit.prevent="submitRegister">
+                                    
                                     <!-- Nombre -->
-                                    <div class="mb-3 w-75 m-auto name-and-username-register">
+                                    <div class="mb-3 w-100 m-auto name-and-username-register">
                                         <div>
                                             <label for="name" class="form-label">{{ $t('name') }}</label>
                                             <br>
@@ -25,8 +26,8 @@
                                                 <div v-for="msg in validationErrors.name" :key="msg">{{ msg }}</div>
                                             </div>
                                         </div>
+
                                         <!-- Username -->
-                                        
                                         <div>
                                             <label for="username" class="form-label">{{ $t('username') }}</label>
                                             <br>
@@ -38,7 +39,7 @@
                                     </div>
 
                                     <!-- Email -->
-                                    <div class="mb-3 w-75 m-auto">
+                                    <div class="mb-3 w-100">
                                         <label for="email" class="form-label">{{ $t('email') }}</label>
                                         <input placeholder="jhonatan@email.com" v-model="registerForm.email" id="email" type="email" class="text-center form-control form-control-sm" autocomplete="email">
                                         <div v-if="validationErrors?.email" class="text-danger mt-1">
@@ -47,7 +48,7 @@
                                     </div>
 
                                     <!-- Contraseña -->
-                                    <div class="mb-3 w-75 m-auto name-and-username-register">
+                                    <div class="mb-3 w-100 m-auto name-and-username-register">
                                         <div>
                                             <label for="password" class="form-label">{{ $t('password') }}</label>
                                             <input placeholder="**********" v-model="registerForm.password" id="password" type="password" class="form-control form-control-sm text-center" autocomplete="new-password">
@@ -67,7 +68,7 @@
                                     </div>
             
                                     <!-- Términos -->
-                                    <div class="form-check mb-3 w-75 m-auto">
+                                    <div class="form-check mb-3 w-100 m-auto">
                                         <input class="form-check-input checkInput" type="checkbox" name="terms" id="terms" required>
                                         <label class="form-check-label checkLabel" for="terms">
                                             {{ $t('termsAndConditions') }}
@@ -99,3 +100,11 @@ import useAuth from '@/composables/auth'
 
 const { registerForm, validationErrors, processing, submitRegister } = useAuth();
 </script>
+
+<style>
+.form-label
+{
+    width: 100%;
+    text-align: left;
+}
+</style>
