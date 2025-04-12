@@ -10,33 +10,31 @@ const toast = useToast();
 
 const popupIndex = ref(0);
 const markerData = ref({ name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 });
-const defaultMarkerData = { name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 };
+const markerList = ref();
+const markerListItemSelected = ref(null);
 
 const props = defineProps({
   visible: Boolean,
 });
 const emit = defineEmits(['update:visible']);
 
+// Añado computed porque al cerrar el popup necesito que el marcador que esta en el centro de la pantalla desaparezca, esta es la fomra mas sencilla
 const visible = computed({
   get: () => props.visible,
-  set: (val) => { emit('update:visible', val); if (val == false) { HideCenterMarker(); } }
+  set: (val) => {
+    emit('update:visible', val);
+    if (val == false)
+      HideCenterMarker();
+  }
 });
 
-function NextPopupIndex() {
-  popupIndex.value += 1;
-  popupIndex.value = popupIndex.value % 3;
-}
+onMounted(() => {
+  markerList.value = GetMarkerLists();
+});
 
-function ValidateAndNext() {
-  if (popupIndex.value === 0) {
-    if (!markerData.value.name || !markerData.value.description) {
-      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life: 2000 });
-      return;
-    }
-  }
-
-  NextPopupIndex();
-}
+/**
+ * Api calls
+ */
 
 function CreateNewMarker() {
   const center = GetMapCenterCoordinates();
@@ -59,25 +57,73 @@ function CreateNewMarker() {
       console.log(res);
 
       markerData.value.id = res.data.marker.id;
+      
+      HideCenterMarker();
       AddMarker(markerData.value);
       ReloadMapMarkers();
 
       popupIndex.value = 0;
-      markerData.value = defaultMarkerData;
+      markerData.value = { name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 };  // Default value
+
       emit('update:visible', false);
-      HideCenterMarker();
     })
     .catch(err => {
       console.error('Error al crear marcador:', err.response.data)
     });
 }
+
+function GetMarkerLists() {
+  axios.get('/api/markersLists')
+    .then(res => {
+      markerList.value = res.data;
+    })
+    .catch(err => {
+      console.error('[PopupCreateMarker]: ', err.response.data)
+    });
+}
+
+/**
+ * Popup Controls
+ */
+
+function NextPopupIndex() {
+  popupIndex.value += 1;
+  popupIndex.value = popupIndex.value % 3;
+}
+
+function PreviousPopupIndex() {
+  popupIndex.value -= 1;
+}
+
+function ValidateAndNext() {
+  if (popupIndex.value === 0) {
+    if (!markerData.value.name || !markerData.value.description) {
+      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life: 2000 });
+      return;
+    }
+  }
+
+  NextPopupIndex();
+}
+
+function selectMarkerList(index) {
+  if (markerListItemSelected.value == index) {
+    markerListItemSelected.value = null;
+    markerData.value.marker_list_id = markerList[markerListItemSelected.value].id;
+  }
+  else {
+    markerListItemSelected.value = index;
+    markerData.value.marker_list_id = null;
+  }
+}
+
+
 </script>
 
 <template>
   <Toast />
 
-  <Dialog position="bottom" v-model:visible="visible" @hide="() => { HideCenterMarker(); popupIndex.value = 0; }"
-    class="popup bottom-popup">
+  <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
 
     <div class="w-100 text-center popup-header">
       <h2 style="font-weight: 800;">New Marker</h2>
@@ -97,7 +143,7 @@ function CreateNewMarker() {
     <div v-if="popupIndex == 1" id="popup-newMarker-list" class="w-100 d-flex flex-column flex-grow-1"
       style="overflow-y: scroll; max-height: 50vh;">
 
-      <div class="popup-list-item d-flex">
+      <div class="popup-list-item w-100 mb-3 d-flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle"
           viewBox="0 0 16 16">
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
@@ -107,25 +153,42 @@ function CreateNewMarker() {
         <p class="w-100 m-auto" style="margin-left: 8px !important;">Create New List</p>
       </div>
 
-      <div v-for="i in 50" class="popup-list-item d-flex">
-        <p class="w-100 m-auto">🌉 San Francisco Travel</p>
-        <div class="popup-list-item-active"></div>
+      <!-- Marker list items -->
+      <div v-for="(list, index) in markerList" :key="index" @click="selectMarkerList(index)"
+        class="popup-list-item d-flex">
+        <p class="w-100 m-auto">{{ list.emoji_value }} {{ list.name }}</p>
+        <div v-if="markerListItemSelected === index" class="popup-list-item-active"></div>
+
       </div>
+
 
       <div class="popup-fade-bottom"></div>
     </div>
 
     <!-- Summary -->
     <div v-if="popupIndex == 2" id="popup-newMarker-summary" class="w-100 d-flex flex-column flex-grow-1">
-      <h2 class="m-1">🌉 San Francisco Travel</h2>
+      <h2 class="m-1" v-if="markerListItemSelected !== null">
+        {{ markerList[markerListItemSelected].emoji_value }} {{ markerList[markerListItemSelected].name }}
+      </h2>
       <h3 class="m-1">{{ markerData.name }}</h3>
       <p style="margin-left: 16px !important;">{{ markerData.description }}</p>
+
     </div>
 
     <div class="popup-footer">
+      <!-- Return Button-->
+      <button v-if="popupIndex != 0" class="btn secondary-button align-items-center justify-content"
+        @click="PreviousPopupIndex()"
+        style="height: 32px !important; width: 32px !important; padding: 16px !important; margin-right: 16px !important;">
+        <span class="pi pi-arrow-left"></span>
+      </button>
+
+
+      <!-- Next and Finish Button-->
       <button v-if="popupIndex != 2" class="btn popup-button" @click="ValidateAndNext()">Next</button>
       <button v-else class="btn popup-button" @click="CreateNewMarker()">Finish</button>
     </div>
+
   </Dialog>
 </template>
 

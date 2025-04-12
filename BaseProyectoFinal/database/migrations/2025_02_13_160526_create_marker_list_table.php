@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('owner_user_id');
+            $table->integer('emoji_identifier');
             $table->timestamps();
         });
     }

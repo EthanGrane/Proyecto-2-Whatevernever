@@ -15,6 +15,10 @@ class MarkerListController extends Controller
 
             $lists = MarkerList::where('owner_user_id', $user)->get();
 
+            $lists->each(function($list) {
+                $list->emoji_value = $list->getRealEmoji();
+            });
+
             return response()->json($lists, 200);
             
         } catch (\Throwable $th) {
