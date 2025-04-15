@@ -1,16 +1,16 @@
 <script setup>
 
     /*
-    * Esta view es un desastre tanto en back y front, porfa rehazla usando el figma
+    * Esta view es un desastre tanto en back y front, porfa rehazla usando el de referencia figma y composables
     */
 
 import axios from 'axios';
 import { ref } from 'vue';
-import { GenerateRandomEmoji, GetEmojiById, GetIdByEmoji } from '../../../composables/MarkerListEmoji.js';
+import { generateRandomEmoji, getEmojiById, getIdByEmoji } from '../../../composables/useMarkerList';
 
 const marker_creator_list = ref("");
 const myLists = ref([]);        // nombres de variables poco claras
-const showModMenu = ref(null);
+const showModMenu = ref(null);  
 
 // Recojen el valor de los inputs mediante v-model
 const markerList_update_name = ref();
@@ -62,11 +62,13 @@ async function deleteList(id_list) {
 }
 
 async function updateMarkerList(id_list) {
+    console.log(showModMenu.value);
+    
     const name = markerList_update_name.value;
-    const emoji_identifier = GetIdByEmoji(markerList_update_icon_value.value);
+    const emoji_identifier = getIdByEmoji(markerList_update_icon_value.value);
 
     try {
-        let response = await axios.put("http://127.0.0.1:8000/api/markersLists/" + id_list, {
+        let response = await axios.put(`http://127.0.0.1:8000/api/markersLists/${id_list}`, {
             "name": name,
             "emoji_identifier": emoji_identifier
         });
@@ -84,16 +86,24 @@ async function updateMarkerList(id_list) {
 }
 
 function updateMenu(id_list) {
+    console.log("ID List:", id_list); // Verifica que se esté pasando la ID correcta
+
     if (showModMenu.value == null) {
-        showModMenu.value = myLists.value[id_list].name;
-        markerList_update_name = list
+        // Verifica que realmente se está encontrando el elemento por ID
+        const listItem = myLists.value.find(item => item.id === id_list);
+        if (listItem) {
+            showModMenu.value = id_list;
+            markerList_update_name.value = listItem.name;
+        } else {
+            console.log("No se encontró la lista con ID:", id_list); // Si no se encuentra, puedes ver el error
+        }
     } else {
         showModMenu.value = null;
     }
 }
 
 function generateRandomIcon() {
-    markerList_update_icon_value.value = GenerateRandomEmoji();
+    markerList_update_icon_value.value = generateRandomEmoji();
 }
 
 showLists();
@@ -105,7 +115,7 @@ showLists();
             <div v-for="(item, index) in myLists" :key="index" class="search-group-container">
                 <div>
                     <b>
-                        <p>{{ GetEmojiById(item.emoji_identifier) }} {{ item.name }}</p>
+                        <p>{{ getEmojiById(item.emoji_identifier) }} {{ item.name }}</p>
                     </b>
                 </div>
                 <div class="friend-groups-admin-delete-button">
