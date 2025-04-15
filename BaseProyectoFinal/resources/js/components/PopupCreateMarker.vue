@@ -1,123 +1,66 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { authStore } from '../store/auth';
-import Dialog from 'primevue/dialog';
-import { GetMapCenterCoordinates, HideCenterMarker, AddMarker, ReloadMapMarkers } from "../composables/MapUtils";
-import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { createMarkerList, getMarkerLists, getEmojiById, generateRandomEmoji, getIdByEmoji } from '../composables/useMarkerList';
+import { createNewMarker } from '../composables/useMarkers';
 
 const toast = useToast();
+const MAX_POPUP_INDEX = 3;
+const currentPopupIndex = ref(0);
+const markerData = ref({ name: "", description: "", marker_list_id: undefined, lng: 0, lat: 0 });
+const markerList_array = ref();
+const markerList_itemSelected = ref(null);
+const createMarkerList_emoji = ref();
+const createMarkerList_name = ref('');
 
-const popupIndex = ref(0);
-const markerData = ref({ name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 });
-const markerList = ref();
-const markerListItemSelected = ref(null);
-
-const props = defineProps({
-  visible: Boolean,
-});
+const props = defineProps({ visible: Boolean });
 const emit = defineEmits(['update:visible']);
 
-// Añado computed porque al cerrar el popup necesito que el marcador que esta en el centro de la pantalla desaparezca, esta es la fomra mas sencilla
 const visible = computed({
   get: () => props.visible,
-  set: (val) => {
-    emit('update:visible', val);
-    if (val == false)
-      HideCenterMarker();
-  }
+  set: val => emit('update:visible', val)
 });
 
-onMounted(() => {
-  markerList.value = GetMarkerLists();
+const MARKER_LIST_PLACEHOLDERS = [
+  "Ruta gastronómica", "Guía de viaje", "Planes con amigos", "Mapa cultural",
+  "Mapa verde", "Lugares fotogénicos", "Bares con billar", "Lugares fav en Roma", "Paises que quiero visitar"
+];
+
+onMounted(async () => {
+  markerList_array.value = await getMarkerLists();
 });
-
-/**
- * Api calls
- */
-
-function CreateNewMarker() {
-  const center = GetMapCenterCoordinates();
-
-  markerData.value.user_id = authStore().user.id;
-  markerData.value.lng = center.lng;
-  markerData.value.lat = center.lat;
-
-  axios.post('/api/markers', {
-    name: markerData.value.name,
-    description: markerData.value.description,
-    lng: markerData.value.lng,
-    lat: markerData.value.lat,
-    marker_list_id: markerData.value.marker_list_id,
-    user_id: markerData.value.user_id,
-    marker_list_id: markerData.value.marker_list_id ?? null
-  })
-    .then(res => {
-      console.log('Marcador creado:', res.data);
-      console.log(res);
-
-      markerData.value.id = res.data.marker.id;
-      
-      HideCenterMarker();
-      AddMarker(markerData.value);
-      ReloadMapMarkers();
-
-      popupIndex.value = 0;
-      markerData.value = { name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 };  // Default value
-
-      emit('update:visible', false);
-    })
-    .catch(err => {
-      console.error('Error al crear marcador:', err.response.data)
-    });
-}
-
-function GetMarkerLists() {
-  axios.get('/api/markersLists')
-    .then(res => {
-      markerList.value = res.data;
-    })
-    .catch(err => {
-      console.error('[PopupCreateMarker]: ', err.response.data)
-    });
-}
-
-/**
- * Popup Controls
- */
 
 function NextPopupIndex() {
-  popupIndex.value += 1;
-  popupIndex.value = popupIndex.value % 3;
+  currentPopupIndex.value = (currentPopupIndex.value + 1) % MAX_POPUP_INDEX;
 }
 
 function PreviousPopupIndex() {
-  popupIndex.value -= 1;
-}
-
-function ValidateAndNext() {
-  if (popupIndex.value === 0) {
-    if (!markerData.value.name || !markerData.value.description) {
-      toast.add({ severity: 'error', summary: 'Campos incompletos', detail: 'Por favor rellena el nombre y la descripción.', life: 2000 });
-      return;
-    }
-  }
-
-  NextPopupIndex();
+  currentPopupIndex.value = currentPopupIndex.value === 100 ? 1 : currentPopupIndex.value - 1;
 }
 
 function selectMarkerList(index) {
-  if (markerListItemSelected.value == index) {
-    markerListItemSelected.value = null;
-    markerData.value.marker_list_id = markerList[markerListItemSelected.value].id;
-  }
-  else {
-    markerListItemSelected.value = index;
-    markerData.value.marker_list_id = null;
-  }
+  markerList_itemSelected.value = markerList_itemSelected.value === index ? null : index;
+  markerData.value.marker_list_id = markerList_itemSelected.value !== null ? markerList_array.value[markerList_itemSelected.value].id : null;
 }
 
+function showCreateMarkerListPopup() {
+  createMarkerList_emoji.value = generateRandomEmoji();
+  currentPopupIndex.value = 100;
+}
 
+function createMarker() {
+  createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
+}
+
+async function createMarkerListAndReturn() {
+  try {
+    const newList = await createMarkerList(createMarkerList_name.value, getIdByEmoji(createMarkerList_emoji.value));
+    markerList_array.value.push(newList);
+    PreviousPopupIndex();
+  } catch (error) {
+    console.error("Error creando la lista:", error);
+  }
+}
 </script>
 
 <template>
@@ -126,79 +69,113 @@ function selectMarkerList(index) {
   <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
 
     <div class="w-100 text-center popup-header">
-      <h2 style="font-weight: 800;">New Marker</h2>
+      <h2 style="font-weight: 800;" v-if="currentPopupIndex != 100">New Marker</h2>
+      <h2 style="font-weight: 800;" v-else>Create Marker List</h2>
     </div>
 
     <!-- Post Info (Name, Description) -->
-    <div v-if="popupIndex == 0" id="popup-newMarker-name" class="w-100 d-flex flex-column flex-grow-1">
+    <div v-if="currentPopupIndex == 0" id="popup-newMarker-name" class="w-100 d-flex flex-column flex-grow-1">
       <label for="marker-name" style="font-weight: 600; font-size: large">Name</label>
-      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name">
+      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name"
+        maxlength="24">
 
       <label for="marker-description" style="font-weight: 600; font-size: large;">Description</label>
-      <textarea id="marker-description" v-model="markerData.description" class="popup-input"
+      <textarea maxlength="128" id="marker-description" v-model="markerData.description" class="popup-input"
         placeholder="Description Here!" style="height: 128px; width: 100%; resize: none;"></textarea>
     </div>
+    <!-- END -->
 
     <!-- Select Marker List -->
-    <div v-if="popupIndex == 1" id="popup-newMarker-list" class="w-100 d-flex flex-column flex-grow-1"
-      style="overflow-y: scroll; max-height: 50vh;">
+    <div v-if="currentPopupIndex == 1" id="popup-newMarker-list" class="w-100 p-3 d-flex flex-column flex-grow-1"
+      style="overflow-y: scroll; height: 25vh;">
 
-      <div class="popup-list-item w-100 mb-3 d-flex">
+      <div @click="showCreateMarkerListPopup()" class="popup-list-item w-100 mb-3 d-flex clickable-div">
+
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle"
           viewBox="0 0 16 16">
           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
           <path
             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
         </svg>
+
         <p class="w-100 m-auto" style="margin-left: 8px !important;">Create New List</p>
       </div>
 
       <!-- Marker list items -->
-      <div v-for="(list, index) in markerList" :key="index" @click="selectMarkerList(index)"
-        class="popup-list-item d-flex">
-        <p class="w-100 m-auto">{{ list.emoji_value }} {{ list.name }}</p>
-        <div v-if="markerListItemSelected === index" class="popup-list-item-active"></div>
-
+      <div v-for="(list, index) in markerList_array" :key="index" @click="selectMarkerList(index)"
+        class="popup-list-item d-flex clickable-div">
+        <p class="w-100 m-auto">{{ getEmojiById(list.emoji_identifier) }} {{ list.name }}</p>
+        <div v-if="markerList_itemSelected === index" class="popup-list-item-active"></div>
       </div>
 
-
-      <div class="popup-fade-bottom"></div>
     </div>
+    <!-- END -->
 
     <!-- Summary -->
-    <div v-if="popupIndex == 2" id="popup-newMarker-summary" class="w-100 d-flex flex-column flex-grow-1">
-      <h2 class="m-1" v-if="markerListItemSelected !== null">
-        {{ markerList[markerListItemSelected].emoji_value }} {{ markerList[markerListItemSelected].name }}
+    <div v-if="currentPopupIndex == 2" id="popup-newMarker-summary" class="w-100 d-flex flex-column flex-grow-1">
+      <h2 class="m-1" v-if="markerList_itemSelected !== null">
+        {{ getEmojiById(markerList_array[markerList_itemSelected].emoji_identifier) }} {{ markerList_array[markerList_itemSelected].name }}
       </h2>
       <h3 class="m-1">{{ markerData.name }}</h3>
       <p style="margin-left: 16px !important;">{{ markerData.description }}</p>
 
     </div>
+    <!-- END -->
+
+    <!-- Create Maker List -->
+    <div v-if="currentPopupIndex == 100" id="popup-newMarker-summary" class="w-100 d-flex flex-column flex-grow-1">
+      <h3>{{ createMarkerList_emoji }} {{ createMarkerList_name }}</h3>
+
+      <label for="marker-name" style="font-weight: 600; font-size: large">Marker List Name</label>
+      <input v-model="createMarkerList_name" maxlength="24"
+        :placeholder="MARKER_LIST_PLACEHOLDERS[Math.floor(Math.random() * MARKER_LIST_PLACEHOLDERS.length)]"
+        class="popup-input" type="text" id="marker-name">
+
+      <label for="marker-name" style="font-weight: 600; font-size: large">Icon</label>
+      <span class="d-flex align-items-center gap-2">
+        <input readonly class="popup-input w-25 text-center" type="text" id="marker-name" style="font-size: large;"
+          v-model="createMarkerList_emoji">
+        <button @click="createMarkerList_emoji = generateRandomEmoji()"
+          class="btn button-secondary fw-semibold fs-2 p-0 bg-transparent border-0">🎲</button>
+      </span>
+
+    </div>
+    <!-- END -->
 
     <div class="popup-footer">
       <!-- Return Button-->
-      <button v-if="popupIndex != 0" class="btn secondary-button align-items-center justify-content"
-        @click="PreviousPopupIndex()"
-        style="height: 32px !important; width: 32px !important; padding: 16px !important; margin-right: 16px !important;">
+      <Button v-if="currentPopupIndex != 0" class="btn secondary-button" @click="PreviousPopupIndex()"
+        style="height: 32px !important; width: 32px !important; margin-right: 8px !important;">
         <span class="pi pi-arrow-left"></span>
-      </button>
+      </Button>
 
 
       <!-- Next and Finish Button-->
-      <button v-if="popupIndex != 2" class="btn popup-button" @click="ValidateAndNext()">Next</button>
-      <button v-else class="btn popup-button" @click="CreateNewMarker()">Finish</button>
+      <button v-if="currentPopupIndex == 100" class="btn popup-button" @click="createMarkerListAndReturn()" :disabled='!createMarkerList_name'>Create</button>
+      <button v-else-if="currentPopupIndex != 2" class="btn popup-button" @click="NextPopupIndex()" :disabled='!markerData.name || !markerData.description'>Next</button>
+      <button v-else class="btn popup-button" @click="createMarker()">Finish</button>
     </div>
 
   </Dialog>
 </template>
 
+<!-- Si lo implemento en todo el proyecto (crear un .css) se rompen otros css ya que estoy sobreescribiendo los estilos de primevue -->
+<style scoped>
+.clickable-div:hover {
+  cursor: pointer;
+}
+</style>
+
 <style>
+/**
+ * Boton de cerrar popup
+ */
 .p-dialog-header {
   padding: 0 !important;
 
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 24px;
+  left: 24px;
 }
 
 .p-button {
@@ -212,6 +189,7 @@ function selectMarkerList(index) {
 }
 
 .p-dialog-content {
+  overflow-x: hidden !important;
   padding-bottom: 0 !important;
   height: 100% !important;
 }

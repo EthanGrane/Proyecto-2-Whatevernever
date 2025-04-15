@@ -15,10 +15,6 @@ class MarkerListController extends Controller
 
             $lists = MarkerList::where('owner_user_id', $user)->get();
 
-            $lists->each(function($list) {
-                $list->emoji_value = $list->getRealEmoji();
-            });
-
             return response()->json($lists, 200);
             
         } catch (\Throwable $th) {
@@ -33,6 +29,7 @@ class MarkerListController extends Controller
         try {
             $request->validate([
                 "name" => "required|string",
+                "emoji_identifier" => "required|int",
             ]);
 
             $user = auth()->id();
@@ -49,6 +46,7 @@ class MarkerListController extends Controller
 
             $marker = MarkerList::create([
                 'name' => $request->name,
+                'emoji_identifier' => $request->emoji_identifier,
                 'owner_user_id' => $user
             ]);
 
@@ -84,7 +82,8 @@ class MarkerListController extends Controller
     public function update($id, Request $request) {
         try {
             $request->validate([
-                "name" => "required|string"
+                "name" => "required|string",
+                "emoji_identifier" => "required|int"
             ]);
 
             $user = auth()->id();
@@ -100,7 +99,8 @@ class MarkerListController extends Controller
             }
 
             $list->update([
-                "name"=>$request->name
+                "name"=>$request->name,
+                "emoji_identifier" => $request->emoji_identifier
             ]);
 
             return response()->json(['message' => 'Group updated'], 200);

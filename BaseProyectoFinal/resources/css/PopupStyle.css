@@ -9,7 +9,7 @@
   width: 25vw;
   min-width: 326px;
 
-  min-height: 40vh !important;
+  min-height: 45vh !important;
 
   display: flex;
   flex-direction: column;
@@ -36,6 +36,7 @@
   border-radius: 16px;
   border-width: 0 !important;
   padding: 8px;
+  margin-left: 16px;
 
   font-weight: 500;
   font-size: medium;
@@ -52,6 +53,7 @@
 
 .popup-button {
   background-color: #FFD534;
+  color: black;
   font-weight: 700;
   font-size: x-large;
   border-radius: 32px;
@@ -64,6 +66,11 @@
   background-color: #d7b631;
   border-width: 0 !important;
   color: #1A1A1A;
+}
+
+
+.popup-button:disabled {
+  background-color: #4d400f;
 }
 
 .popup-button:active {
