@@ -1,14 +1,19 @@
+// Emit
+import mitt from 'mitt';
+export const emitter = mitt();
+
 let map = null;
-let friendList = [];
-let markerList = [];
-let selectedFriend = null;
+let friendsDataList = [];
+let markersDataList = [];
+
+let currentSelectedMarker = null;
 let centerMarker = null;
 
 export function InitializeMap() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'; //api key
     const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
 
-    const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Madrid (default)
+    const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
 
     // Render Map on div
     map = new mapboxgl.Map({
@@ -38,18 +43,18 @@ export function InitializeMap() {
 }
 
 export function AddFriendMarkerToMap(lng, lat, name, profilePicture, map) {
-    markerList.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
+    markersDataList.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
 
     ReloadMapMarkers(map);
 }
 
 export function SetFriends(_friendList) {
-    friendList.length = 0;
-    friendList.push(..._friendList);
+    friendsDataList.length = 0;
+    friendsDataList.push(..._friendList);
 }
 
 export function SetMarkers(_markerList) {
-    markerList.length = 0;
+    markersDataList.length = 0;
 
     _markerList.forEach(marker => {
         AddMarker(marker);
@@ -66,7 +71,7 @@ export function AddMarker(markerData) {
         markerData.user_id !== undefined
     ) 
     {
-        markerList.push(markerData);
+        markersDataList.push(markerData);
     } 
     else 
     {
@@ -80,13 +85,13 @@ export function ReloadMapMarkers() {
     const markersOnView = document.querySelectorAll('.marker');
     markersOnView.forEach(marker => marker.remove());
 
-    for (let index = 0; index < friendList.length; index++) {
-        const friend = friendList[index];
+    for (let index = 0; index < friendsDataList.length; index++) {
+        const friend = friendsDataList[index];
         AddFriendToMap(map, friend);
     }
 
-    for (let index = 0; index < markerList.length; index++) {
-        const marker = markerList[index];
+    for (let index = 0; index < markersDataList.length; index++) {
+        const marker = markersDataList[index];
         AddMarkerToMap(map, marker);
     }
 }
@@ -134,9 +139,10 @@ function AddFriendToMap(map, friend) {
     element.dataset.originalWidth = width;
     element.dataset.originalHeight = height;
 
-    element.addEventListener('click', () => {
+    element.addEventListener('click', () => 
+    {
         FlyToPosition(friend.last_lng, friend.last_lat, map);
-        SelectFriend(element);
+        SelectMarker(element);
     });
 
     new mapboxgl.Marker(element)
@@ -160,13 +166,13 @@ export function AddMarkerToMap(map, marker) {
     element.dataset.originalHeight = 32;
 
     element.addEventListener('click', () => {
-        FlyToPosition(marker.lng, marker.lat, map);
+        FlyToPosition(marker.lng, marker.lat, map, 12);
+        emitter.emit('marker-clicked', marker.id);
     });
 
     new mapboxgl.Marker(element)
         .setLngLat([marker.lng, marker.lat])
         .addTo(map);
-
 }
 
 export function ShowMarkerOnMapCenter() {
@@ -241,25 +247,25 @@ export function HideCenterMarker() {
 }
 
 
-function SelectFriend(friendElement) {
-    if (selectedFriend !== null || selectedFriend == friendElement) {
-        selectedFriend.style.width = `${selectedFriend.dataset.originalWidth}px`;
-        selectedFriend.style.height = `${selectedFriend.dataset.originalHeight}px`;
-        selectedFriend.style.zIndex = 0;
-        selectedFriend.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${selectedFriend.dataset.originalWidth / 2}px 4px`;
+function SelectMarker(markerElement) {
+    if (currentSelectedMarker !== null || currentSelectedMarker == markerElement) {
+        currentSelectedMarker.style.width = `${currentSelectedMarker.dataset.originalWidth}px`;
+        currentSelectedMarker.style.height = `${currentSelectedMarker.dataset.originalHeight}px`;
+        currentSelectedMarker.style.zIndex = 0;
+        currentSelectedMarker.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${currentSelectedMarker.dataset.originalWidth / 2}px 4px`;
 
-        if (selectedFriend == friendElement) {
-            selectedFriend = null;
+        if (currentSelectedMarker == markerElement) {
+            currentSelectedMarker = null;
             return;
         }
     }
 
-    selectedFriend = friendElement;
+    currentSelectedMarker = markerElement;
 
-    selectedFriend.style.width = '128px';
-    selectedFriend.style.height = '128px';
-    selectedFriend.style.boxShadow = 'black 0 0 32px';
-    selectedFriend.style.zIndex = 1;
+    currentSelectedMarker.style.width = '128px';
+    currentSelectedMarker.style.height = '128px';
+    currentSelectedMarker.style.boxShadow = 'black 0 0 32px';
+    currentSelectedMarker.style.zIndex = 1;
 }
 
 export function FlyToPosition(lng, lat, map, zoom = -1) {

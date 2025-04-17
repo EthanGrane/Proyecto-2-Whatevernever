@@ -36,3 +36,13 @@ export async function createNewMarker(markerData, onSuccess = () => { }, onError
             onError(err.response?.data?.message || "Error al crear el marcador");
         });
 }
+
+export async function showMarkerById(id) {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/markers/' + id);
+        return response.data;
+    } catch (error) {
+        console.error("[SearchView.vue] Error al cargar marcadores:", error);
+        return [];
+    }
+}

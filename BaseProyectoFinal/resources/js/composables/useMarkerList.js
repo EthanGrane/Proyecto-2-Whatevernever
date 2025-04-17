@@ -1,6 +1,6 @@
 export async function getMarkerLists() {
     try {
-        const res = await axios.get('/api/markersLists');
+        const res = await axios.get('/api/markersLists/');
         return res.data;
     } catch (err) {
         console.error('[PopupCreateMarker]: ', err.response.data);
@@ -8,13 +8,25 @@ export async function getMarkerLists() {
     }
 }
 
+export async function getMakerListById(id)
+{
+    if(id == null)
+        return {data: "Unlisted"};
+    try {
+        const res = await axios.get('/api/markersLists/' + id);
+        console.log(res.data)
+        return res.data;
+    } catch (err) {
+        console.error('[Composables/useMarkerList]: ', err.response.data);
+        return [];
+    }
+}
 
 export async function createMarkerList(createMarkerList_name, createMarkerList_icon) {
     try {
-        if(!createMarkerList_name || createMarkerList_name == "")
-        {
+        if (!createMarkerList_name || createMarkerList_name == "") {
             console.error("[Composables/useMarkerList] Marker list name is requiered!");
-            return;
+            return null;
         }
         if (typeof (createMarkerList_icon) !== 'number')
             createMarkerList_icon = getIdByEmoji(createMarkerList_icon);
@@ -23,20 +35,26 @@ export async function createMarkerList(createMarkerList_name, createMarkerList_i
             "name": createMarkerList_name,
             "emoji_identifier": createMarkerList_icon
         });
+
         console.log("Success:", response.data);
+        return response.data.MarkerList;
+
     } catch (error) {
         console.log("Error:", error.response || error.message);
+        return null;
     }
-
 }
+
 
 /*
  * EMOJI
  */
 
 export function getEmojiById(id) {
-    console.log("EMOJI: " + id + " / " + emojiDictionary[id]);
-    return emojiDictionary[id];
+    if (id == null)
+        return "❓"
+    else
+        return emojiDictionary[id];
 }
 
 export function getIdByEmoji(emoji) {

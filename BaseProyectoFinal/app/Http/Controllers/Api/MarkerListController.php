@@ -23,6 +23,21 @@ class MarkerListController extends Controller
         }
     }
 
+    public function show(Request $request) {
+        try {
+            $list = MarkerList::where("id", $request->id)->first();
+    
+            if (!$list) {
+                return response()->json(['message' => 'Marker list not found'], 404);
+            }
+    
+            return response()->json($list, 200);
+    
+        } catch (\Throwable $th) {
+            return response()->json(["Error" => $th->getMessage()], 500);
+        }
+    }
+    
     //Creates a maker list
     public function store(Request $request)
     {
