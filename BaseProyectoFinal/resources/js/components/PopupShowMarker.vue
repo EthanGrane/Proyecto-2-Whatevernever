@@ -55,14 +55,12 @@ watch(() => props.visible, async (newVal) => {
 
 <template>
   <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
-    <div class="w-100 text-center popup-header">
+    <div class="w-100 pt-5 text-center popup-header">
       <h2 style="font-weight: 800;">{{ marker.name }}</h2>
     </div>
 
     <div class="w-100 d-flex flex-column flex-grow-1">
-      <h3 class="m-1">{{ loading ? 'Cargando...' : listData }}</h3>
-
-      <img src="images/ProfilePicture_0.jpg" class="w-75 m-auto">
+      <h3 class="m-1" style="font-style: italic;">{{ loading ? 'Cargando...' : listData }}</h3>
 
       <p
         style="margin-left: 16px !important; height: auto; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; font-size: medium;">

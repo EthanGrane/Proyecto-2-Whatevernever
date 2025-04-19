@@ -5,17 +5,23 @@ export const DEFAULT_MARKER_DATA = { name: "", description: "", marker_list_id: 
 export async function createNewMarker(markerData, onSuccess = () => { }, onError = () => { }) {
     console.log(markerData);
 
-    const center = GetMapCenterCoordinates();
+    const map = GetMap();
 
     markerData.user_id = authStore().user.id;
-    markerData.lng = center.lng;
-    markerData.lat = center.lat;
+    markerData.lng = map.getCenter().lng;
+    markerData.lat = map.getCenter().lat;
+    markerData.zoom = map.getZoom();
+    markerData.pitch = map.getPitch();
+    markerData.bearing = map.getBearing();
 
     axios.post('/api/markers', {
         name: markerData.name,
         description: markerData.description,
         lng: markerData.lng,
         lat: markerData.lat,
+        zoom: markerData.zoom,
+        pitch: markerData.pitch,
+        bearing: markerData.bearing,
         marker_list_id: markerData.marker_list_id,
         user_id: markerData.user_id,
         marker_list_id: markerData.marker_list_id ?? null
@@ -47,14 +53,3 @@ export async function showMarkerById(id) {
     }
 }
 
-export function GetCurrentMapData()
-{
-    let map = GetMap();
-
-    return{
-    "center": map.getCenter(),
-    "bearing": map.getBearing(),
-    "pitch": map.getPitch(),
-    "zoom": map.getZoom()
-    };
-}

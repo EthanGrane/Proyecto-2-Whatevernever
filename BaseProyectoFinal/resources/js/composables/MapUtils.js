@@ -2,6 +2,9 @@
 import mitt from 'mitt';
 export const emitter = mitt();
 
+export const MAP_STYLE_SATELLITE = "mapbox://styles/mapbox/standard-satellite";
+export const MAP_STYLE_STANDARD = "mapbox://styles/mapbox/standard";
+
 let map = null;
 let friendsDataList = [];
 let markersDataList = [];
@@ -11,14 +14,13 @@ let centerMarker = null;
 
 export function InitializeMap() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'; //api key
-    const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
 
     const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
 
     // Render Map on div
     map = new mapboxgl.Map({
         container: 'map',
-        style: mapStyle,
+        style: MAP_STYLE_STANDARD,
         projection: 'globe',
         zoom: 5,
         center: [center.lng, center.lat],
@@ -40,6 +42,11 @@ export function InitializeMap() {
     // map['dragRotate'].disable();
 
     return map;
+}
+
+export function SetMapStyle(url)
+{
+    map.setStyle(url);
 }
 
 export function AddFriendMarkerToMap(lng, lat, name, profilePicture, map) {
@@ -265,6 +272,18 @@ function SelectMarker(markerElement) {
 
 export function GetMap() {
     return map;
+}
+
+export function GetCurrentMapData()
+{
+    let map = GetMap();
+
+    return{
+    "center": map.getCenter(),
+    "bearing": map.getBearing(),
+    "pitch": map.getPitch(),
+    "zoom": map.getZoom()
+    };
 }
 
 export function flyMapPositionAndRotation(center, zoom, pitch, bearing) {
