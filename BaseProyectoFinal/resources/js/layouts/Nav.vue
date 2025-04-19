@@ -15,7 +15,8 @@
                 </div>
             </div>
             <div>
-                <router-link to="/feed">
+                <!-- /feed (he quitado la ruta ya que no nos da tiempo a acabar esa zona de la aplicacion)-->
+                <router-link to="/"> 
                     <img src="/images/feed.svg" alt="Feet image" class="icon">
                     <p>Feed</p>
                 </router-link>
