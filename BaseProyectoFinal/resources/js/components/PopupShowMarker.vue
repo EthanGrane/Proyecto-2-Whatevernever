@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, watch } from "vue";
 import { getEmojiById, getMakerListById as getMarkerListById } from '../composables/useMarkerList';
 
 const props = defineProps({
@@ -10,18 +10,16 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:visible']);
 const visible = computed({
-    get: () => props.visible,
-    set: val => emit('update:visible', val)
+  get: () => props.visible,
+  set: val => emit('update:visible', val)
 });
 
 const listData = ref('');
 
-onMounted(async () => {
+watch(() => props.visible, async (newVal) => {
   try {
-    const emoji = await getEmojiById(props.list);
     const marker = await getMarkerListById(props.list);
-    
-    console.log(marker);
+    const emoji = await getEmojiById(marker.emoji_identifier);
 
     listData.value = `${emoji} ${marker.name}`;
   } catch (error) {
@@ -31,21 +29,21 @@ onMounted(async () => {
 </script>
 
 <template>
-    <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
-      <div class="w-100 text-center popup-header">
-        <h2 style="font-weight: 800;">{{ props.name }}</h2>
-      </div>
-  
-      <div class="w-100 d-flex flex-column flex-grow-1">
-        <h3 class="m-1">{{ listData }}</h3>
+  <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
+    <div class="w-100 text-center popup-header">
+      <h2 style="font-weight: 800;">{{ props.name }}</h2>
+    </div>
 
-        <img src="images/ProfilePicture_0.jpg" class="w-75 m-auto">
+    <div class="w-100 d-flex flex-column flex-grow-1">
+      <h3 class="m-1">{{ listData }}</h3>
 
-        <p style="margin-left: 16px !important; height: auto; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; font-size: medium;">
-          {{ props.description }}
-        </p>
+      <img src="images/ProfilePicture_0.jpg" class="w-75 m-auto">
 
-      </div>
-    </Dialog>
-  </template>
-  
+      <p
+        style="margin-left: 16px !important; height: auto; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; font-size: medium;">
+        {{ props.description }}
+      </p>
+
+    </div>
+  </Dialog>
+</template>
