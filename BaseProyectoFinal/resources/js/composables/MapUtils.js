@@ -116,12 +116,9 @@ export function OnMapDblClick(callback) {
     });
 }
 
-export function GetMapImageUrlFromCoordsAndZoom(coords, zoom)
+export function GetMapImageUrlFromCoordsAndZoom(coords)
 {
-    if(!zoom)
-        zoom = 12;
-
-    return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${coords.lng},${coords.lat},${zoom}/256x256?access_token=${API_TOKEN}`;
+    return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${coords.lng},${coords.lat},13/256x256?access_token=${API_TOKEN}`;
 }
 
 function AddFriendToMap(map, friend) {
@@ -299,7 +296,7 @@ export function flyMapPositionAndRotation(center, zoom, pitch, bearing) {
     const map = GetMap();
 
     if(!zoom)
-        zoom = 12;
+        zoom = 5;
 
     map.flyTo({
         center: center,

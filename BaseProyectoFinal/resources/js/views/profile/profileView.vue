@@ -140,10 +140,10 @@ function checkFriendStatus() {
 
         <div class="profile-markers-list m-3">
             <h4>📍 ALL MARKERS</h4>
-            <div v-if="requestMarkerData" class="d-flex gap-2 w-100" style="overflow-x: scroll;">
+            <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
                 <div v-for="marker in requestMarkerData.markers">
                     <h3 class="m-0">{{ marker.name }}</h3>
-                    <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat }, marker.zoom)">
+                    <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat })">
                 </div>
             </div>
         </div>
