@@ -32,6 +32,9 @@ class markers_table_seeder extends Seeder
                 'description' => $descriptions[$index % count($descriptions)],
                 'lat' => mt_rand(-90000, 90000) / 1000,
                 'lng' => mt_rand(-180000, 180000) / 1000,
+                'zoom' => 8,
+                'pitch' => 0,
+                'bearing' => 0,
                 'user_id' => mt_rand(1,50),
                 'marker_list_id' => mt_rand(1,50)
             ]);

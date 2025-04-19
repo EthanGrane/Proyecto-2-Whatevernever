@@ -1,4 +1,4 @@
-import { GetMapCenterCoordinates, HideCenterMarker, AddMarker, ReloadMapMarkers } from "./MapUtils.js";
+import { GetMapCenterCoordinates, HideCenterMarker, AddMarker, ReloadMapMarkers, GetMap } from "./MapUtils.js";
 import { authStore } from '../store/auth.js';
 export const DEFAULT_MARKER_DATA = { name: "", description: "", marker_list_id: undefined, lng: 0.0, lat: 0.0 };
 
@@ -45,4 +45,16 @@ export async function showMarkerById(id) {
         console.error("[SearchView.vue] Error al cargar marcadores:", error);
         return [];
     }
+}
+
+export function GetCurrentMapData()
+{
+    let map = GetMap();
+
+    return{
+    "center": map.getCenter(),
+    "bearing": map.getBearing(),
+    "pitch": map.getPitch(),
+    "zoom": map.getZoom()
+    };
 }

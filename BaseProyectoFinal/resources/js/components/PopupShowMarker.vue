@@ -1,12 +1,11 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted } from "vue";
 import { getEmojiById, getMakerListById as getMarkerListById } from '../composables/useMarkerList';
+import { flyMapPositionAndRotation } from "../composables/MapUtils.js";
 
 const props = defineProps({
   visible: Boolean,
-  name: String,
-  list: Number,
-  description: String
+  marker: Object
 });
 const emit = defineEmits(['update:visible']);
 const visible = computed({
@@ -15,33 +14,59 @@ const visible = computed({
 });
 
 const listData = ref('');
+const loading = ref(false);
 
-watch(() => props.visible, async (newVal) => {
+// Función que carga los datos
+const loadMarkerData = async () => {
   try {
-    const marker = await getMarkerListById(props.list);
-    const emoji = await getEmojiById(marker.emoji_identifier);
+    loading.value = true;
 
-    listData.value = `${emoji} ${marker.name}`;
+    const marker = props.marker;
+    const markerList = await getMarkerListById(marker.marker_list_id);
+    const emoji = await getEmojiById(markerList.emoji_identifier);
+    listData.value = `${emoji} ${markerList.name}`;
+
+    flyMapPositionAndRotation([marker.lng, marker.lat], marker.zoom, marker.pitch, marker.bearing);
   } catch (error) {
     console.error('Error al cargar los datos:', error);
+    listData.value = 'Error al cargar los datos';
+  } finally {
+    loading.value = false;
   }
+};
+
+// Ejecutar la carga de datos cuando el componente se monta
+onMounted(() => {
+  if (props.visible) {
+    loadMarkerData(); // Cargar los datos si el componente ya está visible al montarse
+  }
+});
+
+// Se ejecuta cada vez que visible cambia
+watch(() => props.visible, async (newVal) => {
+  if (!newVal) {
+    listData.value = '';
+    return;
+  }
+
+  loadMarkerData();
 });
 </script>
 
 <template>
   <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
     <div class="w-100 text-center popup-header">
-      <h2 style="font-weight: 800;">{{ props.name }}</h2>
+      <h2 style="font-weight: 800;">{{ marker.name }}</h2>
     </div>
 
     <div class="w-100 d-flex flex-column flex-grow-1">
-      <h3 class="m-1">{{ listData }}</h3>
+      <h3 class="m-1">{{ loading ? 'Cargando...' : listData }}</h3>
 
       <img src="images/ProfilePicture_0.jpg" class="w-75 m-auto">
 
       <p
         style="margin-left: 16px !important; height: auto; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; font-size: medium;">
-        {{ props.description }}
+        {{ marker.description }}
       </p>
 
     </div>

@@ -69,12 +69,10 @@ export function AddMarker(markerData) {
         markerData.name &&
         markerData.description &&
         markerData.user_id !== undefined
-    ) 
-    {
+    ) {
         markersDataList.push(markerData);
-    } 
-    else 
-    {
+    }
+    else {
         console.error("Marker Data invalid: ", markerData);
     }
 
@@ -139,9 +137,7 @@ function AddFriendToMap(map, friend) {
     element.dataset.originalWidth = width;
     element.dataset.originalHeight = height;
 
-    element.addEventListener('click', () => 
-    {
-        FlyToPosition(friend.last_lng, friend.last_lat, map);
+    element.addEventListener('click', () => {
         SelectMarker(element);
     });
 
@@ -166,7 +162,6 @@ export function AddMarkerToMap(map, marker) {
     element.dataset.originalHeight = 32;
 
     element.addEventListener('click', () => {
-        FlyToPosition(marker.lng, marker.lat, map, 12);
         emitter.emit('marker-clicked', marker.id);
     });
 
@@ -268,30 +263,24 @@ function SelectMarker(markerElement) {
     currentSelectedMarker.style.zIndex = 1;
 }
 
-export function FlyToPosition(lng, lat, map, zoom = -1) {
-    if (zoom == -1) {
-        map.flyTo({
-            center: [lng, lat],
-            speed: 5,
-            curve: 2,
-            easing(t) {
-                return t;
-            }
-        });
-    }
-    else {
-        map.flyTo({
-            center: [lng, lat],
-            zoom: zoom,
-            speed: 5,
-            curve: 1,
-            easing(t) {
-                return t;
-            }
-        });
-    }
-}
-
 export function GetMap() {
     return map;
+}
+
+export function flyMapPositionAndRotation(center, zoom, pitch, bearing) {
+    const map = GetMap();
+
+    if(!zoom)
+        zoom = 12;
+
+    map.flyTo({
+        center: center,
+        zoom: zoom,
+        pitch: pitch,
+        bearing: bearing,
+        speed: 5,
+        curve: 1.42,
+        easing: t => t,
+        essential: true
+    });
 }

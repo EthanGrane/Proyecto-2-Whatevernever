@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useToast } from 'primevue/usetoast';
 import { createMarkerList, getMarkerLists, getEmojiById, generateRandomEmoji, getIdByEmoji } from '../composables/useMarkerList';
-import { createNewMarker } from '../composables/useMarkers';
+import { createNewMarker, GetCurrentMapData } from '../composables/useMarkers';
 
 const toast = useToast();
 const MAX_POPUP_INDEX = 3;
@@ -36,7 +36,9 @@ onMounted(async () => {
   }
 });
 
-function NextPopupIndex() {
+function NextPopupIndex() 
+{  
+  console.log(GetCurrentMapData());
   currentPopupIndex.value = (currentPopupIndex.value + 1) % MAX_POPUP_INDEX;
 }
 
@@ -54,7 +56,8 @@ function showCreateMarkerListPopup() {
   currentPopupIndex.value = 100;
 }
 
-function createMarker() {
+function createMarker() 
+{ 
   createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
   createMarkerList_name.value = null;
 }

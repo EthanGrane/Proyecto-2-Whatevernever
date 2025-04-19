@@ -91,8 +91,7 @@ async function loadMarkers() {
     <div>
         <PopupCreateMarker v-model:visible="createMarkerPopupVisible" />
         <PopupShowMarker v-if="selectedMarkerData != null" v-model:visible="showMarkerDataPopupVisible"
-            :name=selectedMarkerData.name :list=selectedMarkerData.marker_list_id
-            :description=selectedMarkerData.description />
+            :marker=selectedMarkerData />
 
 
         <div id="map"></div>
