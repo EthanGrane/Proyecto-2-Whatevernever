@@ -63,7 +63,7 @@ import Popover from 'primevue/popover'
 import ConfirmDialog from 'primevue/confirmdialog';
 import SpeedDial from 'primevue/speeddial';
 import ToggleButton from 'primevue/togglebutton';
-
+import Carousel from 'primevue/carousel';
 
 /*STYLES */
 

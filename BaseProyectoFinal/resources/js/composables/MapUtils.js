@@ -5,6 +5,8 @@ export const emitter = mitt();
 export const MAP_STYLE_SATELLITE = "mapbox://styles/mapbox/standard-satellite";
 export const MAP_STYLE_STANDARD = "mapbox://styles/mapbox/standard";
 
+const API_TOKEN = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'
+
 let map = null;
 let friendsDataList = [];
 let markersDataList = [];
@@ -13,7 +15,7 @@ let currentSelectedMarker = null;
 let centerMarker = null;
 
 export function InitializeMap() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'; //api key
+    mapboxgl.accessToken = API_TOKEN;
 
     const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
 
@@ -114,6 +116,13 @@ export function OnMapDblClick(callback) {
     });
 }
 
+export function GetMapImageUrlFromCoordsAndZoom(coords, zoom)
+{
+    if(!zoom)
+        zoom = 12;
+
+    return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${coords.lng},${coords.lat},${zoom}/256x256?access_token=${API_TOKEN}`;
+}
 
 function AddFriendToMap(map, friend) {
     const element = document.createElement('div');

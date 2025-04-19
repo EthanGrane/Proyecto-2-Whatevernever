@@ -6,7 +6,8 @@ import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
 import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
-
+import { showAllMarkersFromUserId } from "../../composables/useMarkers.js";
+import { GetMapImageUrlFromCoordsAndZoom } from "../../composables/MapUtils.js";
 
 const { updateImg } = useUsers();
 const route = useRoute();
@@ -14,6 +15,7 @@ const route = useRoute();
 const userPFP = ref("");
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
+const requestMarkerData = ref();
 
 async function loadDataFromRequestUser() {
     try {
@@ -29,6 +31,8 @@ async function loadDataFromRequestUser() {
 
             getFriendsFromRequestedUser();
             checkFriendStatus();
+            requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
+            console.log(requestMarkerData.value);
         } else {
             requestedUserData.value = {};
         }
@@ -81,7 +85,7 @@ async function sendRequest(id_reciver) {
 }
 
 onMounted(async () => {
-    loadDataFromRequestUser();
+    await loadDataFromRequestUser();
 })
 
 // PrimeVue Popover template code
@@ -117,7 +121,8 @@ function checkFriendStatus() {
             <span v-if="authStore().user.id != requestedUserData.id" class="m-1">
 
                 <Button v-if="friendRequestStatus === false" @click="sendRequest(requestedUserData.id)"
-                    class="primary-button" label="Add Friend" style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
+                    class="primary-button" label="Add Friend"
+                    style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
 
                 <Button v-else @click="deleteRequest(requestedUserData.id)" class="secondary-button danger-button-hover"
                     label="UnFriend" />
@@ -133,8 +138,14 @@ function checkFriendStatus() {
             </span>
         </div>
 
-        <div class="profile-markers-list">
+        <div class="profile-markers-list m-3">
             <h4>📍 ALL MARKERS</h4>
+            <div v-if="requestMarkerData" class="d-flex gap-2 w-100" style="overflow-x: scroll;">
+                <div v-for="marker in requestMarkerData.markers">
+                    <h3 class="m-0">{{ marker.name }}</h3>
+                    <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat }, marker.zoom)">
+                </div>
+            </div>
         </div>
 
         <!-- Friends Popup -->
