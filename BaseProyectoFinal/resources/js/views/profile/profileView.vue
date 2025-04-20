@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
 import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
 import { showAllMarkersFromUserId } from "../../composables/useMarkers.js";
+import { getEmojiById, getMarkerListById } from "../../composables/useMarkerList.js";
 import { GetMapImageUrlFromCoordsAndZoom } from "../../composables/MapUtils.js";
 
 const { updateImg } = useUsers();
@@ -16,7 +17,9 @@ const userPFP = ref("");
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
 const requestMarkerData = ref();
+const markersDividedByList = ref([]);
 
+// Inicializa todas las funciones
 async function loadDataFromRequestUser() {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
@@ -31,8 +34,10 @@ async function loadDataFromRequestUser() {
 
             getFriendsFromRequestedUser();
             checkFriendStatus();
+
             requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
-            console.log(requestMarkerData.value);
+            loadMarkers();
+
         } else {
             requestedUserData.value = {};
         }
@@ -41,6 +46,23 @@ async function loadDataFromRequestUser() {
         requestedUserData.value = {};
     }
 }
+
+async function loadMarkers() {
+    let groupedMarkers = {};
+
+    for (let marker of requestMarkerData.value.markers) {
+        const listId = marker.marker_list_id;
+        if (!groupedMarkers[listId]) {
+            groupedMarkers[listId] = { marker_list: await getMarkerListById(listId), markers: [] };
+        }
+        groupedMarkers[listId].markers.push(marker);
+    }
+
+    // Guardamos el diccionario con las listas agrupadas
+    markersDividedByList.value = groupedMarkers;
+    console.log(markersDividedByList.value);
+}
+
 
 async function getFriendsFromRequestedUser() {
     if (!requestedUserData.value.id) return;
@@ -142,11 +164,24 @@ function checkFriendStatus() {
             <h4>📍 ALL MARKERS</h4>
             <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
                 <div v-for="marker in requestMarkerData.markers">
-                    <h3 class="m-0">{{ marker.name }}</h3>
+                    <p class="m-0">{{ marker.name }}</p>
                     <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat })">
                 </div>
             </div>
+
+            <div v-for="(markerList, index) in markersDividedByList" :key="index">
+                <h4 class="mt-5">{{ getEmojiById(markerList.marker_list.emoji_identifier) }} {{ markerList.marker_list.name }}</h4>
+                <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
+                    <div v-for="marker in markerList.markers" :key="marker.id">
+                        <p class="m-0">{{ marker.name }}</p>
+                        <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat })">
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+        <div style="height: 64px;"></div>
 
         <!-- Friends Popup -->
         <Popover ref="op">

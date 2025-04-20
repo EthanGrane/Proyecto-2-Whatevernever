@@ -83,5 +83,23 @@ class markers_table_seeder extends Seeder
                 'updated_at' => now()
             ]);
         }
+
+
+        $faker = Faker::create();
+
+        foreach ($cities as $city) {
+            DB::table('markers')->insert([
+                'name' => $city['name'],
+                'description' => $faker->sentence,
+                'lat' => $faker->latitude(),
+                'lng' => $faker->longitude(),
+                'zoom' => $faker->randomFloat(1, 10, 18),
+                'pitch' => $faker->numberBetween(0, 80),
+                'bearing' => $faker->numberBetween(-180, 180),
+                'user_id' => $faker->numberBetween(0, 50), 
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
     }
 }
