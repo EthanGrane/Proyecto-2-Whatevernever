@@ -11,6 +11,7 @@
             <h2 class="brandName">{{ $t('brandName') }}.</h2>
         </div>
     </header>
+    <div style="height: 8vh;"></div> <!-- Margen -->
 </template>
 
 <script setup>
