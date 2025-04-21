@@ -148,13 +148,16 @@ export default function useUsers() {
             })
     }
 
-    const updateImg = async (picture) => {
+    const updateImg = async (picture, id) => {
         if (isLoading.value) return;
 
         isLoading.value = true
         validationErrors.value = {}
 
-        axios.post('/api/users/updateimg', picture)
+        axios.post('/api/users/updateimgAnother', {
+            "image":picture,
+            "id":id
+        })
             .then(response => {
                 swal({
                     icon: 'success',

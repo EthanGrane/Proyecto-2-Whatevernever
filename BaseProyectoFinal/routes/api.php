@@ -54,7 +54,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     //API
     // Users
     Route::apiResource('users', UserController::class);
-    Route::post('/users/updateimg', [UserController::class, 'updateimg']); //Listar
+    Route::post('/users/updateimg', [UserController::class, 'updateimg']);
+    Route::post('/users/updateimgAnother', [UserController::class, 'updateimgAnother']); //Modifica la imagen de otro usuario
     Route::post('/users/updateusername', [UserController::class, 'updateUserUsername']);
     Route::post('/users/updatedescription', [UserController::class, 'updateUserDescription']);
 

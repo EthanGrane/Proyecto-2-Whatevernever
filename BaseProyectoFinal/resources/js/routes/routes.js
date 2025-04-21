@@ -329,6 +329,12 @@ export default [
                 ]
             },
             {
+                name: 'markers',
+                path: 'markers',
+
+                component: () => import('../views/admin/markers/Index.vue'),
+            },
+            {
                 name: 'roles.index',
                 path: 'roles',
                 component: () => import('../views/admin/roles/Index.vue'),
