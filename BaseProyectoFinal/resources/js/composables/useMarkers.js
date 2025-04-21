@@ -63,3 +63,12 @@ export async function showAllMarkersFromUserId(user_id)
         return [];
     }
 }
+
+async function getMarkers(params = {}) {
+        const response = await axios.get('http://127.0.0.1:8000/api/markers/getAllMarkersFromFriendId/?user_id=' + user_id);
+        return response.data;
+    } catch (error) {
+        console.error("[SearchView.vue] Error al cargar marcadores:", error);
+        return [];
+    }
+}
