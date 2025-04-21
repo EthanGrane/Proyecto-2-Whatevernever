@@ -89,3 +89,23 @@ export default function useMarkers() {
         DEFAULT_MARKER_DATA
     };
 }
+
+async function getMarkers(params = {}) {
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/markers/getAllMarkersFromFriendId/?user_id=' + user_id);
+        return response.data;
+    } catch (error) {
+        console.error('Error al eliminar el marker:', error);
+    }
+}
+
+export default function useMarkers() {
+    return {
+        markers,
+        getMarkers,
+        deleteMarker,
+        createNewMarker,
+        showMarkerById,
+        DEFAULT_MARKER_DATA
+    };
+}
