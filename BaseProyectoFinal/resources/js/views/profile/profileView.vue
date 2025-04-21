@@ -128,6 +128,16 @@ function checkFriendStatus() {
         });
 }
 
+function ProfileIsVisible()
+{
+    if(requestedUserData.value.id === authStore().user.id)
+        return true;
+    else if(friendRequestStatus === true)
+        return true;
+
+    return false;
+}
+
 </script>
 
 <template>
@@ -161,7 +171,7 @@ function checkFriendStatus() {
             </span>
         </div>
 
-        <div v-if="friendRequestStatus == true" class="profile-markers-list m-3">
+        <div v-if="ProfileIsVisible()" class="profile-markers-list m-3">
             <h4>📍 ALL MARKERS</h4>
             <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
                 <div v-for="marker in requestMarkerData.markers">
@@ -226,7 +236,7 @@ function checkFriendStatus() {
                                             button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" 
                                             />
-                                            
+
                                     </div>
                                 </div>
                             </div>

@@ -135,6 +135,7 @@ const submitInput = () => {
 .p-dialog {
     position: fixed !important;
     width: 75vw !important;
+    max-width: 512px !important;
     max-height: 80vh;
     overflow-y: auto;
 }
