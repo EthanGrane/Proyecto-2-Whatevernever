@@ -62,6 +62,7 @@ import FloatLabel from 'primevue/floatlabel';
 import Popover from 'primevue/popover'
 import ConfirmDialog from 'primevue/confirmdialog';
 import SpeedDial from 'primevue/speeddial';
+import ToggleButton from 'primevue/togglebutton';
 
 
 /*STYLES */

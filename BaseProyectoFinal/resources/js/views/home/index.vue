@@ -3,12 +3,30 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 
 // MaboxGL Compostable
+import { emitter } from '@/composables/MapUtils';
 import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
 import PopupCreateMarker from '../../components/PopupCreateMarker.vue';
+import PopupShowMarker from '../../components/PopupShowMarker.vue';
+import { showMarkerById, createNewMarker } from '../../composables/useMarkers.js';
 
-const popupVisible = ref(false);
+const createMarkerPopupVisible = ref(false);
+const showMarkerDataPopupVisible = ref(true);
+
+const selectedMarkerData = ref(null);
+
+async function handleMarkerClick(id) {
+    const data = await showMarkerById(id).then()
+    {
+        selectedMarkerData.value = data;
+        showMarkerDataPopupVisible.value = true;
+    }
+
+}
 
 onMounted(async () => {
+    // Event, on marked clicked get id.
+    emitter.on('marker-clicked', handleMarkerClick);
+
     const friendsConnected = await loadUsers();
     const allMarkers = await loadMarkers();
 
@@ -25,7 +43,7 @@ onMounted(async () => {
     map.on('load', () => {
         OnMapDblClick((e) => {
             ShowMarkerOnMapCenter();
-            popupVisible.value = true;
+            createMarkerPopupVisible.value = true;
         });
 
         ReloadMapMarkers(map);
@@ -39,7 +57,7 @@ onMounted(async () => {
     });
 
     function HandleCenterMarker() {
-        if (popupVisible.value == true)
+        if (createMarkerPopupVisible.value == true)
             ShowMarkerOnMapCenter();
         else
             HideCenterMarker();
@@ -71,7 +89,10 @@ async function loadMarkers() {
 <template>
 
     <div>
-        <PopupCreateMarker v-model:visible="popupVisible" />
+        <PopupCreateMarker v-model:visible="createMarkerPopupVisible" />
+        <PopupShowMarker v-if="selectedMarkerData != null" v-model:visible="showMarkerDataPopupVisible"
+            :marker=selectedMarkerData />
+
 
         <div id="map"></div>
     </div>

@@ -14,5 +14,6 @@ class MarkerList extends Model
     protected $fillable = [
         'name',
         'owner_user_id',
+        'emoji_identifier'
     ];
 }

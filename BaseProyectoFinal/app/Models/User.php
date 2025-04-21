@@ -74,14 +74,6 @@ class User extends Authenticatable implements HasMedia
         }
     }
 
-    /*
-    public function friends() {
-        return $this->belongsToMany(User::class, 'friends', 'user_id', 'sender_user_id')
-                    ->using(Friend::class)
-                    ->withPivot('request_status');
-    }
-    */
-
     public function sentFriendRequests() {
         return $this->hasMany(Friend::class, 'sender_user_id');
     }

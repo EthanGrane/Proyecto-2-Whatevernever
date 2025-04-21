@@ -9,17 +9,34 @@ use App\Models\MarkerList;
 class MarkerListController extends Controller
 {
     //Show markers lists
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         try {
             $user = auth()->id();
 
             $lists = MarkerList::where('owner_user_id', $user)->get();
 
             return response()->json($lists, 200);
-            
+
         } catch (\Throwable $th) {
             return response()->json(["Error" => $th->getMessage()], 500);
 
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $list = MarkerList::where("id", $id)->first();
+
+            if (!$list) {
+                return response()->json(['message' => "Marker list not found with id: $id"], 404);
+            }
+
+            return response()->json($list, 200);
+
+        } catch (\Throwable $th) {
+            return response()->json(["Error" => $th->getMessage()], 500);
         }
     }
 
@@ -29,6 +46,7 @@ class MarkerListController extends Controller
         try {
             $request->validate([
                 "name" => "required|string",
+                "emoji_identifier" => "required|int",
             ]);
 
             $user = auth()->id();
@@ -45,6 +63,7 @@ class MarkerListController extends Controller
 
             $marker = MarkerList::create([
                 'name' => $request->name,
+                'emoji_identifier' => $request->emoji_identifier,
                 'owner_user_id' => $user
             ]);
 
@@ -57,7 +76,8 @@ class MarkerListController extends Controller
     }
 
     //Deletes a marker list
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
 
             $list = MarkerList::where("id", $id)->where("owner_user_id", auth()->id())->first();
@@ -67,7 +87,7 @@ class MarkerListController extends Controller
             }
 
             $list->delete();
-            
+
             return response()->json(['message' => "Marker list deleted"], 200);
 
         } catch (\Throwable $th) {
@@ -77,10 +97,12 @@ class MarkerListController extends Controller
         }
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         try {
             $request->validate([
-                "name" => "required|string"
+                "name" => "required|string",
+                "emoji_identifier" => "required|int"
             ]);
 
             $user = auth()->id();
@@ -96,7 +118,8 @@ class MarkerListController extends Controller
             }
 
             $list->update([
-                "name"=>$request->name
+                "name" => $request->name,
+                "emoji_identifier" => $request->emoji_identifier
             ]);
 
             return response()->json(['message' => 'Group updated'], 200);

@@ -23,7 +23,7 @@ class FriendController extends Controller
             return response()->json(["status" => 500, "Error" => $e->getMessage()]);
         }
     }
-    
+
     /*
      * Creates a new friend request (Store)
      */
@@ -131,12 +131,11 @@ class FriendController extends Controller
 
     //Shows all users that registred in the app
     public function showUsers(Request $request)
-
     {
         $search = $request->query('search');
         $query = User::query();
 
-        if ($search) {  
+        if ($search) {
             $query->where('name', 'like', "%$search%");
         }
 
@@ -153,7 +152,6 @@ class FriendController extends Controller
 
     //Only show friends that recived a request
     public function ShowrequestsRecived(Request $request)
-
     {
         $userId = auth()->user()->id;
         $user = User::findOrFail($userId);
@@ -204,34 +202,61 @@ class FriendController extends Controller
         $userId = auth()->user()->id;
 
         $users = User::join('friends', 'users.id', '=', 'friends.reciver_user_id')
-        ->where('friends.sender_user_id', $userId)
-        ->select('users.id')
-        ->get();
+            ->where('friends.sender_user_id', $userId)
+            ->select('users.id')
+            ->get();
 
         return response()->json($users, 200);
     }
 
+    public function getRequestStatus(Request $request)
+    {
+        $request->validate([
+            'friend_id' => 'required|exists:users,id',
+        ]);
+
+        $userId = auth()->id();
+        $friendId = $request->query('friend_id');
+
+        $friendship = Friend::where(function ($query) use ($userId, $friendId) {
+            $query->where('sender_user_id', $userId)
+                ->where('reciver_user_id', $friendId);
+        })
+            ->first();
+
+        if (!$friendship) {
+            return response()->json([
+                'value' => false,
+                'error' => 'Friendship request not found',
+            ]);
+        }
+
+        return response()->json([
+            'value' => true,
+            'message' => 'Friendship request found and sent',
+        ]);
+    }
 
     //Delete Friendship or friend request (friendship or friend request its the same in the bbdd)
     public function deleteFriend(Request $request)
-     {
-         $request->validate([
-             'friend_id' => 'required|exists:friends,id',
-         ]);
- 
-         $user = auth()->user();
- 
-         $friend = Friend::where(function ($query) use ($user) {
-             $query->where('sender_user_id', $user->id)
-                 ->orWhere('reciver_user_id', $user->id);
-         })->findOrFail($request->friend_id);
- 
-         $friend->delete();
- 
-         return response()->json([
-             'message' => 'Friend deleted successfully',
-         ], 200);
-     }
+    {
+        $request->validate([
+            'friend_id' => 'required|exists:friends,id',
+        ]);
+
+        $user = auth()->user();
+
+        $friend = Friend::where(function ($query) use ($user) {
+            $query->where('sender_user_id', $user->id)
+                ->orWhere('reciver_user_id', $user->id);
+        })->findOrFail($request->friend_id);
+
+        $friend->delete();
+
+        return response()->json([
+            'message' => 'Friend deleted successfully',
+        ], 200);
+    }
 
     //Accepts a friend request
     public function acceptFriend(Request $request)

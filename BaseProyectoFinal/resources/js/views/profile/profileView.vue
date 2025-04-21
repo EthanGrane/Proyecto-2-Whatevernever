@@ -28,6 +28,7 @@ async function loadDataFromRequestUser() {
             }
 
             getFriendsFromRequestedUser();
+            checkFriendStatus();
         } else {
             requestedUserData.value = {};
         }
@@ -51,13 +52,32 @@ async function getFriendsFromRequestedUser() {
 }
 
 async function deleteRequest(friend_id) {
+    if (!friend_id) {
+        console.error("Friend_id is not defined on deleteRequest(friend_id)");
+        return;
+    }
     axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
         .then(response => {
             requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
+
+            if (friend_id == requestedUserData.value.id)
+                friendRequestStatus.value = false;
         })
         .catch(error => {
             console.error('There was an error deleting the friendship:', error.response?.data || error.message);
         });
+}
+
+async function sendRequest(id_reciver) {
+    await axios.post('http://127.0.0.1:8000/api/friend', {
+        "id_sender": authStore().user.id,
+        "id_receiver": id_reciver
+    }).then(response => {
+        if (id_reciver == requestedUserData.value.id)
+            friendRequestStatus.value = true;
+    }).catch(error => {
+        console.error(error);
+    });
 }
 
 onMounted(async () => {
@@ -69,20 +89,41 @@ const op = ref();
 const toggle = (event) => {
     op.value.toggle(event);
 }
+
+const friendRequestStatus = ref(null);
+function checkFriendStatus() {
+    axios.get(`/api/friends/getRequestStatus?friend_id=${requestedUserData.value.id}`)
+        .then(response => {
+            friendRequestStatus.value = response.data.value;
+            console.log("friendRequestStatus = " + friendRequestStatus.value);
+        })
+        .catch(error => {
+            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+        });
+}
+
 </script>
 
 <template>
-    <div v-if="requestedUserData.id" class="profile-background">
-        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
+    <div v-if="requestedUserData.id && friendRequestStatus !== null" class="profile-background">
 
+        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
             <img :src="userPFP" alt="Profile Image" class="profile-info-pfp">
 
             <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>
             <h3 class="profile-info-username">@{{ requestedUserData.username }}</h3>
-
             <p>{{ requestedUserData.desc }}</p>
 
-            <span>
+            <span v-if="authStore().user.id != requestedUserData.id" class="m-1">
+
+                <Button v-if="friendRequestStatus === false" @click="sendRequest(requestedUserData.id)"
+                    class="primary-button" label="Add Friend" style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
+
+                <Button v-else @click="deleteRequest(requestedUserData.id)" class="secondary-button danger-button-hover"
+                    label="UnFriend" />
+            </span>
+
+            <span class="m-1">
                 <button v-if="true" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
 
                 <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
@@ -90,8 +131,8 @@ const toggle = (event) => {
                     {{ $t('friendscounter') }}
                 </button>
             </span>
-
         </div>
+
         <div class="profile-markers-list">
             <h4>📍 ALL MARKERS</h4>
         </div>
@@ -118,20 +159,19 @@ const toggle = (event) => {
                                         </a>
                                     </span>
                                     <div class="d-flex justify-content-between align-items-center">
+
                                         <span class="search-user-information-username"
                                             style="color: white; background-color: #000000; width: fit-content;">
                                             <a :href="'/profile/' + user.user.username"
                                                 style="color: white !important;">
-
                                                 @{{ user.user.username }}
                                             </a>
                                         </span>
 
-                                        <ConfirmButtonPopup 
-                                            v-if="authStore().user.id == requestedUserData.id"
-                                            name="Delete" header="Delete Friend"
-                                            positive_option="Delete Friend" positive_severity="danger"
-                                            button_class="danger-button border-0"
+
+                                        <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
+                                            name="Delete" header="Delete Friend" positive_option="Delete Friend"
+                                            positive_severity="danger" button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
                                     </div>
                                 </div>

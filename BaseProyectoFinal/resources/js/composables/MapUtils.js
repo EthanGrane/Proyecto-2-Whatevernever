@@ -1,19 +1,26 @@
+// Emit
+import mitt from 'mitt';
+export const emitter = mitt();
+
+export const MAP_STYLE_SATELLITE = "mapbox://styles/mapbox/standard-satellite";
+export const MAP_STYLE_STANDARD = "mapbox://styles/mapbox/standard";
+
 let map = null;
-let friendList = [];
-let markerList = [];
-let selectedFriend = null;
+let friendsDataList = [];
+let markersDataList = [];
+
+let currentSelectedMarker = null;
 let centerMarker = null;
 
 export function InitializeMap() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q';
-    const mapStyle = "mapbox://styles/ethangrane/cm5r25hne00ka01plf02k59lw";
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'; //api key
 
-    const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Madrid (default)
+    const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
 
     // Render Map on div
     map = new mapboxgl.Map({
         container: 'map',
-        style: mapStyle,
+        style: MAP_STYLE_STANDARD,
         projection: 'globe',
         zoom: 5,
         center: [center.lng, center.lat],
@@ -37,19 +44,24 @@ export function InitializeMap() {
     return map;
 }
 
+export function SetMapStyle(url)
+{
+    map.setStyle(url);
+}
+
 export function AddFriendMarkerToMap(lng, lat, name, profilePicture, map) {
-    markerList.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
+    markersDataList.push({ lng: lng, lat: lat, name: name, profilePicture: profilePicture });
 
     ReloadMapMarkers(map);
 }
 
 export function SetFriends(_friendList) {
-    friendList.length = 0;
-    friendList.push(..._friendList);
+    friendsDataList.length = 0;
+    friendsDataList.push(..._friendList);
 }
 
 export function SetMarkers(_markerList) {
-    markerList.length = 0;
+    markersDataList.length = 0;
 
     _markerList.forEach(marker => {
         AddMarker(marker);
@@ -64,12 +76,10 @@ export function AddMarker(markerData) {
         markerData.name &&
         markerData.description &&
         markerData.user_id !== undefined
-    ) 
-    {
-        markerList.push(markerData);
-    } 
-    else 
-    {
+    ) {
+        markersDataList.push(markerData);
+    }
+    else {
         console.error("Marker Data invalid: ", markerData);
     }
 
@@ -80,13 +90,13 @@ export function ReloadMapMarkers() {
     const markersOnView = document.querySelectorAll('.marker');
     markersOnView.forEach(marker => marker.remove());
 
-    for (let index = 0; index < friendList.length; index++) {
-        const friend = friendList[index];
+    for (let index = 0; index < friendsDataList.length; index++) {
+        const friend = friendsDataList[index];
         AddFriendToMap(map, friend);
     }
 
-    for (let index = 0; index < markerList.length; index++) {
-        const marker = markerList[index];
+    for (let index = 0; index < markersDataList.length; index++) {
+        const marker = markersDataList[index];
         AddMarkerToMap(map, marker);
     }
 }
@@ -135,8 +145,7 @@ function AddFriendToMap(map, friend) {
     element.dataset.originalHeight = height;
 
     element.addEventListener('click', () => {
-        FlyToPosition(friend.last_lng, friend.last_lat, map);
-        SelectFriend(element);
+        SelectMarker(element);
     });
 
     new mapboxgl.Marker(element)
@@ -160,13 +169,12 @@ export function AddMarkerToMap(map, marker) {
     element.dataset.originalHeight = 32;
 
     element.addEventListener('click', () => {
-        FlyToPosition(marker.lng, marker.lat, map);
+        emitter.emit('marker-clicked', marker.id);
     });
 
     new mapboxgl.Marker(element)
         .setLngLat([marker.lng, marker.lat])
         .addTo(map);
-
 }
 
 export function ShowMarkerOnMapCenter() {
@@ -241,51 +249,57 @@ export function HideCenterMarker() {
 }
 
 
-function SelectFriend(friendElement) {
-    if (selectedFriend !== null || selectedFriend == friendElement) {
-        selectedFriend.style.width = `${selectedFriend.dataset.originalWidth}px`;
-        selectedFriend.style.height = `${selectedFriend.dataset.originalHeight}px`;
-        selectedFriend.style.zIndex = 0;
-        selectedFriend.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${selectedFriend.dataset.originalWidth / 2}px 4px`;
+function SelectMarker(markerElement) {
+    if (currentSelectedMarker !== null || currentSelectedMarker == markerElement) {
+        currentSelectedMarker.style.width = `${currentSelectedMarker.dataset.originalWidth}px`;
+        currentSelectedMarker.style.height = `${currentSelectedMarker.dataset.originalHeight}px`;
+        currentSelectedMarker.style.zIndex = 0;
+        currentSelectedMarker.style.boxShadow = `rgb(0 0 0 / 15%) 0px ${currentSelectedMarker.dataset.originalWidth / 2}px 4px`;
 
-        if (selectedFriend == friendElement) {
-            selectedFriend = null;
+        if (currentSelectedMarker == markerElement) {
+            currentSelectedMarker = null;
             return;
         }
     }
 
-    selectedFriend = friendElement;
+    currentSelectedMarker = markerElement;
 
-    selectedFriend.style.width = '128px';
-    selectedFriend.style.height = '128px';
-    selectedFriend.style.boxShadow = 'black 0 0 32px';
-    selectedFriend.style.zIndex = 1;
-}
-
-export function FlyToPosition(lng, lat, map, zoom = -1) {
-    if (zoom == -1) {
-        map.flyTo({
-            center: [lng, lat],
-            speed: 5,
-            curve: 2,
-            easing(t) {
-                return t;
-            }
-        });
-    }
-    else {
-        map.flyTo({
-            center: [lng, lat],
-            zoom: zoom,
-            speed: 5,
-            curve: 1,
-            easing(t) {
-                return t;
-            }
-        });
-    }
+    currentSelectedMarker.style.width = '128px';
+    currentSelectedMarker.style.height = '128px';
+    currentSelectedMarker.style.boxShadow = 'black 0 0 32px';
+    currentSelectedMarker.style.zIndex = 1;
 }
 
 export function GetMap() {
     return map;
+}
+
+export function GetCurrentMapData()
+{
+    let map = GetMap();
+
+    return{
+    "center": map.getCenter(),
+    "bearing": map.getBearing(),
+    "pitch": map.getPitch(),
+    "zoom": map.getZoom()
+    };
+}
+
+export function flyMapPositionAndRotation(center, zoom, pitch, bearing) {
+    const map = GetMap();
+
+    if(!zoom)
+        zoom = 12;
+
+    map.flyTo({
+        center: center,
+        zoom: zoom,
+        pitch: pitch,
+        bearing: bearing,
+        speed: 5,
+        curve: 1.42,
+        easing: t => t,
+        essential: true
+    });
 }

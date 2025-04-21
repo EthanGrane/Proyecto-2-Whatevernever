@@ -16,6 +16,9 @@ class Marker extends Model
         'description',
         'lng',
         'lat',
+        'zoom',
+        'pitch',
+        'bearing',
         'marker_list_id',
         'user_id',
     ];
