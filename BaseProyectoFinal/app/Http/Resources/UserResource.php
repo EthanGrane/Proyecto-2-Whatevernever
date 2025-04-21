@@ -16,15 +16,14 @@ class UserResource extends JsonResource
     {
         return [
             'id'   => $this->id,
-            'alias' => $this->alias,
+            'username' => $this->username,
+            'desc' => $this->desc,
             'name' => $this->name,
-            'surname1' => $this->surname1,
-            'surname2' => $this->surname2,
             'email' => $this->email,
             'role_id' => $this->roles,
             'roles' => $this->roles,
             'avatar' => count($this->getMedia('*')) > 0 ? $this->getMedia('*')[0]->getUrl() : null,
-            'created_at' => $this->created_at->toDateString()
+            'created_at' => $this->created_at/*->toDateString()*/
         ];
     }
 }
