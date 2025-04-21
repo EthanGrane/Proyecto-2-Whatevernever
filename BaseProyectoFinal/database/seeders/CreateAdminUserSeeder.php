@@ -18,6 +18,7 @@ class CreateAdminUserSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $user = User::firstOrCreate([
             'id' => 999999,
             'name' => 'David',
@@ -26,6 +27,7 @@ class CreateAdminUserSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'desc' => 'Soy admin',
         ]);
+        */
 
         $user = User::firstOrCreate([
             'id' => 100000,

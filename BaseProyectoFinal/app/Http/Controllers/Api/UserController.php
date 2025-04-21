@@ -39,7 +39,7 @@ class UserController extends Controller
                 });
             })
             ->orderBy($orderColumn, $orderDirection)
-            ->paginate(50);
+            ->paginate(500);
 
         return UserResource::collection($users);
     }
@@ -50,8 +50,8 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->surname1 = $request->surname1;
-        $user->surname2 = $request->surname2;
+        $user->username = $request->username;
+        $user->desc = $request->desc;
 
         $user->password = Hash::make($request->password);
 
@@ -88,7 +88,8 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->username = $request->surname1;
+        $user->username = $request->username;
+        $user->desc = $request->desc;
 
         if(!empty($request->password)) {
             $user->password = Hash::make($request->password) ?? $user->password;
@@ -109,6 +110,22 @@ class UserController extends Controller
         ]);
 
         $user = auth()->user();
+
+        // Elimina la imagen anterior
+        $user->clearMediaCollection('users');
+
+        $user->addMediaFromRequest('image')->toMediaCollection('users');
+
+        return response()->json(['message' => 'Imagen actualizada']);
+    }
+
+    public function updateimgAnother(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:65536', // max 65MB
+        ]);
+
+        $user = User::findOrFail($request->input('id')); 
 
         // Elimina la imagen anterior
         $user->clearMediaCollection('users');

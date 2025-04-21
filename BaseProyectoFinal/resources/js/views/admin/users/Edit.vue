@@ -1,6 +1,7 @@
 <template>
 
     <div class="grid">
+        <router-link to="/admin/users"><-- Volver a usuarios <--</router-link>
         <div class="col-12 md:col-4 lg:col-4 xl:col-4">
             <div class="card mb-0">
                 <div class="card-body">
@@ -11,8 +12,8 @@
 
                                 <!-- :fileLimit=1  -->
                                 <FileUpload
-                                    name="picture"
-                                    url="/api/users/updateimg"
+                                    name="image"
+                                    url="/api/users/updateimgAnother"
                                     @before-upload="onBeforeUpload"
                                     @upload="onTemplatedUpload($event)"
                                     accept="image/*"
@@ -96,8 +97,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="surname1">Apellido 1</label>
-                        <input v-model="user.surname1" type="text" class="form-control" id="surname1">
+                        <label for="surname1">Username</label>
+                        <input v-model="user.username" type="text" class="form-control" id="surname1">
                         <div class="text-danger mt-1">{{ errors.surname1 }}</div>
                         <div class="text-danger mt-1">
                             <div v-for="message in validationErrors?.surname1">
@@ -107,8 +108,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="surname2">Apellido 2</label>
-                        <input v-model="user.surname2" type="text" class="form-control" id="surname2">
+                        <label for="surname2">Description</label>
+                        <input v-model="user.desc" type="text" class="form-control" id="surname2">
                         <div class="text-danger mt-1">{{ errors.surname2 }}</div>
                         <div class="text-danger mt-1">
                             <div v-for="message in validationErrors?.surname2">
@@ -143,9 +144,8 @@
 
 
         </div>
+        <Toast />
     </div>
-
-    <Toast />
 </template>
 
 <script setup>
@@ -178,16 +178,16 @@ const { validate, errors, resetForm } = useForm({ validationSchema: schema })
 // Define actual fields for validation
 const { value: name } = useField('name', null, { initialValue: '' });
 const { value: email } = useField('email', null, { initialValue: '' });
-const { value: surname1 } = useField('surname1', null, { initialValue: '' });
-const { value: surname2 } = useField('surname2', null, { initialValue: '' });
+const { value: username } = useField('username', null, { initialValue: '' });
+const { value: desc } = useField('desc', null, { initialValue: '' });
 const { value: password } = useField('password', null, { initialValue: '' });
 const { value: role_id } = useField('role_id', null, { initialValue: '', label: 'role' });
 
 const user = reactive({
     name,
     email,
-    surname1,
-    surname2,
+    username,
+    desc,
     password,
     role_id
 })
@@ -207,8 +207,8 @@ watchEffect(() => {
     user.id = postData.value.id
     user.name = postData.value.name
     user.email = postData.value.email
-    user.surname1 = postData.value.surname1
-    user.surname2 = postData.value.surname2
+    user.username = postData.value.username
+    user.desc = postData.value.desc
     user.role_id = postData.value.role_id
     user.avatar = postData.value.avatar
 })
