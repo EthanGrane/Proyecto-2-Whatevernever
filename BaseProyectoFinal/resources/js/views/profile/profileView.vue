@@ -112,7 +112,7 @@ onMounted(async () => {
 
 // PrimeVue Popover template code
 const op = ref();
-const toggle = (event) => {
+const toggle_showFriends = (event) => {
     op.value.toggle(event);
 }
 
@@ -151,16 +151,17 @@ function checkFriendStatus() {
             </span>
 
             <span class="m-1">
-                <button v-if="true" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
+                <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
 
-                <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
+                <button v-ripple @click="toggle_showFriends" class="secondary-button m-1"
+                    style="--p-ripple-background: black">
                     <b>{{ requestedUserFriendList.length }}</b>
                     {{ $t('friendscounter') }}
                 </button>
             </span>
         </div>
 
-        <div class="profile-markers-list m-3">
+        <div v-if="friendRequestStatus == true" class="profile-markers-list m-3">
             <h4>📍 ALL MARKERS</h4>
             <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
                 <div v-for="marker in requestMarkerData.markers">
@@ -170,7 +171,8 @@ function checkFriendStatus() {
             </div>
 
             <div v-for="(markerList, index) in markersDividedByList" :key="index">
-                <h4 class="mt-5">{{ getEmojiById(markerList.marker_list.emoji_identifier) }} {{ markerList.marker_list.name }}</h4>
+                <h4 class="mt-5">{{ getEmojiById(markerList.marker_list.emoji_identifier) }} {{
+                    markerList.marker_list.name }}</h4>
                 <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
                     <div v-for="marker in markerList.markers" :key="marker.id">
                         <p class="m-0">{{ marker.name }}</p>
@@ -215,10 +217,16 @@ function checkFriendStatus() {
                                         </span>
 
 
-                                        <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
-                                            name="Delete" header="Delete Friend" positive_option="Delete Friend"
-                                            positive_severity="danger" button_class="danger-button border-0"
-                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
+                                        <ConfirmButtonPopup
+                                            v-if="authStore().user.id == requestedUserData.id"
+                                            name="Delete" 
+                                            header="Delete Friend" 
+                                            positive_option="Delete Friend"
+                                            positive_severity="danger" 
+                                            button_class="danger-button border-0"
+                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" 
+                                            />
+                                            
                                     </div>
                                 </div>
                             </div>

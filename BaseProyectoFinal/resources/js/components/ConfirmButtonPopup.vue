@@ -76,5 +76,4 @@ const dialog = () => {
     <ConfirmDialog></ConfirmDialog>
 
     <Button  @click="dialog()" :class="props.button_class">{{ props.name }}</Button>
-
 </template>

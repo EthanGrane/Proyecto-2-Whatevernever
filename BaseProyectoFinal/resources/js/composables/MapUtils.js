@@ -1,4 +1,3 @@
-// Emit
 import mitt from 'mitt';
 export const emitter = mitt();
 
@@ -39,9 +38,6 @@ export function InitializeMap() {
     );
 
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
-
-    // Disable some Intreaction Handles
-    // map['dragRotate'].disable();
 
     return map;
 }
@@ -151,9 +147,10 @@ function AddFriendToMap(map, friend) {
     element.dataset.originalHeight = height;
 
     element.addEventListener('click', () => {
+        map.flyTo({center:[friend.last_lng, friend.last_lat]});
         SelectMarker(element);
     });
-
+    
     new mapboxgl.Marker(element)
         .setLngLat([friend.last_lng, friend.last_lat])
         .addTo(map);
