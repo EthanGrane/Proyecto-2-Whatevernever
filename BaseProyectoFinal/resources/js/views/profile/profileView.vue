@@ -128,14 +128,13 @@ function checkFriendStatus() {
         });
 }
 
-function ProfileIsVisible()
-{
-    if(requestedUserData.value.id === authStore().user.id)
+function ProfileIsVisible() {
+    if (requestedUserData.value.id === authStore().user.id)
         return true;
-    else if(friendRequestStatus === true)
+    else if (friendRequestStatus.value == true)
         return true;
-
-    return false;
+    else
+        return false;
 }
 
 </script>
@@ -227,15 +226,10 @@ function ProfileIsVisible()
                                         </span>
 
 
-                                        <ConfirmButtonPopup
-                                            v-if="authStore().user.id == requestedUserData.id"
-                                            name="Delete" 
-                                            header="Delete Friend" 
-                                            positive_option="Delete Friend"
-                                            positive_severity="danger" 
-                                            button_class="danger-button border-0"
-                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" 
-                                            />
+                                        <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
+                                            name="Delete" header="Delete Friend" positive_option="Delete Friend"
+                                            positive_severity="danger" button_class="danger-button border-0"
+                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
 
                                     </div>
                                 </div>
