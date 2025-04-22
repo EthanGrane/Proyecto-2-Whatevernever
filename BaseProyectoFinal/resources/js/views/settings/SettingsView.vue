@@ -29,44 +29,37 @@ const items = ref([
 </script>
 
 <template>
-    <div>
-        <span class="d-flex align-items-center ml-3">
-            <li class="pi pi-cog" style="font-size: 2rem;"></li>
-            <h1 class="ml-3">Configuracion</h1>
-        </span>
+    <div class="settings-background">
+        <div class="settings-side-menu">
 
-        <div class="settings-background">
-            <div class="settings-side-menu">
+            <Button class="secondary-button" @click="changePage('general')" icon="pi pi-align-justify"
+                :label="$t('generalSettingsButton')" />
+            <Button class="secondary-button" @click="changePage('account')" icon="pi pi-user"
+                :label="$t('accountSettingsButton')" />
+            <Button class="secondary-button" @click="changePage('groups')" icon="pi pi-users"
+                :label="$t('groupsSettingsButton')" />
+            <Button class="secondary-button" @click="changePage('markers')" icon="pi pi-map-marker"
+                :label="$t('markersSettingsButton')" />
+            <hr>
+            <Button class="secondary-button danger-button-hover" style="padding: 8px !important;" @click="logout"
+                icon="pi pi-sign-out" :label="$t('signoutbutton')" />
+        </div>
 
-                <Button class="secondary-button" @click="changePage('general')" icon="pi pi-align-justify"
-                    :label="$t('generalSettingsButton')" />
-                <Button class="secondary-button" @click="changePage('account')" icon="pi pi-user"
-                    :label="$t('accountSettingsButton')" />
-                <Button class="secondary-button" @click="changePage('groups')" icon="pi pi-users"
-                    :label="$t('groupsSettingsButton')" />
-                <Button class="secondary-button" @click="changePage('markers')" icon="pi pi-map-marker"
-                    :label="$t('markersSettingsButton')" />
-                <hr>
-                <Button class="secondary-button danger-button-hover" style="padding: 8px !important;" @click="logout"
-                    icon="pi pi-sign-out" :label="$t('signoutbutton')" />
+        <div v-if="show_pages" class="settings-pages">
+            <div v-if="conf_page == 'general'">
+                <GeneralSettingsView />
             </div>
 
-            <div v-if="show_pages" class="settings-pages">
-                <div v-if="conf_page == 'general'">
-                    <GeneralSettingsView />
-                </div>
+            <div v-if="conf_page == 'account'">
+                <AccountSettingsView />
+            </div>
 
-                <div v-if="conf_page == 'account'">
-                    <AccountSettingsView />
-                </div>
+            <div v-if="conf_page == 'groups'">
+                <Friendsgroups />
+            </div>
 
-                <div v-if="conf_page == 'groups'">
-                    <Friendsgroups />
-                </div>
-
-                <div v-if="conf_page == 'markers'">
-                    <MarkerListSettingsView />
-                </div>
+            <div v-if="conf_page == 'markers'">
+                <MarkerListSettingsView />
             </div>
         </div>
     </div>

@@ -1,9 +1,10 @@
-// Emit
 import mitt from 'mitt';
 export const emitter = mitt();
 
 export const MAP_STYLE_SATELLITE = "mapbox://styles/mapbox/standard-satellite";
 export const MAP_STYLE_STANDARD = "mapbox://styles/mapbox/standard";
+
+const API_TOKEN = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'
 
 let map = null;
 let friendsDataList = [];
@@ -13,7 +14,7 @@ let currentSelectedMarker = null;
 let centerMarker = null;
 
 export function InitializeMap() {
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXRoYW5ncmFuZSIsImEiOiJjbTVyMWNsZDAwNmNsMnFxdTl5enQ2dXAxIn0.gCn0a-Ef8cuqw1pEozCo0Q'; //api key
+    mapboxgl.accessToken = API_TOKEN;
 
     const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
 
@@ -37,9 +38,6 @@ export function InitializeMap() {
     );
 
     map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
-
-    // Disable some Intreaction Handles
-    // map['dragRotate'].disable();
 
     return map;
 }
@@ -114,6 +112,10 @@ export function OnMapDblClick(callback) {
     });
 }
 
+export function GetMapImageUrlFromCoordsAndZoom(coords)
+{
+    return `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${coords.lng},${coords.lat},13/256x256?access_token=${API_TOKEN}`;
+}
 
 function AddFriendToMap(map, friend) {
     const element = document.createElement('div');
@@ -145,9 +147,10 @@ function AddFriendToMap(map, friend) {
     element.dataset.originalHeight = height;
 
     element.addEventListener('click', () => {
+        map.flyTo({center:[friend.last_lng, friend.last_lat]});
         SelectMarker(element);
     });
-
+    
     new mapboxgl.Marker(element)
         .setLngLat([friend.last_lng, friend.last_lat])
         .addTo(map);
@@ -290,7 +293,7 @@ export function flyMapPositionAndRotation(center, zoom, pitch, bearing) {
     const map = GetMap();
 
     if(!zoom)
-        zoom = 12;
+        zoom = 5;
 
     map.flyTo({
         center: center,

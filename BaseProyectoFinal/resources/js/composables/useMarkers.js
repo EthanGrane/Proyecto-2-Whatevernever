@@ -79,6 +79,17 @@ async function deleteMarker(id, index = null) {
     }
 }
 
+export async function showAllMarkersFromUserId(user_id)
+{
+    try {
+        const response = await axios.get('http://127.0.0.1:8000/api/markers/getAllMarkersFromFriendId/?user_id=' + user_id);
+        return response.data;
+    } catch (error) {
+        console.error("[SearchView.vue] Error al cargar marcadores:", error);
+        return [];
+    }
+}
+
 export default function useMarkers() {
     return {
         markers,
@@ -86,6 +97,7 @@ export default function useMarkers() {
         deleteMarker,
         createNewMarker,
         showMarkerById,
+        showAllMarkersFromUserId,
         DEFAULT_MARKER_DATA
     };
 }

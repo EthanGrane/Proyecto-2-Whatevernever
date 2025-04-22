@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // MaboxGL Compostable
 import { emitter } from '@/composables/MapUtils';
-import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "../../composables/MapUtils.js";
+import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "@/composables/MapUtils.js";
 import PopupCreateMarker from '../../components/PopupCreateMarker.vue';
 import PopupShowMarker from '../../components/PopupShowMarker.vue';
 import { showMarkerById, createNewMarker } from '../../composables/useMarkers.js';

@@ -2,35 +2,21 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+import SettingField from "@/components/SettingField.vue";
 
 const toast = useToast();
 
-const color = ref();
-const imageFile = ref(null);
-const fileInput = ref(null);
-const new_username = ref();
-const new_description = ref();
-
-const triggerFileInput = () => {
-    fileInput.value.click();
-};
+const color = ref("");
+const new_username = ref("");
+const new_description = ref("");
 
 function showMessage(message, type) {
-    let adapt_type = "";
-
-    if (type == "good") {
-        adapt_type = "success";
-    } else if (type == "bad") {
-        adapt_type = "error";
-    } else {
-        adapt_type = "warn";
-        console.log(message);
-    }
+    let adapt_type = type === "good" ? "success" : type === "bad" ? "error" : "warn";
+    if (adapt_type === "warn") console.log(message);
 
     toast.add({ severity: adapt_type, summary: 'Info', detail: message, life: 3000 });
 }
 
-// Cuando se selecciona un archivo se sube
 const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -40,13 +26,9 @@ const handleFileChange = async (e) => {
 
     try {
         const response = await axios.post("http://127.0.0.1:8000/api/users/updateimg", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+            headers: { "Content-Type": "multipart/form-data" },
         });
-
         console.log(response);
-
         showMessage("Image updated", "good");
     } catch (err) {
         console.error(err);
@@ -54,118 +36,89 @@ const handleFileChange = async (e) => {
     }
 };
 
-async function updateUsername(username) {
+const updateUsername = async () => {
     try {
         const response = await axios.post("http://127.0.0.1:8000/api/users/updateusername", {
-            'username': username,
-        })
-
+            username: new_username.value,
+        });
         showMessage("Name updated", "good");
         console.log(response);
-
     } catch (error) {
         showMessage("Error while updating name", "bad");
         console.log(error);
     }
-}
+};
 
-async function updateDescription(desc) {
+const updateDescription = async () => {
     try {
         const response = await axios.post("http://127.0.0.1:8000/api/users/updatedescription", {
-            'desc': desc,
-        })
-
+            desc: new_description.value,
+        });
         showMessage("Description updated", "good");
         console.log(response);
-
     } catch (error) {
         showMessage("Error while updating description", "bad");
         console.log(error);
     }
-}
+};
 </script>
 
 <template>
-    <div>
-        <!-- Actualizar imagen -->
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-                <p class="settings-option-title">Modificar foto de perfil</p>
-                <p class="settings-option-description">
-                    Cambiar imagen con la que los otros usuarios pueden asociarte.
-                </p>
-            </span>
-            <Button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;"
-                @click="triggerFileInput">
-                <span>(icon)</span>
-                Change
-            </Button>
-            <input type="file" accept="image/*" ref="fileInput" @change="handleFileChange" style="display: none;" />
-        </div>
-        <hr />
+  <div>
+    <!-- Foto de perfil -->
+    <SettingField
+      title="Modificar foto de perfil"
+      description="Cambiar imagen con la que los otros usuarios pueden asociarte."
+      type="file"
+      accept="image/*"
+      @change="handleFileChange"
+    />
+    <hr />
 
-        <!-- Otros campos -->
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-                <p class="settings-option-title">Modificar nombre de perfil</p>
-                <p class="settings-option-description">
-                Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-                </p>
-            </span>
-            <div class="secondary-button">
-                <input placeholder="New name" v-model="new_username">
-                <button @click="updateUsername(new_username)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-                    <span>(icon)</span>
-                    Change
-                </button>
-            </div>
-        </div>
-        <hr />
+    <!-- Nombre -->
+    <SettingField
+      v-model="new_username"
+      title="Modificar nombre de perfil"
+      description="Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte."
+      type="input"
+      placeholder="New name"
+      icon="pi-pen-to-square"
+      @submitInput="updateUsername"
+    />
+    <hr />
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-                <p class="settings-option-title">Modificar descripcion de usuario</p>
-                <p class="settings-option-description">
-                Cambiar descripcion para que la vean otros usuarios.
-                </p>
-            </span>
-            <div class="secondary-button">
-                <input placeholder="New description" v-model="new_description">
-                <button @click="updateDescription(new_description)" class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-                    <span>(icon)</span>
-                    Change
-                </button>
-            </div>
+    <!-- Descripción -->
+    <SettingField
+      v-model="new_description"
+      title="Modificar descripcion de usuario"
+      description="Cambiar descripcion para que la vean otros usuarios."
+      type="input"
+      placeholder="New description"
+      icon="pi-pen-to-square"
+      @submitInput="updateDescription"
+    />
+    <hr />
 
-        </div>
-        <hr />
+    <!-- Contraseña -->
+    <SettingField
+      title="Modificar contraseña"
+      description="Cambiar contraseña de la cuenta."
+      type="button"
+      icon="pi-pen-to-square"
+      @click="() => showMessage('Cambiar contraseña no implementado aún', 'warn')"
+    />
+    <hr />
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-                <p class="settings-option-title">Modificar contraseña</p>
-                <p class="settings-option-description">
-                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-                </p>
-            </span>
-            <button class="btn secondary-button" style="padding-left: 32px !important; padding-right: 32px !important;">
-                <span>(icon)</span>
-                Change
-            </button>
-        </div>
-        <hr />
+    <!-- Color 
+    <SettingField
+      v-model="color"
+      title="Modificar color de cuenta"
+      description="Color de identificación de tu cuenta para los demás."
+      type="color"
+    />
 
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-                <p class="settings-option-title">Modificar color de cuenta</p>
-                <p class="settings-option-description">
-                    Cambiar nombre (no el @username) con la que los otros usuarios pueden asociarte.
-                </p>
-            </span>
-            <div class="card flex justify-center">
-                <ColorPicker v-model="color" format="hex" style="background: fixed !important;" />
-            </div>
-        </div>
-        <hr />
-        <Toast />
-    </div>
+    <hr />
+-->
+    <Toast />
+  </div>
 </template>

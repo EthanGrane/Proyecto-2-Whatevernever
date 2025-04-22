@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 class MarkerController extends Controller
 {
     public function getLastMarkerFromFriends(Request $request)
@@ -35,29 +37,61 @@ class MarkerController extends Controller
 
         return response()->json(["status" => 200, "markers" => $markers]);
     }
-    public function getAllMarkersFromFriendId(Request $request)
+    public function getAllMarkersFromUserId(Request $request)
     {
         try {
             $request->validate([
-                'friend_id' => 'required|int',
+                'user_id' => 'required|int',
             ]);
 
-            $user = auth()->user();
+            $authUser = auth()->user();
+            $user_id = $request->user_id;
 
-            $status = Friend::where('sender_user_id', $user->id)
-                ->where('reciver_user_id', $request->friend_id)
-                ->first();
+            if ($authUser->id != $user_id) {
+                // Comprobar si hay amistad en cualquier dirección
+                $status = Friend::where(function ($query) use ($authUser, $user_id) {
+                    $query->where('sender_user_id', $authUser->id)
+                        ->where('reciver_user_id', $user_id);
+                })
+                    ->orWhere(function ($query) use ($authUser, $user_id) {
+                        $query->where('sender_user_id', $user_id)
+                            ->where('reciver_user_id', $authUser->id);
+                    })
+                    ->first();
 
-            if ($status) {
-                $markers = Marker::where("user_id", $request->friend_id)->first();
-            } else {
-                $markers = null;
+                // Si no son amigos, no se devuelven marcadores
+                if (!$status) {
+                    return response()->json([
+                        'status' => 403,
+                        'message' => 'No tienes permiso para ver los marcadores de este usuario.'
+                    ]);
+                }
             }
-        } catch (ModelNotFoundException $e) {
-            print ($e->getMessage());
+
+            // Si son amigos o es el propio usuario autenticado
+            $markers = Marker::where("user_id", $user_id)->get();
+
+            if ($markers->isEmpty()) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No se encontraron marcadores para este usuario.'
+                ]);
+            }
+
+            return response()->json([
+                "status" => 200,
+                "markers" => $markers
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Hubo un problema al procesar tu solicitud.',
+                'error' => $e->getMessage()
+            ]);
         }
-        return response()->json(["status" => 200, "markers" => $markers]);
     }
+
 
     /*
      * CRUD

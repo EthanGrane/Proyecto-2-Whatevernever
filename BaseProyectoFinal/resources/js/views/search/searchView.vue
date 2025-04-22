@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { authStore } from "../../store/auth";
+import ConfirmButtonPopup from '@/components/ConfirmButtonPopup.vue';
 
 const usersList = ref([]);
 const inputbusqueda = ref("");

@@ -8,7 +8,7 @@ export async function getMarkerLists() {
     }
 }
 
-export async function getMakerListById(id)
+export async function getMarkerListById(id)
 {
     if(id == null)
         return {data: "Unlisted"};

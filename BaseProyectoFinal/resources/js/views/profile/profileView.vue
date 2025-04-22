@@ -6,7 +6,9 @@ import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
 import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
-
+import { showAllMarkersFromUserId } from "../../composables/useMarkers.js";
+import { getEmojiById, getMarkerListById } from "../../composables/useMarkerList.js";
+import { GetMapImageUrlFromCoordsAndZoom } from "../../composables/MapUtils.js";
 
 const { updateImg } = useUsers();
 const route = useRoute();
@@ -14,7 +16,10 @@ const route = useRoute();
 const userPFP = ref("");
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
+const requestMarkerData = ref();
+const markersDividedByList = ref([]);
 
+// Inicializa todas las funciones
 async function loadDataFromRequestUser() {
     try {
         const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
@@ -29,6 +34,10 @@ async function loadDataFromRequestUser() {
 
             getFriendsFromRequestedUser();
             checkFriendStatus();
+
+            requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
+            loadMarkers();
+
         } else {
             requestedUserData.value = {};
         }
@@ -37,6 +46,23 @@ async function loadDataFromRequestUser() {
         requestedUserData.value = {};
     }
 }
+
+async function loadMarkers() {
+    let groupedMarkers = {};
+
+    for (let marker of requestMarkerData.value.markers) {
+        const listId = marker.marker_list_id;
+        if (!groupedMarkers[listId]) {
+            groupedMarkers[listId] = { marker_list: await getMarkerListById(listId), markers: [] };
+        }
+        groupedMarkers[listId].markers.push(marker);
+    }
+
+    // Guardamos el diccionario con las listas agrupadas
+    markersDividedByList.value = groupedMarkers;
+    console.log(markersDividedByList.value);
+}
+
 
 async function getFriendsFromRequestedUser() {
     if (!requestedUserData.value.id) return;
@@ -81,12 +107,12 @@ async function sendRequest(id_reciver) {
 }
 
 onMounted(async () => {
-    loadDataFromRequestUser();
+    await loadDataFromRequestUser();
 })
 
 // PrimeVue Popover template code
 const op = ref();
-const toggle = (event) => {
+const toggle_showFriends = (event) => {
     op.value.toggle(event);
 }
 
@@ -100,6 +126,15 @@ function checkFriendStatus() {
         .catch(error => {
             console.error('There was an error deleting the friendship:', error.response?.data || error.message);
         });
+}
+
+function ProfileIsVisible() {
+    if (requestedUserData.value.id === authStore().user.id)
+        return true;
+    else if (friendRequestStatus.value == true)
+        return true;
+    else
+        return false;
 }
 
 </script>
@@ -117,25 +152,47 @@ function checkFriendStatus() {
             <span v-if="authStore().user.id != requestedUserData.id" class="m-1">
 
                 <Button v-if="friendRequestStatus === false" @click="sendRequest(requestedUserData.id)"
-                    class="primary-button" label="Add Friend" style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
+                    class="primary-button" label="Add Friend"
+                    style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
 
                 <Button v-else @click="deleteRequest(requestedUserData.id)" class="secondary-button danger-button-hover"
                     label="UnFriend" />
             </span>
 
             <span class="m-1">
-                <button v-if="true" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
+                <button v-if="false" class="secondary-button m-1">🗺️ {{ $t('viewfriendmap') }}</button>
 
-                <button v-ripple @click="toggle" class="secondary-button m-1" style="--p-ripple-background: black">
+                <button v-ripple @click="toggle_showFriends" class="secondary-button m-1"
+                    style="--p-ripple-background: black">
                     <b>{{ requestedUserFriendList.length }}</b>
                     {{ $t('friendscounter') }}
                 </button>
             </span>
         </div>
 
-        <div class="profile-markers-list">
+        <div v-if="ProfileIsVisible()" class="profile-markers-list m-3">
             <h4>📍 ALL MARKERS</h4>
+            <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
+                <div v-for="marker in requestMarkerData.markers">
+                    <p class="m-0">{{ marker.name }}</p>
+                    <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat })">
+                </div>
+            </div>
+
+            <div v-for="(markerList, index) in markersDividedByList" :key="index">
+                <h4 class="mt-5">{{ getEmojiById(markerList.marker_list.emoji_identifier) }} {{
+                    markerList.marker_list.name }}</h4>
+                <div v-if="requestMarkerData" class="d-flex gap-3 w-100" style="overflow-x: scroll;">
+                    <div v-for="marker in markerList.markers" :key="marker.id">
+                        <p class="m-0">{{ marker.name }}</p>
+                        <img :src="GetMapImageUrlFromCoordsAndZoom({ lng: marker.lng, lat: marker.lat })">
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+        <div style="height: 64px;"></div>
 
         <!-- Friends Popup -->
         <Popover ref="op">
@@ -173,6 +230,7 @@ function checkFriendStatus() {
                                             name="Delete" header="Delete Friend" positive_option="Delete Friend"
                                             positive_severity="danger" button_class="danger-button border-0"
                                             @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
+
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, watch, onMounted } from "vue";
-import { getEmojiById, getMakerListById as getMarkerListById } from '../composables/useMarkerList';
+import { getEmojiById, getMarkerListById as getMarkerListById } from '../composables/useMarkerList';
 import { flyMapPositionAndRotation } from "../composables/MapUtils.js";
 
 const props = defineProps({
