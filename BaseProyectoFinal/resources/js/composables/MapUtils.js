@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 export const emitter = mitt();
+import { GetSatelliteMapStyleCookie} from "@/composables/SettingsCookies";
 
 export const MAP_STYLE_SATELLITE = "mapbox://styles/mapbox/standard-satellite";
 export const MAP_STYLE_STANDARD = "mapbox://styles/mapbox/standard";
@@ -17,11 +18,12 @@ export function InitializeMap() {
     mapboxgl.accessToken = API_TOKEN;
 
     const center = { lng: 2.02690062977777, lat: 41.4113279581609 }; // Coordenadas de Barcelona (default)
+    const style = GetSatelliteMapStyleCookie() ? MAP_STYLE_SATELLITE : MAP_STYLE_STANDARD;
 
     // Render Map on div
     map = new mapboxgl.Map({
         container: 'map',
-        style: MAP_STYLE_STANDARD,
+        style: style,
         projection: 'globe',
         zoom: 5,
         center: [center.lng, center.lat],
