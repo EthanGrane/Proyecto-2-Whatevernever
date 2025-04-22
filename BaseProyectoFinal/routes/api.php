@@ -62,6 +62,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
 
+    Route::post('/users/deleteEverything', [UserController::class, 'deleteAllRelationWithUser']);
+
     // My User functions
     Route::get('/user/showUserByUsername', [UserController::class, 'showUserByUsername']);
 

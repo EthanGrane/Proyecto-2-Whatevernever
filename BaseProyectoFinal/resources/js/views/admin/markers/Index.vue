@@ -1,5 +1,6 @@
 <template>
     <div class="grid">
+        <router-link class="link-panel-admin" to="/admin">← Volver al panel ←</router-link>
         <div class="col-12">
             <div class="card">
 

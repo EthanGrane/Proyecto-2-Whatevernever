@@ -1,5 +1,6 @@
 <template>
     <div class="row justify-content-center my-2">
+        <router-link class="link-panel-admin" to="/admin">← Volver al panel ←</router-link>
         <div class="col-md-12">
             <div class="card border-0">
                 <div class="card-header bg-transparent">
