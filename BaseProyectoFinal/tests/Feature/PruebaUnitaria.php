@@ -17,6 +17,12 @@ class PruebaUnitaria extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(4, 2 + 2);
+        $value1 = 13;
+
+        $value2 = 74;
+
+        $this->assertEquals(17.567, $value1/$value2*100);
+
+        
     }
 }

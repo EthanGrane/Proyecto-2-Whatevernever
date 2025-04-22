@@ -17,5 +17,12 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
 
+        
+        $value1 = 13;
+
+        $value2 = 74;
+
+        $this->assertEquals(17.56756756756757, $value1/$value2*100);
+
     }
 }

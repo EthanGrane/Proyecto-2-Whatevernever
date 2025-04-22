@@ -9,6 +9,7 @@ use App\Models\Friend;
 use App\Models\Marker;
 use App\Models\MarkerList;
 use App\Models\MarkerListMarkers;
+use App\Models\MarkerReviews;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -204,6 +205,9 @@ class UserController extends Controller
             Friend::where("sender_user_id", $request->id)
                 ->orWhere("reciver_user_id", $request->id)
                 ->delete();
+
+            // Eliminar reseñas
+            MarkerReviews::where("user_id", $request->id)->delete();
         
             // Eliminar marcadores
             Marker::where("user_id", $request->id)->delete();
@@ -221,8 +225,8 @@ class UserController extends Controller
             $user->delete();
         
             return response()->noContent();
-        } catch (\Throwable $th) {
-            return response()->json(['message'=>$th], 404);
+        } catch (\Exception $e) {
+            return response()->json(['message'=>$e], 404);
         }
         
     }
