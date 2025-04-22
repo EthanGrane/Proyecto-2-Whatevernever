@@ -32,4 +32,15 @@ class Marker extends Model
         return $this->belongsTo(User::class, 'marker_list_id');
     }
 
+    // Marker Reviews
+    public function reviews()
+    {
+        return $this->hasMany(MarkerReviews::class);
+    }
+
+    public function averageStars()
+    {
+        return $this->reviews()->avg('review_stars');
+    }
+
 }
