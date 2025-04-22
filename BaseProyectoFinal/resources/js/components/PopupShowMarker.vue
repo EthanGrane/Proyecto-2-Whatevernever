@@ -50,7 +50,11 @@ const loadMarkerData = async (marker = props.marker) => {
 
     const markerList = await getMarkerListById(marker.marker_list_id);
     const emoji = await getEmojiById(markerList.emoji_identifier);
-    listData.value = `${emoji} ${markerList.name}`;
+
+    if(markerList.value)
+      listData.value = `${emoji} ${markerList.name}`;
+    else
+    listData.value = `${emoji} All Markers`;
 
     // Estrellas promedias
     rating_avg.value = await GetAvgStarsByMarkerId(props.marker.id) || { average_stars: 0 };

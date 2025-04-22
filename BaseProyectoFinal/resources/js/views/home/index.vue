@@ -98,24 +98,7 @@ function ToggleCreateMarker() {
         <PopupShowMarker v-if="selectedMarkerData != null" v-model:visible="showMarkerDataPopupVisible"
             :marker=selectedMarkerData />
 
-        <button class="button-primary d-block d-sm-none" @click="ToggleCreateMarker" style="
-    position: fixed;
-    bottom: 64px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 800;
-    border-radius: 50%;
-    border: 0;
-  ">
-            +
-        </button>
-
+            <button class="button-primary d-block d-sm-none" @click="ToggleCreateMarker" style="position: fixed; bottom: 64px; right: 16px; width: 32px; height: 32px; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; border-radius: 50%; border: 0;">+</button>
 
         <div id="map"></div>
     </div>
