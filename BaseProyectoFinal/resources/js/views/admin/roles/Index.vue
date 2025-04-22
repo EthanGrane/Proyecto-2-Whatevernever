@@ -106,9 +106,10 @@
                                     {{ post.created_at }}
                                 </td>
                                 <td class="px-6 py-4 text-sm">
-                                    <router-link v-if="can('role-edit')"
+                                    <!-- <router-link v-if="can('role-edit')"
                                                  :to="{ name: 'roles.edit', params: { id: post.id } }" class="badge bg-primary">Edit
-                                    </router-link>
+                                    </router-link> -->
+
                                     <a href="#" v-if="can('role-delete')" @click.prevent="deleteRole(post.id)"
                                        class="ms-2 badge bg-danger">Delete</a>
                                 </td>

@@ -182,4 +182,9 @@ textarea.form-control {
     color: #dc3545;
     font-size: 0.875rem;
 }
+
+* {
+    color: white;
+}
+
 </style>
