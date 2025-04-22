@@ -24,6 +24,21 @@ class MarkerListController extends Controller
         }
     }
 
+    public function showAll()
+    {
+        try {
+            $lists = MarkerList::query()->get();
+            
+            return response()->json($lists, 200);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                "error" => "Error al obtener las listas",
+                "details" => $th->getMessage()
+            ], 500);
+        }
+    }
+
     public function show($id)
     {
         try {
@@ -79,23 +94,31 @@ class MarkerListController extends Controller
     public function destroy($id)
     {
         try {
-
-            $list = MarkerList::where("id", $id)->where("owner_user_id", auth()->id())->first();
+            $user = auth()->user();
+            $list = MarkerList::find($id);
 
             if (!$list) {
-                return response()->json(['message' => 'Group not found or you are not the owner'], 404);
+                return response()->json(['message' => 'Marker list not found'], 404);
+            }
+
+            if (!$user->hasRole('admin') && $list->owner_user_id != $user->id) {
+                return response()->json([
+                    'message' => 'Unauthorized - You must be admin or the owner to delete this list'
+                ], 404);
             }
 
             $list->delete();
 
-            return response()->json(['message' => "Marker list deleted"], 200);
+            return response()->json(['message' => "Marker list deleted successfully"], 200);
 
         } catch (\Throwable $th) {
-            //throw $th;
-
-            return response()->json(["Error" => $th->getMessage()], 500);
+            return response()->json([
+                "error" => "Error deleting marker list",
+                "details" => $th->getMessage()
+            ], 500);
         }
     }
+
 
     public function update($id, Request $request)
     {
@@ -105,15 +128,14 @@ class MarkerListController extends Controller
                 "emoji_identifier" => "required|int"
             ]);
 
-            $user = auth()->id();
-
-            $list = MarkerList::where("id", $id)->first();
+            $user = auth()->user();
+            $list = MarkerList::find($id);
 
             if (!$list) {
-                return response()->json(['message' => 'List not found'], 404);
+                return response()->json(['message' => 'Marker list not found'], 404);
             }
 
-            if ($list->owner_user_id != $user) {
+            if (!$user->hasRole('admin') && $list->owner_user_id != $user->id) {
                 return response()->json(['message' => 'You are not the owner of this list'], 401);
             }
 

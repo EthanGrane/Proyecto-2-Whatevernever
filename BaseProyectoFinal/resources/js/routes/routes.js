@@ -335,6 +335,19 @@ export default [
                 component: () => import('../views/admin/markers/Index.vue'),
             },
             {
+                name: 'markersLists',
+                path: 'markersLists',
+
+                component: () => import('../views/admin/markersList/Index.vue'),
+            },
+            {
+                name: 'markersLists.edit',
+                path: 'markersLists/edit/:id',
+
+                component: () => import('../views/admin/markersList/Edit.vue'),
+                meta: { breadCrumb: 'Marker List Edit' }
+            },
+            {
                 name: 'roles.index',
                 path: 'roles',
                 component: () => import('../views/admin/roles/Index.vue'),
