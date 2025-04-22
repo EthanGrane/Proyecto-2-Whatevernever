@@ -106,6 +106,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     // Marker Reviews
     Route::get('/markerReviews/getAvgStarsByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getAvgStarsByMarkerId']);
+    Route::get('/markerReviews/getReviewByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getReviewByMarkerId']);
     Route::apiResource('markerReviews', MarkerReviewsController::class);
     
 });
