@@ -103,5 +103,6 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     // Markers lists
     Route::apiResource('markersLists', MarkerListController::class);
+    Route::get('/markerList/showAll', [MarkerListController::class, 'showAll']);
     
 });

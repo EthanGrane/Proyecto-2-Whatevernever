@@ -8,6 +8,16 @@ export async function getMarkerLists() {
     }
 }
 
+export async function getAllMarkerLists() {
+    try {
+        const res = await axios.get('/api/markerList/showAll');
+        return res.data;
+    } catch (err) {
+        console.error('[PopupCreateMarker]: ', err.response.data);
+        return [];
+    }
+}
+
 export async function getMarkerListById(id)
 {
     if(id == null)
@@ -18,6 +28,21 @@ export async function getMarkerListById(id)
         return res.data;
     } catch (err) {
         console.error('[Composables/useMarkerList]: ', err.response.data);
+        return [];
+    }
+}
+
+export async function updateMarkerListById(id, name, emoji = 10) {
+    try {
+        const res = await axios.put('/api/markersLists/' + id, {
+            "name":name,
+            "emoji_identifier":emoji
+        });
+
+        console.log(res);
+
+    } catch (error) {
+        console.log(error);
         return [];
     }
 }
@@ -171,3 +196,17 @@ const emojiDictionary = {
     96: "🔮",
     97: "⚜️"
 };
+
+export async function deleteMarkerList(id) {
+    try {
+        const res = await axios.delete(`/api/markersLists/${id}`);
+        return res.data;
+    } catch (err) {
+        console.error('[Composables/useMarkerList]: ', err.response?.data || err.message);
+        throw err;
+    }
+}
+
+export const useMarkerList = () => {
+    return {getAllMarkerLists, deleteMarkerList, updateMarkerListById, getMarkerListById, emojiDictionary};
+}
