@@ -63,7 +63,8 @@ import Popover from 'primevue/popover'
 import ConfirmDialog from 'primevue/confirmdialog';
 import SpeedDial from 'primevue/speeddial';
 import ToggleButton from 'primevue/togglebutton';
-import Carousel from 'primevue/carousel';
+import Carousel from 'primevue/carousel';   
+import Rating from 'primevue/rating';
 
 /*STYLES */
 
@@ -170,6 +171,9 @@ app.component('InputIcon', InputIcon);
 app.component('MeterGroup', MeterGroup);
 
 app.component('ConfirmDialog', ConfirmDialog);
+app.component('Popover', Popover);
+app.component('Rating', Rating);
+app.component('ToggleButton', ToggleButton);
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

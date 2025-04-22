@@ -74,7 +74,7 @@ class markers_table_seeder extends Seeder
                 'description' => $city['description'],
                 'lat' => $city['lat'],
                 'lng' => $city['lng'],
-                'zoom' => mt_rand(14, 16) / 10, // 7.0 - 14.0
+                'zoom' => mt_rand(140, 160) / 10, // 7.0 - 14.0
                 'pitch' => mt_rand(0, 80),
                 'bearing' => mt_rand(-180, 180),
                 'marker_list_id' => 999,

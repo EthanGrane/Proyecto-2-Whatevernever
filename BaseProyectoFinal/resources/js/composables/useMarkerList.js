@@ -77,7 +77,7 @@ export async function createMarkerList(createMarkerList_name, createMarkerList_i
 
 export function getEmojiById(id) {
     if (id == null)
-        return "❓"
+        return "📍"
     else
         return emojiDictionary[id];
 }

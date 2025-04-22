@@ -66,5 +66,13 @@
     "deletebutton": "Delete",
     "username": "Username",
     "notregisted": "You don't have a acount? Register!",
-    "already_registered": "Already have a acount? Login!"
+    "already_registered": "Already have a acount? Login!",
+
+    
+    "new_marker": "New Marker",
+    "create_marker": "Create Marker",
+    "marker_list_name": "Marker List Name",
+    "create_new_list": "Create new List",
+    "next": "Next",
+    "finish": "Finish"
 }
