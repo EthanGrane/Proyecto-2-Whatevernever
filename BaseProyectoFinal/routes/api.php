@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\api\FriendGroupsController;
 use App\Http\Controllers\Api\MarkerController;
 use App\Http\Controllers\Api\MarkerListController;
+use App\Http\Controllers\Api\MarkerReviewsController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
@@ -102,5 +103,9 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     // Markers lists
     Route::apiResource('markersLists', MarkerListController::class);
+
+    // Marker Reviews
+    Route::get('/markerReviews/getAvgStarsByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getAvgStarsByMarkerId']);
+    Route::apiResource('markerReviews', MarkerReviewsController::class);
     
 });
