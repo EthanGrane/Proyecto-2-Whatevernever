@@ -62,7 +62,7 @@ const loadMarkerData = async (marker = props.marker) => {
     } else {
       rating_client_value.value = null;
     }
-    
+
     flyMapPositionAndRotation([marker.lng, marker.lat], marker.zoom, marker.pitch, marker.bearing);
 
   } catch (error) {
@@ -74,7 +74,7 @@ const loadMarkerData = async (marker = props.marker) => {
 };
 
 async function RateMarker() {
-  
+
   await SetReviewToMarker(props.marker.id, rating_client_value.value);
   await sleep(100);
   rating_avg.value = await GetAvgStarsByMarkerId(props.marker.id) || { average_stars: 0 };
@@ -88,7 +88,24 @@ async function RateMarker() {
       <h2 style="font-weight: 800;">{{ marker.name }}</h2>
     </div>
 
-    <div class="w-100 d-flex flex-column flex-grow-1">
+    <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center m-0 p-0">
+      <Rating v-model="rating_avg.average_stars" :stars=10 readonly>
+        <template #onicon>
+
+          <img v-if="rating_avg.average_stars >= 9" src="/images/MarkerReviews/Fire.webp" width="20" />
+          <img v-else-if="rating_avg.average_stars >= 5" src="/images/MarkerReviews/Hearth.webp" width="20" />
+          <img v-else src="/images/MarkerReviews/HappyFace.webp" width="20" />
+
+        </template>
+        <template #officon>
+          <img src="/images/MarkerReviews/CryFace.webp" width="20" />
+        </template>
+      </Rating>
+      <p style="font-weight: normal;">({{ rating_avg.count }})</p>
+
+    </div>
+
+    <div class="w-100 d-flex flex-column flex-grow-1 p-3">
       <h3 class="m-1" style="font-style: italic;">{{ loading ? 'Cargando...' : listData }}</h3>
 
       <p
@@ -97,36 +114,17 @@ async function RateMarker() {
       </p>
 
       <hr>
-
-      <div class="w-100 m-auto d-flex  flex-column">
-        <h4 style="font-weight: normal;">Ratings ({{ rating_avg.count }}):</h4>
-
-        <Rating @click="RateMarker" v-model="rating_client_value" :stars=10>
+      <div class="w-100 m-auto d-flex align-items-center">
+        <Rating @click="RateMarker" v-model="rating_client_value" :stars="10">
           <template #onicon>
-
             <img v-if="rating_client_value >= 9" src="/images/MarkerReviews/Fire.webp" width="20" />
             <img v-else-if="rating_client_value >= 5" src="/images/MarkerReviews/Hearth.webp" width="20" />
             <img v-else src="/images/MarkerReviews/HappyFace.webp" width="20" />
-
           </template>
           <template #officon>
             <img src="/images/MarkerReviews/CryFace.webp" width="20" />
           </template>
         </Rating>
-
-        <Rating v-model="rating_avg.average_stars" :stars=10 readonly>
-          <template #onicon>
-
-            <img v-if="rating_avg.average_stars >= 9" src="/images/MarkerReviews/Fire.webp" width="20" />
-            <img v-else-if="rating_avg.average_stars >= 5" src="/images/MarkerReviews/Hearth.webp" width="20" />
-            <img v-else src="/images/MarkerReviews/HappyFace.webp" width="20" />
-
-          </template>
-          <template #officon>
-            <img src="/images/MarkerReviews/CryFace.webp" width="20" />
-          </template>
-        </Rating>
-
       </div>
 
     </div>
