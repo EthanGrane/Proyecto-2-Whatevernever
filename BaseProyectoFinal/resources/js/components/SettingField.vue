@@ -118,7 +118,7 @@ const submitInput = () => {
 
 </script>
 
-<style>
+<style scoped>
 /* Estilos comunes */
 .setting-field-container {
     display: flex;
