@@ -151,7 +151,7 @@ async function createMarkerListAndReturn() {
   </Dialog>
 </template>
 
-<style scoped>
+<style>
 .clickable-div:hover {
   cursor: pointer;
 }
