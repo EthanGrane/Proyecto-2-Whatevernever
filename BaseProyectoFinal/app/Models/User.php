@@ -43,6 +43,7 @@ class User extends Authenticatable implements HasMedia
      * @var array<string, string>
      */
     protected $casts = [
+        'email_verified_at' => 'datetime',
         'last_lng' => 'double',
         'last_lat' => 'double',
     ];
