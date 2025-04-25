@@ -77,6 +77,20 @@ async function getFriendsFromRequestedUser() {
         });
 }
 
+async function deleteFriend(friend_id) {
+    try {
+        const resp = await axios.post('http://127.0.0.1:8000/api/friends/delete', {
+            friend_id:friend_id
+        });
+
+        console.log(resp)
+    } catch (error) {
+        console.log(error)
+    }
+
+    
+}
+
 async function deleteRequestAsSender(friend_id) {
     if (!friend_id) {
         console.error("Friend_id is not defined on deleteRequestAsSender(friend_id)");
@@ -229,7 +243,7 @@ function ProfileIsVisible() {
                                         <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
                                             name="Delete" header="Delete Friend" positive_option="Delete Friend"
                                             positive_severity="danger" button_class="danger-button border-0"
-                                            @confirmed="(result) => { if (result) { deleteRequestAsSender(user.user.id) } }" />
+                                            @confirmed="(result) => { if (result) { deleteFriend(user.user.id) } }" />
 
                                     </div>
                                 </div>

@@ -267,7 +267,7 @@ class FriendController extends Controller
     public function deleteFriend(Request $request)
     {
         $request->validate([
-            'friend_id' => 'required|exists:friends,id',
+            'friend_id' => 'required',
         ]);
 
         $user = auth()->user();
