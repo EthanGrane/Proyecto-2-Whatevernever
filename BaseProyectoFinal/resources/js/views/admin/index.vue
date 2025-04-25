@@ -9,6 +9,7 @@
             <router-link to="/admin/roles">Roles</router-link>
             <router-link to="/admin/permissions">Permissions</router-link>
             <router-link to="/admin/markers">Markers</router-link>
+            <router-link to="/admin/markersLists">Markers Lists</router-link>
         </div>
         
     </div>

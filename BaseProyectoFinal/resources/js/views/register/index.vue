@@ -3,7 +3,7 @@
 
         <div class="w-50 vh-100 d-flex justify-content-center align-items-center d-none d-md-flex">
             <div class="w-75 h-100 m-auto advertisment-menu" style="background-color: var(--background4);">
-                <h2 class="brandName w-100 text-center pt-5">{{ $t('brandName') }}.</h2>
+                <h2 class="brandName w-100 text-left pt-5">{{ $t('brandName') }}.</h2>
             </div>
         </div>
 
@@ -21,7 +21,7 @@
                                         <div>
                                             <label for="name" class="form-label">{{ $t('name') }}</label>
                                             <br>
-                                            <input placeholder="Jhonatan Ortega" v-model="registerForm.name" id="name" type="text" class="text-center form-control form-control-sm" autofocus>
+                                            <input placeholder="Jhonatan Ortega" v-model="registerForm.name" id="name" type="text" class="form-registro text-left form-control form-control-sm" autofocus>
                                             <div v-if="validationErrors?.name" class="text-danger mt-1">
                                                 <div v-for="msg in validationErrors.name" :key="msg">{{ msg }}</div>
                                             </div>
@@ -31,7 +31,7 @@
                                         <div>
                                             <label for="username" class="form-label">{{ $t('username') }}</label>
                                             <br>
-                                            <input placeholder="jhonatan_ortega" v-model="registerForm.username" id="username" type="text" class="text-center form-control form-control-sm" autocomplete="username">
+                                            <input placeholder="jhonatan_ortega" v-model="registerForm.username" id="username" type="text" class="form-registro text-left form-control form-control-sm" autocomplete="username">
                                             <div v-if="validationErrors?.username" class="text-danger mt-1">
                                                 <div v-for="msg in validationErrors.username" :key="msg">{{ msg }}</div>
                                             </div>
@@ -40,8 +40,8 @@
 
                                     <!-- Email -->
                                     <div class="mb-3 w-100">
-                                        <label for="email" class="form-label">{{ $t('email') }}</label>
-                                        <input placeholder="jhonatan@email.com" v-model="registerForm.email" id="email" type="email" class="text-center form-control form-control-sm" autocomplete="email">
+                                        <label for="email" class="form-label text-center campo-email-registro">{{ $t('email') }}</label>
+                                        <input placeholder="jhonatan@email.com" v-model="registerForm.email" id="email" type="email" class="form-registro text-center form-control form-control-sm" autocomplete="email">
                                         <div v-if="validationErrors?.email" class="text-danger mt-1">
                                             <div v-for="msg in validationErrors.email" :key="msg">{{ msg }}</div>
                                         </div>
@@ -51,7 +51,7 @@
                                     <div class="mb-3 w-100 m-auto name-and-username-register">
                                         <div>
                                             <label for="password" class="form-label">{{ $t('password') }}</label>
-                                            <input placeholder="**********" v-model="registerForm.password" id="password" type="password" class="form-control form-control-sm text-center" autocomplete="new-password">
+                                            <input placeholder="**********" v-model="registerForm.password" id="password" type="password" class="form-registro form-control form-control-sm text-left" autocomplete="new-password">
                                             <div v-if="validationErrors?.password" class="text-danger mt-1">
                                                 <div v-for="msg in validationErrors.password" :key="msg">{{ msg }}</div>
                                             </div>
@@ -60,7 +60,7 @@
                                         <!-- Confirmar contraseña -->
                                         <div>
                                             <label for="password_confirmation" class="form-label">{{ $t('confirm_password') }}</label>
-                                            <input placeholder="**********" v-model="registerForm.password_confirmation" id="password_confirmation" type="password" class="form-control form-control-sm text-center" autocomplete="new-password">
+                                            <input placeholder="**********" v-model="registerForm.password_confirmation" id="password_confirmation" type="password" class="form-registro form-control form-control-sm text-left" autocomplete="new-password">
                                             <div v-if="validationErrors?.password_confirmation" class="text-danger mt-1">
                                                 <div v-for="msg in validationErrors.password_confirmation" :key="msg">{{ msg }}</div>
                                             </div>

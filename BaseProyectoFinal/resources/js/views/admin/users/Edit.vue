@@ -350,4 +350,8 @@ const formatSize = (bytes) => {
 label {
     margin-bottom: 0.3rem;
 }
+
+* {
+    color: white;
+}
 </style>

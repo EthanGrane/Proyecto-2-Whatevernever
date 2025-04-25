@@ -127,7 +127,9 @@ export default function useUsers() {
         })
             .then(result => {
                 if (result.isConfirmed) {
-                    axios.delete('/api/users/' + id)
+                    axios.post('/api/users/deleteEverything', {
+                        "id":id
+                    })
                         .then(response => {
                             users.value.data.splice(index, 1);
 

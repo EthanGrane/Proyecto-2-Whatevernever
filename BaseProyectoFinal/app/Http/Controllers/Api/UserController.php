@@ -5,6 +5,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Friend;
+use App\Models\Marker;
+use App\Models\MarkerList;
+use App\Models\MarkerListMarkers;
+use App\Models\MarkerReviews;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -187,5 +192,42 @@ class UserController extends Controller
         ]);
 
         return response()->json(['message' => 'Description updated']);
+    }
+
+    //Eliminar todo lo que este relacionado con un usuario incluido el mismo
+    public function deleteAllRelationWithUser(Request $request) {
+        try {
+            $user = User::findOrFail($request->id);
+
+            $this->authorize('user-delete');
+        
+            // Eliminar amigos
+            Friend::where("sender_user_id", $request->id)
+                ->orWhere("reciver_user_id", $request->id)
+                ->delete();
+
+            // Eliminar reseñas
+            MarkerReviews::where("user_id", $request->id)->delete();
+        
+            // Eliminar marcadores
+            Marker::where("user_id", $request->id)->delete();
+        
+            $markerLists = MarkerList::where("owner_user_id", $request->id)->get();
+        
+            // Eliminar relación marcador-lista (para cada lista del usuario)
+            $markerListIds = $markerLists->pluck('id');
+            MarkerListMarkers::whereIn('marker_list_id', $markerListIds)->delete();
+        
+            // Eliminar las listas de marcadores
+            MarkerList::whereIn('id', $markerListIds)->delete();
+        
+            // Eliminar el usuario
+            $user->delete();
+        
+            return response()->noContent();
+        } catch (\Exception $e) {
+            return response()->json(['message'=>$e], 404);
+        }
+        
     }
 }
