@@ -99,7 +99,7 @@ class FriendController extends Controller
     /*
      * Delete a friend or friend request (Destroy)
      */
-    public function destroyFriendRequest(Request $request)
+    public function destroyFriendRequestAsSender(Request $request)
     {
         $request->validate([
             'id_sender' => 'required|exists:users,id',
@@ -123,6 +123,32 @@ class FriendController extends Controller
 
         return response()->json(['data' => $query], 200);
     }
+
+    public function destroyFriendRequestAsReciver(Request $request)
+    {
+        $request->validate([
+            'id_sender' => 'required|exists:users,id',
+            'id_receiver' => 'required|exists:users,id',
+        ]);
+
+        $idSender = $request->query('id_sender');
+        $idReceiver = $request->query('id_receiver');
+
+        if ($idReceiver != auth()->id()) {
+            return response()->json(['message' => 'Error you are not authorized to do this'], 401);
+        }
+
+        if ($idSender == $idReceiver) {
+            return response()->json(['message' => 'You cant be your own friend', 'type' => 'bad'], 200);
+        }
+
+        $query = Friend::where('reciver_user_id', $idSender)
+            ->where('sender_user_id', $idReceiver)
+            ->delete();
+
+        return response()->json(['data' => $query], 200);
+    }
+
 
 
     /*

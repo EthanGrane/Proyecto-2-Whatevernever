@@ -18,7 +18,7 @@ let currentMarkerId = ref(null);
 const listData = ref('');
 const loading = ref(false);
 const rating_avg = ref({ average_stars: 0 });   // Es el valor promedio que tiene el marcador
-const rating_client_value = ref();          // Es el valor que le da el usuario al marcador
+const rating_client_value = ref();              // Es el valor que le da el usuario al marcador
 
 // Ejecutar la carga de datos cuando el componente se monta
 onMounted(async () => {

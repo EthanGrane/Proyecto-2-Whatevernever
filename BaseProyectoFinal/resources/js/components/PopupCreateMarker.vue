@@ -151,13 +151,11 @@ async function createMarkerListAndReturn() {
   </Dialog>
 </template>
 
-<style scoped>
+<style>
 .clickable-div:hover {
   cursor: pointer;
 }
-</style>
 
-<style>
 .p-dialog-header {
   padding: 0 !important;
   position: absolute;

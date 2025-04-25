@@ -77,12 +77,12 @@ async function getFriendsFromRequestedUser() {
         });
 }
 
-async function deleteRequest(friend_id) {
+async function deleteRequestAsSender(friend_id) {
     if (!friend_id) {
-        console.error("Friend_id is not defined on deleteRequest(friend_id)");
+        console.error("Friend_id is not defined on deleteRequestAsSender(friend_id)");
         return;
     }
-    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
+    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequestAsSender?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
         .then(response => {
             requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
 
@@ -90,7 +90,7 @@ async function deleteRequest(friend_id) {
                 friendRequestStatus.value = false;
         })
         .catch(error => {
-            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
+            console.error('There was an error deleting the sender friend request:', error.response?.data || error.message);
         });
 }
 
@@ -155,7 +155,7 @@ function ProfileIsVisible() {
                     class="primary-button" label="Add Friend"
                     style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
 
-                <Button v-else @click="deleteRequest(requestedUserData.id)" class="secondary-button danger-button-hover"
+                <Button v-else @click="deleteRequestAsSender(requestedUserData.id)" class="secondary-button danger-button-hover"
                     label="UnFriend" />
             </span>
 
@@ -229,7 +229,7 @@ function ProfileIsVisible() {
                                         <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
                                             name="Delete" header="Delete Friend" positive_option="Delete Friend"
                                             positive_severity="danger" button_class="danger-button border-0"
-                                            @confirmed="(result) => { if (result) { deleteRequest(user.user.id) } }" />
+                                            @confirmed="(result) => { if (result) { deleteRequestAsSender(user.user.id) } }" />
 
                                     </div>
                                 </div>

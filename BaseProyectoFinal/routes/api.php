@@ -67,20 +67,20 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/user/showUserByUsername', [UserController::class, 'showUserByUsername']);
 
     //Friends
-    Route::apiResource('friend', FriendController::class);
-
     Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
     Route::get('/friends/myFriends', [FriendController::class, 'ShowrequestsRecived']);
     Route::get('/friends/requestsSend', [FriendController::class, 'ShowrequestsSent']);
     Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
     Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
     Route::get('/friends/GetUsersWithFriendRequests', [FriendController::class, 'GetUsersWithFriendRequests']);
-    Route::get('/friends/destroyRequest', [FriendController::class, 'destroyFriendRequest']);
+    Route::get('/friends/destroyRequestAsReciver', [FriendController::class, 'destroyFriendRequestAsReciver']);
+    Route::get('/friends/destroyRequestAsSender', [FriendController::class, 'destroyFriendRequestAsSender']);
 
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/request', [FriendController::class, 'createRequest']);
+    Route::apiResource('friend', FriendController::class);
 
     //Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
     // Route::get('/friends/showFriends', [FriendController::class, 'showFriends']); Old
