@@ -76,15 +76,18 @@ async function createMarkerListAndReturn() {
 <template>
   <Toast />
 
-  <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup DialogHeader" header="Create Marker">
+  <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
+    <div class="w-100 text-center popup-header">
+      <h2 style="font-weight: 800;" v-if="currentPopupIndex != 100">{{ $t("new_marker") }}</h2>
+      <h2 style="font-weight: 800;" v-else>{{ $t("create_new_list") }}</h2>
+    </div>
 
     <!-- Post Info (Name, Description) -->
     <div v-if="currentPopupIndex == 0" class="w-100 d-flex flex-column flex-grow-1">
       <label for="marker-name" style="font-weight: 600; font-size: large">Name</label>
-      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name"
-        maxlength="24" style="width: 90%;">
+      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name" maxlength="24">
 
-      <label class="pt-2" for="marker-description" style="font-weight: 600; font-size: large;">Description</label>
+      <label for="marker-description" style="font-weight: 600; font-size: large;">Description</label>
       <textarea maxlength="128" id="marker-description" v-model="markerData.description" class="popup-input"
         placeholder="Description Here!" style="height: 128px; width: 90%; resize: none;"></textarea>
     </div>
@@ -99,7 +102,7 @@ async function createMarkerListAndReturn() {
           <path
             d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
         </svg>
-        <p class="w-100 m-auto" style="margin-left: 8px !important;">Create New List</p>
+        <p class="w-100 m-auto" style="margin-left: 8px !important;">{{ $t("create_new_list") }}</p>
       </div>
 
       <div v-for="(list, index) in markerList_array" :key="index" @click="selectMarkerList(index)"
@@ -123,7 +126,7 @@ async function createMarkerListAndReturn() {
     <div v-if="currentPopupIndex == 100" class="w-100 d-flex flex-column flex-grow-1">
       <h3>{{ createMarkerList_emoji }} {{ createMarkerList_name }}</h3>
 
-      <label for="marker-name" style="font-weight: 600; font-size: large">Marker List Name</label>
+      <label for="marker-name" style="font-weight: 600; font-size: large">{{ $t("marker_list_name") }}</label>
       <input v-model="createMarkerList_name" maxlength="24"
         :placeholder="MARKER_LIST_PLACEHOLDERS[Math.floor(Math.random() * MARKER_LIST_PLACEHOLDERS.length)]"
         class="popup-input" type="text" id="marker-name">
@@ -147,7 +150,6 @@ async function createMarkerListAndReturn() {
       <button v-else-if="currentPopupIndex != 2" class="btn popup-button" @click="NextPopupIndex()"
         :disabled='!markerData.name || !markerData.description'>Next</button>
       <button v-else class="btn popup-button" @click="createMarker()">Finish</button>
-
     </div>
   </Dialog>
 </template>

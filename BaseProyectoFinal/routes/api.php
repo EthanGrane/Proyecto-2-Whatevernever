@@ -63,6 +63,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/user', [ProfileController::class, 'user']);
     Route::put('/user', [ProfileController::class, 'update']);
 
+    Route::post('/users/deleteEverything', [UserController::class, 'deleteAllRelationWithUser']);
+
     // My User functions
     Route::get('/user/showUserByUsername', [UserController::class, 'showUserByUsername']);
 
@@ -105,10 +107,13 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
 
     // Markers lists
     Route::apiResource('markersLists', MarkerListController::class);
+    Route::get('/markerList/showAll', [MarkerListController::class, 'showAll']);
+
 
     // Marker Reviews
     Route::get('/markerReviews/getAvgStarsByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getAvgStarsByMarkerId']);
     Route::get('/markerReviews/getReviewByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getReviewByMarkerId']);
     Route::apiResource('markerReviews', MarkerReviewsController::class);
+
     
 });

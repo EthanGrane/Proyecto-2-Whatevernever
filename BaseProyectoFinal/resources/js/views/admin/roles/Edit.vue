@@ -133,3 +133,9 @@ function getDifference(array1, array2) {
     });
 }
 </script>
+
+<style scoped>
+* {
+    color: white;
+}
+</style>

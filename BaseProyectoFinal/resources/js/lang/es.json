@@ -22,6 +22,7 @@
     "forgot_password": "¿Olvidaste tu contraseña?",
     "confirm_password": "Confirmar Contraseña",
     "name": "Nombre",
+    "description": "Descripcion",
     "toggle_navigation": "Cambiar Navegación",
     "home": "Inicio",
     "you_are_logged_in": "¡Has iniciado sesión!",
@@ -68,6 +69,10 @@
     "notregisted": "No tienes cuenta? Registrate!",
     "already_registered": "Ya tienes cuenta? Inicia session!",
 
-    "home_hint_header" : "Como usar el Mapa?",
-    "home_hint_content" : "Teclas Rapidas:\n - Arrastrar LClick: Mover por el mapa.\n - Arrastrar RClick: Rotar prespectiva.\n - Doble LClick: Crear nuevo marcador."
+    "new_marker": "Nuevo Marcador",
+    "create_marker": "Crear Marcador",
+    "marker_list_name": "Nombre Lista Marcador",
+    "create_new_list": "Crear Nueva Lista",
+    "next": "Siguiente",
+    "finish": "Finalizar"
 }

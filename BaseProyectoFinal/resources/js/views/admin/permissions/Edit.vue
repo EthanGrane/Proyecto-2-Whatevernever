@@ -67,3 +67,9 @@
         permission.name = postData.value.name
     })
 </script>
+
+<style scoped>
+* {
+    color: white;
+}
+</style>

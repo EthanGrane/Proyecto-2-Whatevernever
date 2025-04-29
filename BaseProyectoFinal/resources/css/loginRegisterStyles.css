@@ -108,3 +108,12 @@ input:-ms-input-placeholder {
 .advertisment-menu div input {
     text-align: center !important;
 }
+
+.campo-email-registro {
+    margin-top: 20px;
+}
+
+.form-registro {
+    margin: 0px !important;
+    padding: 0px !important;
+}

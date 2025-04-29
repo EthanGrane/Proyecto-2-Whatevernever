@@ -267,3 +267,17 @@ hr {
     animation: opening 3s ease-in-out 1;
     overflow: hidden;
 }
+
+.link-panel-admin {
+    transition: 300ms;
+    color: white !important;
+    border: 1px solid white;
+    padding: 2px;
+    border-bottom-right-radius: 10px;
+    background-color: #000000;
+}
+
+.link-panel-admin:hover {
+    transition: 300ms;
+    filter: invert();
+}

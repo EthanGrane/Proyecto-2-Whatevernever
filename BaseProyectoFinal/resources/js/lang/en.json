@@ -68,7 +68,11 @@
     "notregisted": "You don't have a acount? Register!",
     "already_registered": "Already have a acount? Login!",
 
-    "home_hint_header" : "How to use Map?",
-    "home_hint_content": "Hotkeys:\n - Drag LClick: Move around the map.\n - Drag RClick: Rotate perspective.\n - Double LClick: Create new marker."
-
+    
+    "new_marker": "New Marker",
+    "create_marker": "Create Marker",
+    "marker_list_name": "Marker List Name",
+    "create_new_list": "Create new List",
+    "next": "Next",
+    "finish": "Finish"
 }
