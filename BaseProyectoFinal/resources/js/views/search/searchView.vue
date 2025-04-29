@@ -2,7 +2,10 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { authStore } from "../../store/auth";
+import {DeleteRequestAsSender} from '@/composables/useFriends.js';
 import ConfirmButtonPopup from '@/components/ConfirmButtonPopup.vue';
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 
 const usersList = ref([]);
 const inputbusqueda = ref("");
@@ -49,14 +52,7 @@ async function sendRequest(id_reciver) {
 }
 
 async function deleteRequest(friend_id) {
-    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequest?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
-        .then(response => {
-            console.log('Friendship deleted:', response.data);
-            friendsRequestSended.value = friendsRequestSended.value.filter(friend => friend.id !== friend_id);
-        })
-        .catch(error => {
-            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
-        });
+    await DeleteRequestAsSender(authStore().user.id, friend_id);
 }
 
 function manejarInput() {
@@ -74,6 +70,8 @@ cargarUsers();
 
 <template>
     <div class="search-background">
+        <Toast />
+
         <div>
             <input class="search-field" v-model="inputbusqueda" @input="manejarInput"
                 :placeholder="$t('buscadoramigos')">
@@ -145,24 +143,20 @@ cargarUsers();
     </div>
 </template>
 
-<style>
-@media (max-width: 520px) 
-{
-    .search-user-list-container 
-    {
+<style scoped>
+@media (max-width: 520px) {
+    .search-user-list-container {
         width: 100% !important;
         margin: 8px !important;
     }
 
-    .search-background
-    {
+    .search-background {
         margin: 8px !important;
     }
 
-    .search-field
-    {
+    .search-field {
         width: 90vw !important;
-        margin: 16px !important; 
+        margin: 16px !important;
     }
 }
 </style>

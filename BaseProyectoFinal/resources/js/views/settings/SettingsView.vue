@@ -65,7 +65,7 @@ const items = ref([
     </div>
 </template>
 
-<style>
+<style scoped>
 /* Cuando el ancho de la pantalla sea menor a 512px, ocultamos el texto */
 @media (max-width: 512px) {
     .secondary-button .p-button-label {

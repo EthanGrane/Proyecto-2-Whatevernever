@@ -101,7 +101,7 @@ import useAuth from '@/composables/auth'
 const { registerForm, validationErrors, processing, submitRegister } = useAuth();
 </script>
 
-<style>
+<style scoped>
 .form-label
 {
     width: 100%;

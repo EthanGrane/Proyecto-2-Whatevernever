@@ -317,7 +317,7 @@ const formatSize = (bytes) => {
 
 </script>
 
-<style>
+<style scoped>
 .fu-content {
     padding: 0px !important;
     border: 0px !important;

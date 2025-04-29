@@ -25,3 +25,41 @@
         top: 100px;
     }
 }
+
+.p-dialog-content
+{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.p-dialog-header {
+    padding: 0 !important;
+}
+
+.p-dialog-header-actions
+{
+    margin-top: 16px;
+    margin-right: 16px;
+    margin-left: auto;
+
+    border-radius: 50%;
+
+    height: auto !important ;
+}
+
+.p-dialog-header-actions
+{
+    margin: 0 !important;
+    margin-left: auto !important;
+}
+
+.p-button-text.p-button-secondary
+{
+    color: white !important;
+}
+.p-button-text.p-button-secondary:hover
+{
+    color: black !important;
+}

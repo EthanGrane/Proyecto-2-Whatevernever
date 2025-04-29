@@ -44,7 +44,3 @@ async function setLocale(newLocale) {
 }
 
 </script>
-
-<style scoped>
-
-</style>

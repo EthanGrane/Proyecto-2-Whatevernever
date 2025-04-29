@@ -66,5 +66,8 @@
     "deletebutton": "Borrar",
     "username": "Nombre de usuario",
     "notregisted": "No tienes cuenta? Registrate!",
-    "already_registered": "Ya tienes cuenta? Inicia session!"
+    "already_registered": "Ya tienes cuenta? Inicia session!",
+
+    "home_hint_header" : "Como usar el Mapa?",
+    "home_hint_content" : "Teclas Rapidas:\n - Arrastrar LClick: Mover por el mapa.\n - Arrastrar RClick: Rotar prespectiva.\n - Doble LClick: Crear nuevo marcador."
 }

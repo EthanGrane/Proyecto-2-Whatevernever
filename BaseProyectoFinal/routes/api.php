@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/user/showUserByUsername', [UserController::class, 'showUserByUsername']);
 
     //Friends
+
     Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
     Route::get('/friends/myFriends', [FriendController::class, 'ShowrequestsRecived']);
     Route::get('/friends/requestsSend', [FriendController::class, 'ShowrequestsSent']);
@@ -80,7 +81,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/request', [FriendController::class, 'createRequest']);
-    Route::apiResource('friend', FriendController::class);
+    Route::apiResource('friend', FriendController::class);  //Prefijo friend* no friends*
 
     //Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
     // Route::get('/friends/showFriends', [FriendController::class, 'showFriends']); Old

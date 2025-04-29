@@ -113,7 +113,6 @@ class UserController extends Controller
 
         // Elimina la imagen anterior
         $user->clearMediaCollection('users');
-
         $user->addMediaFromRequest('image')->toMediaCollection('users');
 
         return response()->json(['message' => 'Imagen actualizada']);
