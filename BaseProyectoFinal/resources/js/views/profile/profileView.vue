@@ -243,7 +243,7 @@ function ProfileIsVisible() {
                                         <ConfirmButtonPopup v-if="authStore().user.id == requestedUserData.id"
                                             name="Delete" header="Delete Friend" positive_option="Delete Friend"
                                             positive_severity="danger" button_class="danger-button border-0"
-                                            @confirmed="(result) => { if (result) { deleteFriend(user.user.id) } }" />
+                                            @confirmed="(result) => { if (result) { deleteFriend(user.id) } }" />
 
                                     </div>
                                 </div>
