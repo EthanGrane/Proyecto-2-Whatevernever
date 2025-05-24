@@ -52,7 +52,7 @@ input:-ms-input-placeholder {
 
 .iniciosession input {
     background-color: rgba(0, 0, 0, 0.0);
-    border: none;
+    border: 1px solid var(--background2) !important;
     color: var(--background3);
 }
 
@@ -100,7 +100,7 @@ input:-ms-input-placeholder {
 
 .advertisment-menu {
     background-image: url('/images/advertisment.png');
-    background-size: 80%;
+    background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
 }

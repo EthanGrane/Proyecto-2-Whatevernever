@@ -31,9 +31,7 @@
     height: 100%;
 }
 
-.search-user-container 
-{
-    background-color: black;
+.search-user-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,8 +45,7 @@
     border-radius: 16px;
 }
 
-.search-user-container:hover 
-{
+.search-user-container:hover {
     background-color: var(--background4) !important;
 }
 
@@ -65,8 +62,7 @@
     border-radius: 100%;
 }
 
-.search-user-information-name 
-{
+.search-user-information-name {
     color: white;
     font-size: large;
     font-weight: 500;
@@ -120,7 +116,9 @@
     border-radius: 32px;
 }
 
-.search-fake-user-image, .nombrefalso_carga, .search-fake-button {
+.search-fake-user-image,
+.nombrefalso_carga,
+.search-fake-button {
     animation: fade-pulse 1s infinite;
 }
 
@@ -130,13 +128,23 @@
 }
 
 
+.user-background-light {
+    background: rgb(2,2,2) !important;
+}
+
+.user-background-dark {
+    background: black;
+}
+
 @keyframes fade-pulse {
     0% {
         opacity: 0.5;
     }
+
     50% {
         opacity: 1;
     }
+
     100% {
         opacity: 0.5;
     }
