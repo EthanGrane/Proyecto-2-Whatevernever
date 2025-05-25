@@ -2,53 +2,50 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { authStore } from '../../store/auth';
-import useUsers from '../../composables/users';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
 import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
 import { showAllMarkersFromUserId } from "../../composables/useMarkers.js";
 import { getEmojiById, getMarkerListById } from "../../composables/useMarkerList.js";
 import { GetMapImageUrlFromCoordsAndZoom } from "../../composables/MapUtils.js";
+import { useFriends } from '../../composables/useFriends.js';
 
-const { updateImg } = useUsers();
 const route = useRoute();
+const friendsApi = useFriends();
 
 const userPFP = ref("");
 const requestedUserData = ref({});
 const requestedUserFriendList = ref([]);
 const requestMarkerData = ref();
 const markersDividedByList = ref([]);
+const friendRequestStatus = ref(null);
 
-// Inicializa todas las funciones
 async function loadDataFromRequestUser() {
-    try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + route.params.username);
-        if (response.data) {
-            requestedUserData.value = response.data;
-            let foto = (response.data.media_url ? response.data.media_url.split("localhost/")[1] : "");
-            if (response.data.media_url == null) {
-                userPFP.value = "/images/default_pf.jpg";
-            } else {
-                userPFP.value = "/" + foto;
-            }
+    const user = await friendsApi.getUserDataFromName(route.params.username);
+    if (user) {
+        requestedUserData.value = user;
+        userPFP.value = user.image;
 
-            getFriendsFromRequestedUser();
-            checkFriendStatus();
+        checkFriendStatus();
+        getFriendsFromRequestedUser();
 
-            requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
-            loadMarkers();
-
-        } else {
-            requestedUserData.value = {};
-        }
-    } catch (error) {
-        console.error("[ProfileView.vue] Error:", error);
+        requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
+        console.log('requestMarkerData:', requestMarkerData.value);
+        loadMarkers();
+    } else {
         requestedUserData.value = {};
+        userPFP.value = "/images/default_pf.jpg";
     }
 }
 
 async function loadMarkers() {
     let groupedMarkers = {};
+
+    if (!requestMarkerData.value || !Array.isArray(requestMarkerData.value.markers)) {
+        console.warn('No markers found or markers is not an array.');
+        markersDividedByList.value = {};
+        return;
+    }
 
     for (let marker of requestMarkerData.value.markers) {
         const listId = marker.marker_list_id;
@@ -58,7 +55,6 @@ async function loadMarkers() {
         groupedMarkers[listId].markers.push(marker);
     }
 
-    // Guardamos el diccionario con las listas agrupadas
     markersDividedByList.value = groupedMarkers;
     console.log(markersDividedByList.value);
 }
@@ -67,48 +63,39 @@ async function loadMarkers() {
 async function getFriendsFromRequestedUser() {
     if (!requestedUserData.value.id) return;
 
-    axios.get('http://127.0.0.1:8000/api/friends/allFriends?user_id=' + requestedUserData.value.id)
-        .then(response => {
-            requestedUserFriendList.value = response.data || [];
-        })
-        .catch(error => {
-            console.error("[ProfileView.vue] Error:", error);
-            requestedUserFriendList.value = [];
-        });
+    requestedUserFriendList.value = await friendsApi.getFriendsFromUserId(requestedUserData.value.id);
 }
+
 
 async function deleteRequestAsSender(friend_id) {
     if (!friend_id) {
         console.error("Friend_id is not defined on deleteRequestAsSender(friend_id)");
         return;
     }
-    axios.get(`http://127.0.0.1:8000/api/friends/destroyRequestAsSender?id_sender=${authStore().user.id}&id_receiver=${friend_id}`)
-        .then(response => {
-            requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
 
-            if (friend_id == requestedUserData.value.id)
-                friendRequestStatus.value = false;
-        })
-        .catch(error => {
-            console.error('There was an error deleting the sender friend request:', error.response?.data || error.message);
-        });
+    try {
+        await friendsApi.deleteRequestAsSender(authStore().user.id, friend_id);
+        requestedUserFriendList.value = requestedUserFriendList.value.filter(friend => friend.user.id !== Number(friend_id));
+
+        if (friend_id == requestedUserData.value.id)
+            friendRequestStatus.value = false;
+
+    } catch (error) {
+        console.error('There was an error deleting the sender friend request:', error.message);
+    }
 }
 
-async function sendRequest(id_reciver) {
-    await axios.post('http://127.0.0.1:8000/api/friend', {
-        "id_sender": authStore().user.id,
-        "id_receiver": id_reciver
-    }).then(response => {
-        if (id_reciver == requestedUserData.value.id)
+async function sendFriendRequest(id_receiver) {
+    try {
+        await friendsApi.sendRequest(authStore().user.id, id_receiver);
+        if (id_receiver == requestedUserData.value.id) {
             friendRequestStatus.value = true;
-    }).catch(error => {
+        }
+    } catch (error) {
         console.error(error);
-    });
+    }
 }
 
-onMounted(async () => {
-    await loadDataFromRequestUser();
-})
 
 // PrimeVue Popover template code
 const op = ref();
@@ -116,16 +103,9 @@ const toggle_showFriends = (event) => {
     op.value.toggle(event);
 }
 
-const friendRequestStatus = ref(null);
-function checkFriendStatus() {
-    axios.get(`/api/friends/getRequestStatus?friend_id=${requestedUserData.value.id}`)
-        .then(response => {
-            friendRequestStatus.value = response.data.value;
-            console.log("friendRequestStatus = " + friendRequestStatus.value);
-        })
-        .catch(error => {
-            console.error('There was an error deleting the friendship:', error.response?.data || error.message);
-        });
+async function checkFriendStatus() {
+
+    friendRequestStatus.value = await friendsApi.checkFriendStatus(requestedUserData.value.id);
 }
 
 function ProfileIsVisible() {
@@ -136,6 +116,12 @@ function ProfileIsVisible() {
     else
         return false;
 }
+
+
+onMounted(async () => {
+    await loadDataFromRequestUser();
+    await checkFriendStatus(requestedUserData.value.id)
+})
 
 </script>
 
@@ -151,12 +137,12 @@ function ProfileIsVisible() {
 
             <span v-if="authStore().user.id != requestedUserData.id" class="m-1">
 
-                <Button v-if="friendRequestStatus === false" @click="sendRequest(requestedUserData.id)"
+                <Button v-if="friendRequestStatus === false" @click="sendFriendRequest(requestedUserData.id)"
                     class="primary-button" label="Add Friend"
                     style="padding: 8px !important; padding-left: 12px !important; padding-right: 12px !important;" />
 
-                <Button v-else @click="deleteRequestAsSender(requestedUserData.id)" class="secondary-button danger-button-hover"
-                    label="UnFriend" />
+                <Button v-else @click="deleteRequestAsSender(requestedUserData.id)"
+                    class="secondary-button danger-button-hover" label="UnFriend" />
             </span>
 
             <span class="m-1">
