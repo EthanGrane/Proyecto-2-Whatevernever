@@ -82,10 +82,10 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
-    Route::post('/friends/request', [FriendController::class, 'createRequest']);
-    Route::apiResource('friend', FriendController::class);  //Prefijo friend* no friends*
+    Route::post('/friends/request', [FriendController::class, 'createRequest']);        
+    Route::apiResource('friend', FriendController::class);                          // Prefijo friend* no friends*
 
-    //Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
+    // Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
     // Route::get('/friends/showFriends', [FriendController::class, 'showFriends']); Old
     // Route::get('/friends/myFriends', [FriendController::class, 'showMyFriends']); Old
     // Route::get('/friends/requestsSend', [FriendController::class, 'requestsSent']); Old
@@ -108,7 +108,6 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     // Markers lists
     Route::apiResource('markersLists', MarkerListController::class);
     Route::get('/markerList/showAll', [MarkerListController::class, 'showAll']);
-
 
     // Marker Reviews
     Route::get('/markerReviews/getAvgStarsByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getAvgStarsByMarkerId']);

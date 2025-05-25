@@ -1,100 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue';
-import axios from 'axios';
-import { authStore } from "../../store/auth";
-import { DeleteRequestAsSender } from '@/composables/useFriends.js';
-import ConfirmButtonPopup from '@/components/ConfirmButtonPopup.vue';
-import { useToast } from "primevue/usetoast";
+import { onMounted } from 'vue';
+import { useUserSearch } from '@/composables/useUserSearch.js';
 
-const toast = useToast();
+const {
+  selectedFilter,
+  usersList,
+  inputbusqueda,
+  friendsRequestSended,
+  friendsRequestMap,
+  filteredUsers,
+  loadUsersData,
+  sendRequest,
+  deleteRequest,
+  manejarInput
+} = useUserSearch();
 
-const selectedFilter = ref("alphabetical Asc");
-const usersList = ref([]);
-const inputbusqueda = ref("");
-const friendsRequestSended = ref([]);
-const friendsRequestMap = ref(new Map());
-
-let debounceTimeout = null;
-
-const filteredUsers = computed(() => {
-    let filtered = [...usersList.value];
-
-    if (selectedFilter.value === "alphabetical Asc") {
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    if (selectedFilter.value === "alphabetical Des") {
-        filtered.sort((a, b) => b.name.localeCompare(a.name));
-    }
-
-    if (selectedFilter.value === "friendRequests") {
-        filtered = filtered.filter(user =>
-            friendsRequestSended.value.some(friend => friend.id === user.id)
-        );
-    }
-
-    if (selectedFilter.value === "no friendRequests") {
-        filtered = filtered.filter(user =>
-            !friendsRequestSended.value.some(friend => friend.id === user.id)
-        );
-    }
-
-    return filtered;
-});
-
-async function cargarUsers() {
-    try {
-        const [usersRes, requestsRes] = await Promise.all([
-            axios.get('http://127.0.0.1:8000/api/friends/showFriends?search=' + inputbusqueda.value),
-            axios.get('http://127.0.0.1:8000/api/friends/GetUsersWithFriendRequests')
-        ]);
-
-        usersList.value = usersRes.data.map(user => {
-            user.image = user.media_url ? user.media_url.split("localhost/")[1] : "";
-            return user;
-        });
-
-        friendsRequestSended.value = requestsRes.data;
-        friendsRequestMap.value = new Map(
-            friendsRequestSended.value.map(friend => [friend.id, true])
-        );
-
-    } catch (error) {
-        console.error("[SearchView.vue] Error:", error);
-    }
-}
-
-async function sendRequest(id_reciver) {
-    await axios.post('http://127.0.0.1:8000/api/friend', {
-        "id_sender": authStore().user.id,
-        "id_receiver": id_reciver
-    }).then(response => {
-        friendsRequestSended.value.push({ id: id_reciver });
-        friendsRequestMap.value.set(id_reciver, true);
-    }).catch(error => {
-        console.error(error);
-    });
-}
-
-async function deleteRequest(friend_id) {
-    await DeleteRequestAsSender(authStore().user.id, friend_id);
-    friendsRequestSended.value = friendsRequestSended.value.filter(friend => friend.id !== friend_id);
-    friendsRequestMap.value.delete(friend_id);
-}
-
-function manejarInput() {
-    if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    if (inputbusqueda.value === '') {
-        usersList.value = [];
-    }
-
-    debounceTimeout = setTimeout(() => {
-        cargarUsers();
-    }, 500);
-}
-
-cargarUsers();
+onMounted(loadUsersData);
 </script>
 
 <template>
