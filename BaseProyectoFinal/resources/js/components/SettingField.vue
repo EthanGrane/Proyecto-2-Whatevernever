@@ -33,12 +33,12 @@
     </div>
 
     <!-- Dialog que contiene el campo de entrada y el botón de enviar -->
-    <Dialog v-model:visible="showDialog" :header="title" @hide="hideDialog">
+    <Dialog v-model:visible="showDialog" :header="title" class="p-3"  @hide="hideDialog">
         <p>{{ description }}</p>
         <div class="d-flex flex-column gap-2" style="height: 100%; justify-content: flex-end;">
             <!-- Aquí está el input de texto -->
             <input v-model="inputValue" :placeholder="placeholder" class="form-control" type="text"
-                style="color: black !important;" />
+                style="color: black !important; border: 1px solid var(--background2) !important;" />
 
             <!-- El botón ahora estará al final -->
             <Button class="btn secondary-button px-4" @click="submitInput" style="margin-top: auto;">
@@ -154,4 +154,5 @@ const submitInput = () => {
 .setting-field-input {
     width: 100%;
 }
+
 </style>
