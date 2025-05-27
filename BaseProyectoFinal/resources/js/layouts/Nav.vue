@@ -100,11 +100,11 @@ function handleNav(targetPath) {
 
 .floating-circle {
   position: absolute;
-  top: -24px;
+  top: -32px;
   left: 50%;
   transform: translateX(-50%) scale(1);
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   max-width: none !important;
   max-height: none !important;
   background-color: var(--background0);
