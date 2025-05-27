@@ -103,8 +103,8 @@ function handleNav(targetPath) {
   top: -32px;
   left: 50%;
   transform: translateX(-50%) scale(1);
-  width: 72px;
-  height: 72px;
+  width: 5rem;
+  height: 5rem;
   max-width: none !important;
   max-height: none !important;
   background-color: var(--background0);
