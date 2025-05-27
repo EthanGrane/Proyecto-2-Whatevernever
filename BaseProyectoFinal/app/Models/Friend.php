@@ -16,7 +16,6 @@ class Friend extends Pivot
         'request_status',
         'sender_user_id',
         'reciver_user_id',
-        'friend_group_id',
     ];
 
     public function sender()

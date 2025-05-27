@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Faker\Factory as Faker;
 use Nette\Utils\Random;
+use App\Models\Marker;
 
 class markers_table_seeder extends Seeder
 {
@@ -15,6 +16,8 @@ class markers_table_seeder extends Seeder
      */
     public function run(): void
     {
+        // Ahora uso el Factory del Marker para los seeders
+        
         $cities = [
             ["name" => "New York", "description" => "La ciudad que nunca duerme", "lat" => 40.7128, "lng" => -74.0060],
             ["name" => "Tokyo", "description" => "La metrópolis futurista", "lat" => 35.6895, "lng" => 139.6917],
@@ -69,37 +72,18 @@ class markers_table_seeder extends Seeder
         ];
 
         foreach ($cities as $city) {
-            DB::table('markers')->insert([
+            Marker::factory()->create([
                 'name' => $city['name'],
                 'description' => $city['description'],
                 'lat' => $city['lat'],
                 'lng' => $city['lng'],
-                'zoom' => mt_rand(140, 160) / 10, // 7.0 - 14.0
+                'zoom' => mt_rand(140, 160) / 10,
                 'pitch' => mt_rand(0, 80),
                 'bearing' => mt_rand(-180, 180),
-                'marker_list_id' => 999,
                 'user_id' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
             ]);
         }
 
-
-        $faker = Faker::create();
-
-        foreach ($cities as $city) {
-            DB::table('markers')->insert([
-                'name' => $city['name'],
-                'description' => $faker->sentence,
-                'lat' => $faker->latitude(),
-                'lng' => $faker->longitude(),
-                'zoom' => $faker->randomFloat(1, 10, 18),
-                'pitch' => $faker->numberBetween(0, 80),
-                'bearing' => $faker->numberBetween(-180, 180),
-                'user_id' => $faker->numberBetween(0, 50), 
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        Marker::factory()->count(50)->create();
     }
 }

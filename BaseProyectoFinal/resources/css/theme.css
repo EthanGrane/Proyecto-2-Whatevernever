@@ -1,8 +1,9 @@
 :root {
-    --background1: #000000;
-    --background2: #212121;
-    --background3: #707070;
-    --background4: #1A1A1A;
+    --background0: #000000;
+    --background1: #050505;
+    --background2: #1A1A1A;
+    --background3: #212121;
+    --background4: #707070;
 
     --positive: #00C109;
     --positive-hover: #107d16;

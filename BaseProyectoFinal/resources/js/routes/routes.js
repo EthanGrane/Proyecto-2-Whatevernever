@@ -198,7 +198,7 @@ export default [
 
     {
         path: '/admin',
-        component: AuthenticatedLayout,
+        //component: AuthenticatedLayout,
         redirect: {
             name: 'admin.index'
         },

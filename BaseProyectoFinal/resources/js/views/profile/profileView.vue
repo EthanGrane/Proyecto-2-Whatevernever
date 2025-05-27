@@ -128,7 +128,7 @@ onMounted(async () => {
 <template>
     <div v-if="requestedUserData.id && friendRequestStatus !== null" class="profile-background">
 
-        <div class="profile-info-container" style="background: linear-gradient(#99de45, #000000);">
+        <div class="profile-info-container" style="background: linear-gradient(#99de45, var(--background1));">
             <img :src="userPFP" alt="Profile Image" class="profile-info-pfp">
 
             <h1 class="profile-info-name">{{ requestedUserData.name }}</h1>

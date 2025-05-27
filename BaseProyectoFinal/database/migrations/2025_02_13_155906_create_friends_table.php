@@ -16,7 +16,6 @@ return new class extends Migration
             $table->boolean('request_status')->default(false);
             $table->foreignId('sender_user_id')->constrained('users');
             $table->foreignId('reciver_user_id')->constrained('users');
-            $table->integer('friend_group_id')->nullable();
             $table->timestamps();
         });
     }

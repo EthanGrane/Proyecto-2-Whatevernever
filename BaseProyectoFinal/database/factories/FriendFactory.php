@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Friend;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Friend>
+ * @extends Factory<Friend>
  */
 class FriendFactory extends Factory
 {
@@ -14,9 +16,9 @@ class FriendFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => \App\Models\User::factory(), // Si tienes una relación con el modelo User
-            'friend_id' => \App\Models\User::factory(), // Similar si hay relación con User
-            // Otros campos de tu tabla `friends`
+            'request_status' => $this->faker->randomElement([0,1]),
+            'sender_user_id' => User::factory(),
+            'reciver_user_id' => User::factory(),
         ];
     }
 }

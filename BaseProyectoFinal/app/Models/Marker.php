@@ -13,24 +13,20 @@ class Marker extends Model
 
     protected $fillable = [
         'name',
-        'description',
-        'lng',
-        'lat',
-        'zoom',
-        'pitch',
-        'bearing',
-        'marker_list_id',
-        'user_id',
+        'owner_user_id',
+        'emoji_identifier'
     ];
 
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function list()
+    
+    public function lists()
     {
-        return $this->belongsTo(User::class, 'marker_list_id');
+        return $this->belongsToMany(MarkerList::class, 'marker_list_markers', 'marker_id', 'marker_list_id');
     }
+
 
     // Marker Reviews
     public function reviews()

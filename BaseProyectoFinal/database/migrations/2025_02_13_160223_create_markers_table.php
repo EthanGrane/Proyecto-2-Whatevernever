@@ -20,7 +20,6 @@ return new class extends Migration
             $table->double('pitch');
             $table->double('bearing');
             $table->double('zoom');
-            $table->integer('marker_list_id')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });
