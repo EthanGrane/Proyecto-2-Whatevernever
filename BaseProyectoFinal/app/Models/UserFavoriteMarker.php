@@ -13,7 +13,6 @@ class UserFavoriteMarker extends Model
     protected $fillable = [
         'user_id',
         'marker_id',
-        'rating',
         'favorite',
     ];
 

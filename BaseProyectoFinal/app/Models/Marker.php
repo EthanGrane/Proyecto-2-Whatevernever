@@ -48,10 +48,8 @@ class Marker extends Model
     }
 
     public function favoritedByUsers()
-{
-    return $this->belongsToMany(User::class, 'user_favorite_markers')
-                ->withPivot('rating', 'status')
-                ->withTimestamps();
-}
-
+    {
+        return $this->belongsToMany(User::class, 'user_favorite_markers')
+            ->withTimestamps();
+    }
 }

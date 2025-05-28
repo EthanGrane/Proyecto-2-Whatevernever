@@ -92,6 +92,12 @@ async function RateMarker() {
   rating_avg.value = await GetAvgStarsByMarkerId(props.marker.id) || { average_stars: 0 };
 }
 
+// Add to fav
+async function ToggleFavorite()
+{
+  
+}
+
 </script>
 
 

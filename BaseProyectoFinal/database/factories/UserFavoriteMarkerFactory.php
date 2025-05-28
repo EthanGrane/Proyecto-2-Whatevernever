@@ -22,7 +22,6 @@ class UserFavoriteMarkerFactory extends Factory
         return [
             'user_id' => User::factory(),
             'marker_id' => Marker::factory(),
-            'rating' => $this->faker->numberBetween(1, 5),
             'favorite' => $this->faker->boolean(80),
         ];
     }

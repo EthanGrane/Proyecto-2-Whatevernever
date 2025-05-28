@@ -99,7 +99,6 @@ class User extends Authenticatable implements HasMedia
     public function favoriteMarkers()
     {
         return $this->belongsToMany(Marker::class, 'user_favorite_markers')
-            ->withPivot('rating', 'status')
             ->withTimestamps();
     }
 }

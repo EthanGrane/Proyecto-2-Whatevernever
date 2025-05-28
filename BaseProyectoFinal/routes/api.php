@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\PostControllerAdvance;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\FavoriteMarkerController;
+
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Http\Request;
@@ -20,8 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('forget.password.post');
 Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.reset');
 
-Route::group(['middleware' => 'auth:sanctum'], function () 
-{
+Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::apiResource('posts', PostControllerAdvance::class);
     Route::apiResource('categories', CategoryController::class);
@@ -71,7 +72,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     //Friends
 
     Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
-    Route::get('/friends/showRequestsRecived', [FriendController::class, 'ShowRequestsRecived']);     
+    Route::get('/friends/showRequestsRecived', [FriendController::class, 'ShowRequestsRecived']);
     Route::get('/friends/showRequestsSent', [FriendController::class, 'ShowRequestsSent']);
     Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
     Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
@@ -82,7 +83,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
     Route::post('/friends/delete', [FriendController::class, 'deleteFriend']);
     Route::post('/friends/accept', [FriendController::class, "acceptFriend"]);
-    Route::post('/friends/request', [FriendController::class, 'createRequest']);        
+    Route::post('/friends/request', [FriendController::class, 'createRequest']);
     Route::apiResource('friend', FriendController::class);                          // Prefijo friend* no friends*
 
     // Route::post('/friends/request', [FriendController::class, 'createRequest']); Old
@@ -94,15 +95,15 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/friends/showMyGroups', [FriendGroupsController::class, 'showMyGroups']);
     Route::get('/friends/showJoinedGroups', [FriendGroupsController::class, 'showJoinedGroups']);
     Route::get('/friends/friendsInGroup', [FriendGroupsController::class, 'showPeopleInGroup']);
-    
+
     Route::post('/friends/kickFromGroup', [FriendGroupsController::class, 'kickFromGroup']);
     Route::post('/friends/createGroup', [FriendGroupsController::class, 'createGroup']);
     Route::post('/friends/dropGroup', [FriendGroupsController::class, 'dropGroup']);
     Route::post('/friends/addToGroup', [FriendGroupsController::class, 'addToGroup']);
 
     // Markers
-    Route::get('/markers/getAllMarkersFromFriendId',[MarkerController::class, 'getAllMarkersFromUserId']);
-    Route::post('/markers/getLastMarkerFromFriends',[MarkerController::class, 'getLastMarkerFromFriends']);
+    Route::get('/markers/getAllMarkersFromFriendId', [MarkerController::class, 'getAllMarkersFromUserId']);
+    Route::post('/markers/getLastMarkerFromFriends', [MarkerController::class, 'getLastMarkerFromFriends']);
     Route::apiResource('markers', MarkerController::class); // siempre ultimo ya que puede dar errores con el contenido posterior a markers/...
 
     // Markers lists
@@ -114,5 +115,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     Route::get('/markerReviews/getReviewByMarkerId/{marker_id}', [MarkerReviewsController::class, 'getReviewByMarkerId']);
     Route::apiResource('markerReviews', MarkerReviewsController::class);
 
-    
+    // Favorite Marker Controller
+    Route::get('/favorite', [FavoriteMarkerController::class, 'getFavorite']);
+    Route::post('/markers/{marker}/favorite', [FavoriteMarkerController::class, 'addFavorite']);
+    Route::delete('/markers/{marker}/favorite', [FavoriteMarkerController::class, 'removeFavorite']);
 });
