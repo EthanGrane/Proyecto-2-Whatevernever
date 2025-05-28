@@ -51,10 +51,10 @@ const loadMarkerData = async (marker = props.marker) => {
     const markerList = await getMarkerListById(marker.marker_list_id);
     const emoji = await getEmojiById(markerList.emoji_identifier);
 
-    if(markerList.value)
+    if (markerList.value)
       listData.value = `${emoji} ${markerList.name}`;
     else
-    listData.value = `${emoji} All Markers`;
+      listData.value = `${emoji} All Markers`;
 
     // Estrellas promedias
     rating_avg.value = await GetAvgStarsByMarkerId(props.marker.id) || { average_stars: 0 };
@@ -77,14 +77,23 @@ const loadMarkerData = async (marker = props.marker) => {
   }
 };
 
+// Place a review code:
+const showRatingDialog = ref(false);
+function openRatingDialog() {
+  showRatingDialog.value = true;
+}
+
 async function RateMarker() {
 
   await SetReviewToMarker(props.marker.id, rating_client_value.value);
+  showRatingDialog.value = false;
+
   await sleep(100);
   rating_avg.value = await GetAvgStarsByMarkerId(props.marker.id) || { average_stars: 0 };
 }
 
 </script>
+
 
 <template>
   <Dialog position="bottom" v-model:visible="visible" class="popup bottom-popup">
@@ -92,45 +101,41 @@ async function RateMarker() {
       <h2 style="font-weight: 800;">{{ marker.name }}</h2>
     </div>
 
-    <div class="w-100 d-flex flex-grow-1 justify-content-center align-items-center m-0 p-0">
-      <Rating v-model="rating_avg.average_stars" :stars=10 readonly>
-        <template #onicon>
-
-          <img v-if="rating_avg.average_stars >= 9" src="/images/MarkerReviews/Fire.webp" width="20" />
-          <img v-else-if="rating_avg.average_stars >= 5" src="/images/MarkerReviews/Hearth.webp" width="20" />
-          <img v-else src="/images/MarkerReviews/HappyFace.webp" width="20" />
-
-        </template>
-        <template #officon>
-          <img src="/images/MarkerReviews/CryFace.webp" width="20" />
-        </template>
-      </Rating>
-      <p style="font-weight: normal;">({{ rating_avg.count }})</p>
-
-    </div>
-
     <div class="w-100 d-flex flex-column flex-grow-1 p-3">
-      <h3 class="m-1" style="font-style: italic;">{{ loading ? 'Cargando...' : listData }}</h3>
+      <h3 class="m-1">{{ loading ? 'Cargando...' : listData }}</h3>
 
       <p
         style="margin-left: 16px !important; height: auto; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; font-size: medium;">
         {{ marker.description }}
       </p>
+    </div>
 
-      <hr>
-      <div class="w-100 m-auto d-flex align-items-center">
-        <Rating @click="RateMarker" v-model="rating_client_value" :stars="10">
-          <template #onicon>
-            <img v-if="rating_client_value >= 9" src="/images/MarkerReviews/Fire.webp" width="20" />
-            <img v-else-if="rating_client_value >= 5" src="/images/MarkerReviews/Hearth.webp" width="20" />
-            <img v-else src="/images/MarkerReviews/HappyFace.webp" width="20" />
-          </template>
-          <template #officon>
-            <img src="/images/MarkerReviews/CryFace.webp" width="20" />
-          </template>
-        </Rating>
-      </div>
+    <div class="w-75 d-flex flex-grow-1 justify-content-center align-items-center m-auto p-3" style="max-height: 64px;">
+      <Rating v-model="rating_avg.average_stars" :stars="10" readonly></Rating>
+      <p class="m-2" style="font-weight: normal;">({{ rating_avg.count }})</p>
+    </div>
 
+    <span>
+      <Button class="primary-button w-75 m-2" @click="openRatingDialog">
+        Review
+      </Button>
+
+      <Button class="primary-button w-auto" style="border-radius: 50% !important; width: 45px !important; height: 45px !important;" @click="openRatingDialog">
+        <i class="pi pi-star"></i>
+        <i v-if="false" class="pi pi-star-fill"></i>
+      </Button>
+    </span>
+  </Dialog>
+
+  <!-- Diálogo para dar la valoración (rating) -->
+  <Dialog v-model:visible="showRatingDialog" modal>
+    <div class="w-100 m-auto d-flex flex-column align-items-center p-3">
+      <p class="w-100">Place a Review:</p>
+      <Rating @click="RateMarker" v-model="rating_client_value" :stars="10"></Rating>
     </div>
   </Dialog>
 </template>
+
+<style scoped>
+
+</style>

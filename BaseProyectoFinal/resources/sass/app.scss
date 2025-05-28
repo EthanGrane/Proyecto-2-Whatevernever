@@ -36,3 +36,24 @@ ol,ul{
     margin: 0px;
     padding-left: 0.5rem;
 }
+
+.p-button-text.p-button-secondary:hover {
+  color: white !important;
+}
+
+.p-button-text.p-button-secondary
+{
+  background-color: var(--background2) !important;
+}
+
+.p-rating-option-active .p-rating-icon {
+  color: var(--primary) !important;
+}
+
+.p-rating-option:hover .p-rating-icon {
+  color: var(--primary) !important;
+}
+
+.pt-5 {
+  padding: 0 !important;
+}

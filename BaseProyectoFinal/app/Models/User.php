@@ -94,4 +94,12 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsToMany(FriendGroup::class, 'friend_groups_friends', 'id_friend', 'friend_group_id');
     }
+
+    // Fav markers
+    public function favoriteMarkers()
+    {
+        return $this->belongsToMany(Marker::class, 'user_favorite_markers')
+            ->withPivot('rating', 'status')
+            ->withTimestamps();
+    }
 }

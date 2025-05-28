@@ -29,7 +29,7 @@ class Marker extends Model
     {
         return $this->belongsTo(User::class, "user_id");
     }
-    
+
     public function lists()
     {
         return $this->belongsToMany(MarkerList::class, 'marker_list_markers', 'marker_id', 'marker_list_id');
@@ -46,4 +46,12 @@ class Marker extends Model
     {
         return $this->reviews()->avg('review_stars');
     }
+
+    public function favoritedByUsers()
+{
+    return $this->belongsToMany(User::class, 'user_favorite_markers')
+                ->withPivot('rating', 'status')
+                ->withTimestamps();
+}
+
 }
