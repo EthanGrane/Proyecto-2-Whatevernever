@@ -3,6 +3,7 @@ import { computed, ref, watch, onMounted } from "vue";
 import { getEmojiById, getMarkerListById } from '@/composables/useMarkerList';
 import { flyMapPositionAndRotation } from "@/composables/MapUtils.js";
 import { GetAvgStarsByMarkerId, SetReviewToMarker, GetMyReviewByMarkerId } from "@/composables/useMarkerReviews";
+import { useFavoriteMarkers } from "../composables/useFavoriteMarkers";
 
 const props = defineProps({
   visible: Boolean,
@@ -14,16 +15,21 @@ const visible = computed({
   set: val => emit('update:visible', val)
 });
 
+const useFavoriteMarkersApi = useFavoriteMarkers();
+
 let currentMarkerId = ref(null);
 const listData = ref('');
 const loading = ref(false);
 const rating_avg = ref({ average_stars: 0 });   // Es el valor promedio que tiene el marcador
 const rating_client_value = ref();              // Es el valor que le da el usuario al marcador
 
+const isFavorite = ref(false)
+
 // Ejecutar la carga de datos cuando el componente se monta
 onMounted(async () => {
   if (props.visible) {
     await loadMarkerData(); // Cargar los datos si el componente ya está visible al montarse
+    isFavorite.value = await useFavoriteMarkersApi.isFavorite(props.marker?.id);
   }
 });
 
@@ -93,9 +99,9 @@ async function RateMarker() {
 }
 
 // Add to fav
-async function ToggleFavorite()
-{
-  
+async function ToggleFavorite() {
+  await useFavoriteMarkersApi.toggleSetFavorite(props.marker.id);
+  isFavorite.value = !isFavorite.value;
 }
 
 </script>
@@ -126,9 +132,10 @@ async function ToggleFavorite()
         Review
       </Button>
 
-      <Button class="primary-button w-auto" style="border-radius: 50% !important; width: 45px !important; height: 45px !important;" @click="openRatingDialog">
-        <i class="pi pi-star"></i>
-        <i v-if="false" class="pi pi-star-fill"></i>
+      <Button class="primary-button w-auto"
+        style="border-radius: 50% !important; width: 45px !important; height: 45px !important;" @click="ToggleFavorite">
+        <i v-if="isFavorite" class="pi pi-star-fill"></i>
+        <i v-else class="pi pi-star"></i>
       </Button>
     </span>
   </Dialog>
@@ -142,6 +149,4 @@ async function ToggleFavorite()
   </Dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
