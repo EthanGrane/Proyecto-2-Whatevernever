@@ -79,7 +79,7 @@
     outline: none;
 }
 
-.popup-button {
+/* .popup-button {
     background-color: #ffd534;
     color: black;
     font-weight: 700;
@@ -104,7 +104,7 @@
 
 .popup-button:active {
     color: white;
-}
+} */
 
 .popup-footer {
     margin: 8px;

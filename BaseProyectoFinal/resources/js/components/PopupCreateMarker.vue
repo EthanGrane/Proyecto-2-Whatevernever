@@ -85,7 +85,8 @@ async function createMarkerListAndReturn() {
     <!-- Post Info (Name, Description) -->
     <div v-if="currentPopupIndex == 0" class="w-100 d-flex flex-column flex-grow-1">
       <label for="marker-name" style="font-weight: 600; font-size: large">Name</label>
-      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name" maxlength="24">
+      <input placeholder="Name Here!" class="popup-input" type="text" id="marker-name" v-model="markerData.name"
+        maxlength="24">
 
       <label for="marker-description" style="font-weight: 600; font-size: large;">Description</label>
       <textarea maxlength="128" id="marker-description" v-model="markerData.description" class="popup-input"
@@ -141,39 +142,33 @@ async function createMarkerListAndReturn() {
     </div>
 
     <div class="popup-footer">
-      <Button v-if="currentPopupIndex != 0" class="btn secondary-button return-button" @click="PreviousPopupIndex()">
-        <span class="pi pi-arrow-left"></span>
-      </Button>
+      <span class="d-flex justify-content-between align-items-center w-100">
+        <Button v-if="currentPopupIndex != 0" class="btn secondary-button return-button" @click="PreviousPopupIndex()">
+          <span class="pi pi-arrow-left"></span>
+        </Button>
 
-      <button v-if="currentPopupIndex == 100" class="btn popup-button" @click="createMarkerListAndReturn()"
-        :disabled='!createMarkerList_name'>Create</button>
-      <button v-else-if="currentPopupIndex != 2" class="btn popup-button" @click="NextPopupIndex()"
-        :disabled='!markerData.name || !markerData.description'>Next</button>
-      <button v-else class="btn popup-button" @click="createMarker()">Finish</button>
+        <button v-if="currentPopupIndex == 100" class="btn primary-button w-100 m-2" @click="createMarkerListAndReturn()"
+          :disabled='!createMarkerList_name'>Create</button>
+        <button v-else-if="currentPopupIndex != 2" class="btn primary-button w-100 m-2" @click="NextPopupIndex()"
+          :disabled='!markerData.name || !markerData.description'>Next</button>
+        <button v-else class="btn highlight-button w-100 m-2" @click="createMarker()">Finish</button>
+      </span>
     </div>
   </Dialog>
 </template>
 
 <style scoped>
-
-.return-button
-{
-  position: absolute !important;
-  bottom: 16px !important;
-  left: 16px !important;
-
+.return-button {
   border: 50%;
   width: 32px !important;
   height: 32px !important;
 }
 
-.clickable-div:hover 
-{
+.clickable-div:hover {
   cursor: pointer;
 }
 
-.dialog-header
-{
+.dialog-header {
   padding: 0 !important;
 }
 
@@ -182,8 +177,7 @@ async function createMarkerListAndReturn() {
   color: white !important;
 }
 
-.p-button:hover 
-{
+.p-button:hover {
   background-color: white !important;
   color: black !important;
 }
@@ -210,5 +204,4 @@ async function createMarkerListAndReturn() {
 .p-toast-detail {
   color: white !important;
 }
-
 </style>
