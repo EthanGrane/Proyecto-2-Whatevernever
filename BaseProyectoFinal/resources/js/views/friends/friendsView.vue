@@ -1,187 +1,172 @@
-<template>
-    <div id="backgroundfriends">
-        <div id="friendsbuttons">
-            <button :class="{ friendsbuttonsselected: pages, friendsbuttonsNOTselected: !pages }" @click="page1">
-                {{$t('sendRequests')}}
-            </button>
-            <button :class="{ friendsbuttonsselected: !pages, friendsbuttonsNOTselected: pages }" @click="page2">
-                {{ $t('recivedRequests') }}
-            </button>
-        </div>
-        
-        <!--Requests i send-->
-        <div v-if="pages" class="friendrequestspage">
-            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
-                <div class="search-user-information-container">
-                    <div>
-                        <div class="search-fake-user-image"></div>
-                    </div>
-                    <div>
-                        <div class="search-fake-user-username"></div>
-
-                        <div class="d-flex flex-row">
-                            <div class="search-fake-user-name"></div>
-                            <div class="search-fake-user-description"></div>
-                        </div>
-
-                    </div>
-                </div>
-                <div>
-                    <div class="search-fake-button"></div>
-                </div>
-            </div>
-            <div v-for="(user, index) in users" :key="index" class="search-user-container">
-                <div class="search-user-information-container" v-if="user.request_status == 0">
-                    <div>
-                        <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
-                    </div>
-                    <div class="search-user-information">
-                        <b><p class="search-user-information-name">{{ user.reciver.name }}</p></b>
-                        <p class="search-user-information-username">@{{ user.reciver.username }}</p>
-                    </div>
-                </div>
-                <div v-if="user.request_status == 0">
-                    <button @click="deleteFriend(user.id)" class="secondary-button">{{ $t('cancelFriendRequest') }}</button>
-                </div>
-            </div>
-            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>{{$t('withoutrequests')}}</h2>
-            </div>
-        </div>
-        <!--Requests i recive-->
-        <div v-if="!pages" class="friendrequestspage">
-            <div v-if="loading" v-for="n in 4" :key="n" class="search-user-container">
-                <div class="search-user-information-container">
-                    <div>
-                        <div class="search-fake-user-image"></div>
-                    </div>
-                    <div>
-                        <div class="search-fake-user-username"></div>
-
-                        <div class="d-flex flex-row">
-                            <div class="search-fake-user-name"></div>
-                            <div class="search-fake-user-description"></div>
-                        </div>
-
-                    </div>
-                </div>
-                <div>
-                    <div class="search-fake-button"></div>
-                </div>
-            </div>
-            <div v-for="(user, index) in users" :key="index" class="search-user-container">
-                
-                <div class="search-user-information-container" v-if="user.request_status == 0">
-                    <div>
-                        <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image">
-                    </div>
-                    <div class="search-user-information">
-                        <b><p class="search-user-information-name">{{ user.sender.name }}</p></b>
-                        <p class="search-user-information-username">@{{ user.sender.username }}</p>
-                    </div>
-                </div>
-
-                <div v-if="user.request_status == 0">
-                    <button @click="acceptRequest(user.id)" class="secondary-button">{{ $t('acceptFriendRequest') }}</button>
-                </div>
-
-            </div>
-            <div v-if="users.length < 1 && !loading" id="notfoundsearcherror">
-                <h2>{{$t('withoutrequests')}}</h2>
-            </div>
-        </div>
-    </div>
-</template>
-
 <script setup>
 import { ref } from 'vue';
 import { authStore } from "../../store/auth";
-import axios from 'axios';
+import { useFriends } from "../../composables/useFriends";
 
-    const auth = authStore();
-    const user_id = ref(auth.user?.id);
+const auth = authStore();
+const userId = ref(auth.user?.id);
+const friendsApi = useFriends();
 
-    const loading = ref(false);
-    const users = ref([]);
-    const pages = ref(true);
+const isLoading = ref(false);
+const friendRequests = ref([]);
+const showSentRequests = ref(true);
 
-    async function cargarRequests() 
-    {
-        loading.value = true;
-        await axios.get('http://127.0.0.1:8000/api/friends/myFriends?user='+user_id.value)
-        .then(response => {
-            users.value = response.data;
-            //users.value = response.data.map(request => request.sender);
-            loading.value = false;
-        })
-        .catch(error => {
-            console.error("[SearchView.vue] Error:", error);
-            loading.value = false;
-        });
-    }
+async function fetchReceivedRequests() {
+  try {
+    const response = await friendsApi.getRequestReceived(userId.value);
+    friendRequests.value = response;
+  } catch (error) {
+    console.error("[SearchView.vue] Error fetching received requests:", error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 
-    async function LoadRequestsSend() {
-        loading.value = true;
-        await axios.get('http://127.0.0.1:8000/api/friends/requestsSend?user='+user_id.value)
-        .then(response => {
-            users.value = response.data;
+async function fetchSentRequests() {
+  try {
+    const response = await friendsApi.getRequestSend(userId.value);
+    friendRequests.value = response;
+  } catch (error) {
+    console.error("[SearchView.vue] Error fetching sent requests:", error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 
-            loading.value = false;
-        })
-        .catch(error => {
-            console.error("[FriendsView.vue] Error:", error);
-            loading.value = false;
-        })
-    }
+function showSent() {
+  showSentRequests.value = true;
+  friendRequests.value = [];
+  fetchSentRequests();
+}
 
-    function page1() {
-        pages.value = true;
-        users.value = [];
-        LoadRequestsSend();
-    }
+function showReceived() {
+  showSentRequests.value = false;
+  friendRequests.value = [];
+  fetchReceivedRequests();
+}
 
-    function page2() {
-        pages.value = false;
-        users.value = [];
-        cargarRequests();
-    }
+async function acceptFriendRequest(friendshipId) {
+  try {
+    await friendsApi.acceptFriend(friendshipId);
+    await fetchReceivedRequests();
+  } catch (error) {
+    console.error("[SearchView.vue] Error accepting friend request:", error);
+  }
+}
 
-    async function acceptRequest(id_friendship) {
-        try {
-            await axios.post('http://127.0.0.1:8000/api/friends/accept', {
-                "id": id_friendship,
-            })
-            .then(response => {
-                console.log(response);
-                users.value = [];
-                cargarRequests();
-            })
-            .catch(error => {
-                console.error("[SearchView.vue] Error:", error);
-            });
+async function cancelFriendRequest(friendshipId) {
+  try {
+    await friendsApi.deleteRequestAsSender(userId.value,friendshipId);
+    await fetchSentRequests();
+  } catch (error) {
+    console.error("[SearchView.vue] Error cancelling friend request:", error);
+  }
+}
 
-        } catch (error) {
-            console.log(error);
-        }
-    }
+// Carga inicial: mostrar solicitudes enviadas
+fetchSentRequests();
 
-    async function deleteFriend(id_friendship) {
-        try {
-            await axios.post('http://127.0.0.1:8000/api/friends/delete', {
-                "friend_id": id_friendship,
-            })
-            .then(response => {
-                console.log(response);
-                users.value = [];
-                LoadRequestsSend();
-            })
-            .catch(error => {
-                console.error("[SearchView.vue] Error:", error);
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    LoadRequestsSend();
 </script>
+
+<template>
+  <div id="backgroundfriends">
+    <div id="friendsbuttons">
+      <button
+        :class="{ friendsbuttonsselected: showSentRequests, friendsbuttonsNOTselected: !showSentRequests }"
+        @click="showSent"
+      >
+        {{ $t('sendRequests') }}
+      </button>
+      <button
+        :class="{ friendsbuttonsselected: !showSentRequests, friendsbuttonsNOTselected: showSentRequests }"
+        @click="showReceived"
+      >
+        {{ $t('recivedRequests') }}
+      </button>
+    </div>
+
+    <!-- Solicitudes enviadas -->
+    <div v-if="showSentRequests" class="friendrequestspage">
+      <div v-if="isLoading" v-for="n in 4" :key="n" class="search-user-container">
+        <div class="search-user-information-container">
+          <div>
+            <div class="search-fake-user-image"></div>
+          </div>
+          <div>
+            <div class="search-fake-user-username"></div>
+            <div class="d-flex flex-row">
+              <div class="search-fake-user-name"></div>
+              <div class="search-fake-user-description"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="search-fake-button"></div>
+        </div>
+      </div>
+
+      <div v-for="(request, index) in friendRequests" :key="index" class="search-user-container">
+        <div v-if="request.request_status === 0" class="search-user-information-container">
+          <div>
+            <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image" />
+          </div>
+          <div class="search-user-information">
+            <b><p class="search-user-information-name">{{ request.reciver.name }}</p></b>
+            <p class="search-user-information-username">@{{ request.reciver.username }}</p>
+          </div>
+        </div>
+        <div v-if="request.request_status === 0">
+          <button @click="cancelFriendRequest(request.id)" class="secondary-button danger-button">
+            {{ $t('cancelFriendRequest') }}
+          </button>
+        </div>
+      </div>
+
+      <div v-if="friendRequests.length === 0 && !isLoading" id="notfoundsearcherror">
+        <h2>{{ $t('withoutrequests') }}</h2>
+      </div>
+    </div>
+
+    <!-- Solicitudes recibidas -->
+    <div v-else class="friendrequestspage">
+      <div v-if="isLoading" v-for="n in 4" :key="n" class="search-user-container">
+        <div class="search-user-information-container">
+          <div>
+            <div class="search-fake-user-image"></div>
+          </div>
+          <div>
+            <div class="search-fake-user-username"></div>
+            <div class="d-flex flex-row">
+              <div class="search-fake-user-name"></div>
+              <div class="search-fake-user-description"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="search-fake-button"></div>
+        </div>
+      </div>
+
+      <div v-for="(request, index) in friendRequests" :key="index" class="search-user-container">
+        <div v-if="request.request_status === 0" class="search-user-information-container">
+          <div>
+            <img src="/images/icon_profile.svg" alt="User image" class="search-user-information-image" />
+          </div>
+          <div class="search-user-information">
+            <b><p class="search-user-information-name">{{ request.sender.name }}</p></b>
+            <p class="search-user-information-username">@{{ request.sender.username }}</p>
+          </div>
+        </div>
+        <div v-if="request.request_status === 0">
+          <button @click="acceptFriendRequest(request.id)" class="secondary-button">
+            {{ $t('acceptFriendRequest') }}
+          </button>
+        </div>
+      </div>
+
+      <div v-if="friendRequests.length === 0 && !isLoading" id="notfoundsearcherror">
+        <h2>{{ $t('withoutrequests') }}</h2>
+      </div>
+    </div>
+  </div>
+</template>

@@ -71,8 +71,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
     //Friends
 
     Route::get('/friends/showFriends', [FriendController::class, 'showUsers']);
-    Route::get('/friends/myFriends', [FriendController::class, 'ShowrequestsRecived']);
-    Route::get('/friends/requestsSend', [FriendController::class, 'ShowrequestsSent']);
+    Route::get('/friends/showRequestsRecived', [FriendController::class, 'ShowRequestsRecived']);     
+    Route::get('/friends/showRequestsSent', [FriendController::class, 'ShowRequestsSent']);
     Route::get('/friends/allFriends', [FriendController::class, 'ShowAllFriends']);
     Route::get('/friends/getRequestStatus', [FriendController::class, 'getRequestStatus']);
     Route::get('/friends/GetUsersWithFriendRequests', [FriendController::class, 'GetUsersWithFriendRequests']);

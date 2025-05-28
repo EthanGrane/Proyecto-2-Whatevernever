@@ -13,13 +13,21 @@ class Marker extends Model
 
     protected $fillable = [
         'name',
-        'owner_user_id',
+        'description',
+        'lat',
+        'lng',
+        'zoom',
+        'bearing',
+        'pitch',
+        'marker_list_id',
+        'user_id',
         'emoji_identifier'
     ];
 
-    public function owner()
+
+    public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, "user_id");
     }
     
     public function lists()
@@ -38,5 +46,4 @@ class Marker extends Model
     {
         return $this->reviews()->avg('review_stars');
     }
-
 }

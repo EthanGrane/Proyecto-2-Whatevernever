@@ -91,6 +91,27 @@ export function useFriends() {
         }
     };
 
+    const getRequestReceived = async (user_id) => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/friends/showRequestsRecived?user=' + user_id);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            return error;
+        }
+    }
+
+        const getRequestSend = async (user_id) => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/friends/showRequestsSent?user=' + user_id);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            return error;
+        }
+    }
+
+
     return {
         getUsers,
         getFriendRequests,
@@ -99,6 +120,8 @@ export function useFriends() {
         createFriendRequestMap,
         getUserDataFromName,
         getFriendsFromUserId,
-        checkFriendStatus
+        checkFriendStatus,
+        getRequestReceived,
+        getRequestSend
     };
 }

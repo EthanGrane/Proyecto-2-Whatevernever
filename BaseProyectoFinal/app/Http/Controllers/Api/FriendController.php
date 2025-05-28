@@ -101,23 +101,24 @@ class FriendController extends Controller
      */
     public function destroyFriendRequestAsSender(Request $request)
     {
-        $idSender = $request->input('id_sender');
+        $idSender = auth()->id(); // más seguro que confiar en el input
         $idReceiver = $request->input('id_receiver');
-        
-        if ($idSender != auth()->id()) {
-            return response()->json(['message' => 'Error you are not authorized to do this'], 401);
-        }
 
         if ($idSender == $idReceiver) {
-            return response()->json(['message' => 'You cant be your own friend', 'type' => 'bad'], 200);
+            return response()->json([
+                'message' => 'You can’t be your own friend',
+                'type' => 'bad'
+            ], 200);
         }
 
-        $query = Friend::where('sender_user_id', "=", $idSender)
-            ->where('reciver_user_id',"=", $idReceiver)
+        $deleted = auth()->user()
+            ->sentFriendRequests()
+            ->where('reciver_user_id', $idReceiver)
             ->delete();
 
-        return response()->json(['data' => $query], 200);
+        return response()->json(['data' => $deleted], 200);
     }
+
 
     public function destroyFriendRequestAsReciver(Request $request)
     {
@@ -167,17 +168,18 @@ class FriendController extends Controller
 
 
     //Only show friends that recived a request
-    public function ShowrequestsRecived(Request $request)
+    public function ShowRequestsRecived(Request $request)
     {
-        $userId = auth()->user()->id;
-        $user = User::findOrFail($userId);
+        $user = auth()->user();
+
         $friendRequests = $user->friendsReceived()->where('request_status', '!=', 1)->get();
 
         return response()->json($friendRequests);
     }
 
+
     //Only shows friends i send a request
-    public function ShowrequestsSent(Request $request)
+    public function ShowRequestsSent(Request $request)
     {
         $userId = $request->query('user');
         $user = User::findOrFail($userId);
