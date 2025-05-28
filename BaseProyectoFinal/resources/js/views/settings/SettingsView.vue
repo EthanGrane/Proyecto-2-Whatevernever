@@ -1,35 +1,53 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Friendsgroups from './pages/friendsgroups.vue';
 import GeneralSettingsView from './pages/GeneralSettingsView.vue';
 import AccountSettingsView from './pages/AccountSettingsView.vue';
 import MarkerListSettingsView from './pages/MarkerListSettingsView.vue';
-
 import useAuth from "@/composables/auth";
 
 const { logout } = useAuth();
+const { t } = useI18n();
 
 const conf_page = ref("general");
 const show_pages = ref(true);
 
 function changePage(page) {
-
     conf_page.value = page;
 }
 
-const items = ref([
+const menuItems = computed(() => [
     {
-        label: 'General',
-        icon: 'pi pi-pencil',
-        command: () => {
-            toast.add({ severity: 'info', summary: 'Add', detail: 'Data Added', life: 3000 });
-        },
+        label: t('generalSettingsButton'),
+        icon: 'pi pi-align-justify',
+        command: () => changePage('general')
+    },
+    {
+        label: t('accountSettingsButton'),
+        icon: 'pi pi-user',
+        command: () => changePage('account')
+    },
+    {
+        label: t('groupsSettingsButton'),
+        icon: 'pi pi-users',
+        command: () => changePage('groups')
+    },
+    {
+        label: t('markersSettingsButton'),
+        icon: 'pi pi-map-marker',
+        command: () => changePage('markers')
     }
 ]);
+
 </script>
 
+
 <template>
+    <Menubar class="mobile-menubar" :model="menuItems" />
+
     <div class="settings-background">
+
         <div class="settings-side-menu">
 
             <Button class="secondary-button" @click="changePage('general')" icon="pi pi-align-justify"
@@ -45,7 +63,7 @@ const items = ref([
                 icon="pi pi-sign-out" :label="$t('signoutbutton')" />
         </div>
 
-        <div v-if="show_pages" class="settings-pages">
+        <div v-if="show_pages" class="settings-pages w-100 m-1">
             <div v-if="conf_page == 'general'">
                 <GeneralSettingsView />
             </div>
@@ -66,6 +84,14 @@ const items = ref([
 </template>
 
 <style scoped>
+.p-menubar {
+    color: white !important;
+    background: none !important;
+    border: none;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+
 /* Cuando el ancho de la pantalla sea menor a 512px, ocultamos el texto */
 @media (max-width: 512px) {
     .secondary-button .p-button-label {
@@ -79,5 +105,58 @@ const items = ref([
         padding: 0px !important;
         border-radius: 50% !important;
     }
+}
+
+@media (max-width: 768px) {
+    .settings-side-menu {
+        display: none;
+    }
+}
+
+.mobile-menubar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-menubar {
+        display: block;
+    }
+
+    .settings-side-menu {
+        display: none;
+    }
+}
+</style>
+
+<style>
+.p-menubar-button
+{
+    color: white !important;
+}
+.p-menubar-button:hover
+{
+    background: none !important;
+}
+
+.p-menubar-mobile .p-menubar-root-list
+{
+    background-color: white !important;
+    border: none !important;
+}
+.p-menubar-item-link 
+{
+    color: black !important;
+}
+.p-menubar-item-content:hover
+{
+    background-color: white !important;
+}
+.p-menubar-root-list > .p-menubar-item > .p-menubar-item-content
+{
+    background-color: white !important;
+}
+.p-menubar-item-icon
+{
+    color: black !important;
 }
 </style>

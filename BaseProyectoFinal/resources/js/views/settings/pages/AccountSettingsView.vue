@@ -94,3 +94,10 @@ const updateDescription = async () => {
     <Toast />
   </div>
 </template>
+
+<style>
+.p-button-text.p-button-secondary
+{
+  background-color: var(--background2) !important;
+}
+</style>

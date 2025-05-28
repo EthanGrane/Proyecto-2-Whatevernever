@@ -16,6 +16,7 @@
         <div v-else-if="type === 'file'">
             <Button class="btn secondary-button px-4" @click="triggerFileInput">
                 <i class="pi pi-upload"></i>
+                Upload
             </Button>
             <input type="file" ref="fileInput" :accept="accept" @change="onChange" style="display: none;" />
         </div>
@@ -111,9 +112,9 @@ const updateModelValue = (value) => {
 
 // Función para manejar el envío del valor del input
 const submitInput = () => {
-    emit('update:modelValue', inputValue.value); // Emitir el valor actualizado
-    showDialog.value = false; // Cerrar el dialog
-    emit('submitInput'); // Emitir el evento a la vista
+    emit('update:modelValue', inputValue.value);
+    showDialog.value = false; 
+    emit('submitInput'); 
 };
 
 </script>

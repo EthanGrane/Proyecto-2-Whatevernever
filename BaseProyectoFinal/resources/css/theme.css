@@ -76,7 +76,8 @@ header img {
 .primary-button {
     background-color: white !important;
     color: black !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
+    font-size: medium;
     padding: 12px !important;
     border-radius: 16px !important;
     border-width: 0 !important;
@@ -90,7 +91,8 @@ header img {
 .highlight-button {
     background-color: var(--primary) !important;
     color: black !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
+    font-size: medium;
     padding: 12px !important;
     border-radius: 16px !important;
     border-width: 0 !important;
