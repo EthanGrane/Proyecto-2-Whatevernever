@@ -14,11 +14,15 @@ class FavoriteMarkerController extends Controller
     {
         $user = $request->user();
 
+        $alreadyFavorited = $user->favoriteMarkers()->where('marker_id', $marker->id)->exists();
+
+        if ($alreadyFavorited)
+            return response()->json(['message' => 'El marcador ya esta en favoritos'], 409);    // 409 respuesta por duplicado
+
         $user->favoriteMarkers()->attach($marker->id);
 
         return response()->json(['message' => 'Marcador añadido a favoritos']);
     }
-
 
     public function removeFavorite(Request $request, Marker $marker)
     {
