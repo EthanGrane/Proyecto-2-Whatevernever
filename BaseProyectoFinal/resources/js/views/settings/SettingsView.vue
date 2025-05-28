@@ -21,24 +21,29 @@ const menuItems = computed(() => [
     {
         label: t('generalSettingsButton'),
         icon: 'pi pi-align-justify',
+        style: conf_page.value === 'general' ? { border: '2px solid var(--background4)' } : {},
         command: () => changePage('general')
     },
     {
         label: t('accountSettingsButton'),
         icon: 'pi pi-user',
+        style: conf_page.value === 'account' ? { border: '2px solid var(--background4)' } : {},
         command: () => changePage('account')
     },
     {
         label: t('groupsSettingsButton'),
         icon: 'pi pi-users',
+        style: conf_page.value === 'groups' ? { border: '2px solid var(--background4)' } : {},
         command: () => changePage('groups')
     },
     {
         label: t('markersSettingsButton'),
         icon: 'pi pi-map-marker',
+        style: conf_page.value === 'markers' ? { border: '2px solid var(--background4)' } : {},
         command: () => changePage('markers')
     }
 ]);
+
 
 </script>
 
@@ -50,14 +55,15 @@ const menuItems = computed(() => [
 
         <div class="settings-side-menu">
 
-            <Button class="secondary-button" @click="changePage('general')" icon="pi pi-align-justify"
-                :label="$t('generalSettingsButton')" />
-            <Button class="secondary-button" @click="changePage('account')" icon="pi pi-user"
-                :label="$t('accountSettingsButton')" />
-            <Button class="secondary-button" @click="changePage('groups')" icon="pi pi-users"
-                :label="$t('groupsSettingsButton')" />
-            <Button class="secondary-button" @click="changePage('markers')" icon="pi pi-map-marker"
-                :label="$t('markersSettingsButton')" />
+            <Button class="secondary-button" :class="{ active: conf_page === 'general' }" @click="changePage('general')"
+                icon="pi pi-align-justify" :label="$t('generalSettingsButton')" />
+            <Button class="secondary-button" :class="{ active: conf_page === 'account' }" @click="changePage('account')"
+                icon="pi pi-user" :label="$t('accountSettingsButton')" />
+            <Button class="secondary-button" :class="{ active: conf_page === 'groups' }" @click="changePage('groups')"
+                icon="pi pi-users" :label="$t('groupsSettingsButton')" />
+            <Button class="secondary-button" :class="{ active: conf_page === 'markers' }" @click="changePage('markers')"
+                icon="pi pi-map-marker" :label="$t('markersSettingsButton')" />
+
             <hr>
             <Button class="secondary-button danger-button-hover" style="padding: 8px !important;" @click="logout"
                 icon="pi pi-sign-out" :label="$t('signoutbutton')" />
@@ -84,6 +90,10 @@ const menuItems = computed(() => [
 </template>
 
 <style scoped>
+.secondary-button.active {
+    background-color: var(--background4) !important;
+}
+
 .p-menubar {
     color: white !important;
     background: none !important;
@@ -129,34 +139,32 @@ const menuItems = computed(() => [
 </style>
 
 <style>
-.p-menubar-button
-{
+.p-menubar-button {
     color: white !important;
 }
-.p-menubar-button:hover
-{
+
+.p-menubar-button:hover {
     background: none !important;
 }
 
-.p-menubar-mobile .p-menubar-root-list
-{
+.p-menubar-mobile .p-menubar-root-list {
     background-color: white !important;
     border: none !important;
 }
-.p-menubar-item-link 
-{
+
+.p-menubar-item-link {
     color: black !important;
 }
-.p-menubar-item-content:hover
-{
+
+.p-menubar-item-content:hover {
     background-color: white !important;
 }
-.p-menubar-root-list > .p-menubar-item > .p-menubar-item-content
-{
+
+.p-menubar-root-list>.p-menubar-item>.p-menubar-item-content {
     background-color: white !important;
 }
-.p-menubar-item-icon
-{
+
+.p-menubar-item-icon {
     color: black !important;
 }
 </style>
