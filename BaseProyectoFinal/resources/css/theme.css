@@ -116,12 +116,31 @@ header img {
 
     min-height: 45px;
 
-    border: none !important;
 }
 
 .secondary-button:hover {
     transition: 200ms;
     background-color: var(--background3) !important;
+}
+
+.secondary-button-stroke {
+    transition: 500ms !important;
+    background: none !important;
+    background-color: none !important;
+    border: 2px solid var(--background4) !important;
+    border-radius: 16px !important;
+    color: white !important;
+
+    padding: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+
+    min-height: 45px;
+
+}
+.secondary-button-stroke:hover {
+    border: none !important;
+
 }
 
 

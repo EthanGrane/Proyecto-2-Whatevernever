@@ -79,12 +79,11 @@ onMounted(loadUsersData);
 
                 <div>
                     <button v-if="friendsRequestMap.get(user.id)" @click.stop.prevent="deleteRequest(user.id)"
-                        class="primary-button danger-button-hover" style="min-width: 6rem; max-height: 3rem;">
-                        {{ $t('cancel') }}
+                        class="secondary-button-stroke danger-button-hover" style="min-width: 7rem;">
+                        {{ $t('UnfriendText') }}
                     </button>
 
-                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="primary-button button-hover"
-                        style="min-width: 7rem;">
+                    <button v-else @click.stop.prevent="sendRequest(user.id)" class="primary-button button-hover" style="min-width: 7rem;">
                         {{ $t('addFriendText') }}
                     </button>
                 </div>
