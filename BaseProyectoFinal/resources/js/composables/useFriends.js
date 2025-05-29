@@ -14,7 +14,7 @@ export function useFriends() {
     }
 
     const getUsers = async (searchTerm) => {
-        const response = await axios.get('http://127.0.0.1:8000/api/friends/showFriends', {
+        const response = await axios.get('/api/friends/showFriends', {
             params: { search: searchTerm }
         });
         return response.data.map(user => ({
@@ -25,7 +25,7 @@ export function useFriends() {
 
     const getFriendRequests = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/friends/GetUsersWithFriendRequests');
+            const response = await axios.get('/api/friends/GetUsersWithFriendRequests');
             return response.data;
         } catch (error) {
             console.error("[useFriends] Error al obtener solicitudes de amistad:", error);
@@ -35,7 +35,7 @@ export function useFriends() {
 
     const sendRequest = async (id_sender, id_receiver) => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/friend', {
+            const response = await axios.post('/api/friend', {
                 id_sender,
                 id_receiver
             });
@@ -64,7 +64,7 @@ export function useFriends() {
 
     const getUserDataFromName = async (username) => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/user/showUserByUsername?username=' + username);
+            const response = await axios.get('/api/user/showUserByUsername?username=' + username);
             if (response.data) {
                 const user = response.data;
                 return {
@@ -81,7 +81,7 @@ export function useFriends() {
 
     const getFriendsFromUserId = async (userId) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/friends/allFriends`, {
+            const response = await axios.get(`/api/friends/allFriends`, {
                 params: { user_id: userId }
             });
             return response.data || [];
@@ -93,7 +93,7 @@ export function useFriends() {
 
     const getRequestReceived = async (user_id) => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/friends/showRequestsRecived?user=' + user_id);
+            const response = await axios.get('/api/friends/showRequestsRecived?user=' + user_id);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -103,7 +103,7 @@ export function useFriends() {
 
         const getRequestSend = async (user_id) => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/friends/showRequestsSent?user=' + user_id);
+            const response = await axios.get('/api/friends/showRequestsSent?user=' + user_id);
             return response.data;
         } catch (error) {
             console.error(error);

@@ -1,26 +1,3 @@
-.feed-card {
-    border-radius: 3vw;
-    width: 17vw;
-    height: 17vw;
-
-    position: relative;
-}
-
-.feed-card-pfp 
-{
-    position: absolute;
-
-    bottom: -2vw;
-    right: -2vw;
-
-    border-radius: 100%;
-
-    width: 5vw;
-    height: 5vw;
-
-    background-position: center;
-    background-size: cover;
-}
 
 .feed-card-gradient-1 {
     background: linear-gradient(40deg, #ff0026 25%, #d000ff);

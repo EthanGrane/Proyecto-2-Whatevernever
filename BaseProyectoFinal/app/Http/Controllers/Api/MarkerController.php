@@ -16,27 +16,38 @@ class MarkerController extends Controller
     {
         $user = auth()->user();
 
-        if ($user == null) {
-            return response()->json(["status" => 500, "message" => "User Id invalid"]);
+        if (!$user) {
+            return response()->json(["status" => 401, "message" => "Usuario no autenticado"]);
         }
 
-        $markers = DB::table("markers as m")
-            ->join("friends as f", function ($join) {
-                $join->on("m.user_id", "=", "f.reciver_user_id");
+        $friendIds = Friend::where(function ($query) use ($user) {
+            $query->where('sender_user_id', $user->id)
+                ->orWhere('reciver_user_id', $user->id);
+        })
+            ->where('request_status', 1)
+            ->get()
+            ->map(function ($friend) use ($user) {
+                return $friend->sender_user_id == $user->id
+                    ? $friend->reciver_user_id
+                    : $friend->sender_user_id;
             })
-            ->where("f.request_status", 1)
-            ->where("f.sender_user_id", $user->getAuthIdentifier())
-            ->join(
-                DB::raw("(SELECT user_id, MAX(id) as last_id FROM markers GROUP BY user_id) as latest_markers"),
-                'm.id',
-                '=',
-                'latest_markers.last_id'
-            )
-            ->select("m.user_id", "m.id", "m.lat", "m.lng", "m.name", "m.description")
-            ->get();
+            ->toArray();
+
+        if (empty($friendIds)) {
+            return response()->json(["status" => 200, "markers" => []]);
+        }
+
+        $latestMarkers = Marker::whereIn('user_id', $friendIds)
+            ->select('user_id', DB::raw('MAX(id) as max_id'))
+            ->groupBy('user_id')
+            ->pluck('max_id')
+            ->toArray();
+
+        $markers = Marker::whereIn('id', $latestMarkers)->get();
 
         return response()->json(["status" => 200, "markers" => $markers]);
     }
+
     public function getAllMarkersFromUserId(Request $request)
     {
         try {
@@ -82,7 +93,6 @@ class MarkerController extends Controller
                 "status" => 200,
                 "markers" => $markers
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,

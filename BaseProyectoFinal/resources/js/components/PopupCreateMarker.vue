@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useToast } from 'primevue/usetoast';
 import { createMarkerList, getMarkerLists, getEmojiById, generateRandomEmoji, getIdByEmoji } from '../composables/useMarkerList';
-import { createNewMarker } from '../composables/useMarkers';
+import useMarkers from "../composables/useMarkers";
 
 const toast = useToast();
 const MAX_POPUP_INDEX = 3;
@@ -15,6 +15,8 @@ const createMarkerList_name = ref('');
 
 const props = defineProps({ visible: Boolean });
 const emit = defineEmits(['update:visible']);
+
+const apiMarkers = useMarkers();
 
 const visible = computed({
   get: () => props.visible,
@@ -55,7 +57,7 @@ function showCreateMarkerListPopup() {
 }
 
 function createMarker() {
-  createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
+  apiMarkers.createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
   createMarkerList_name.value = null;
 }
 
@@ -147,8 +149,8 @@ async function createMarkerListAndReturn() {
           <span class="pi pi-arrow-left"></span>
         </Button>
 
-        <button v-if="currentPopupIndex == 100" class="btn primary-button w-100 m-2" @click="createMarkerListAndReturn()"
-          :disabled='!createMarkerList_name'>Create</button>
+        <button v-if="currentPopupIndex == 100" class="btn primary-button w-100 m-2"
+          @click="createMarkerListAndReturn()" :disabled='!createMarkerList_name'>Create</button>
         <button v-else-if="currentPopupIndex != 2" class="btn primary-button w-100 m-2" @click="NextPopupIndex()"
           :disabled='!markerData.name || !markerData.description'>Next</button>
         <button v-else class="btn highlight-button w-100 m-2" @click="createMarker()">Finish</button>

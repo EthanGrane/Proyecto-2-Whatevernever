@@ -1,10 +1,10 @@
-
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import { authStore } from '../../store/auth';
-import FeedCard from './feedCard.vue';
+import FeedCard from '../../components/feedCard.vue';
+import useMarkers from "../../composables/useMarkers"
 
+const markersApi = useMarkers();
 const auth = authStore();
 const loading = ref(false);
 const markers = ref([]);
@@ -19,9 +19,7 @@ async function getFeed() {
     loading.value = true;
 
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/markers/getLastMarkerFromFriends', {
-            user_id: user_id,
-        });
+        const response = await markersApi.getLastMarkersFromFriends();
 
         markers.value = response.data.markers;
         loading.value = false;
@@ -34,18 +32,15 @@ async function getFeed() {
 </script>
 
 <template>
-    <div v-if="loading">
-        <p>Loading...</p>
+    <div class="d-flex m-auto" style="width: 90%;">
+        <span class="d-flex align-content-center">
+            <img src="/images/feed.svg" style="width: 42px;">
+            <h1>Your Feed</h1>
+        </span>
     </div>
+    <div class="d-flex flex-wrap align-items-center m-auto gap-5" style="width: 90%;">
 
-    <div v-else class="d-flex flex-wrap justify-content-between align-items-center m-auto gap-5" style="width: 90%;">
+        <FeedCard v-for="(marker, index) in markers" :key="index" :marker="marker" :index="(index + 1) % 4"/>
 
-        <FeedCard
-            v-for="(marker, index) in markers"
-            :key="index"
-            :pfp="marker.profile_picture_url"
-            :title="marker.name"
-            :description="marker.description"
-        />
     </div>
 </template>

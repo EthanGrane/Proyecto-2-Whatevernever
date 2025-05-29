@@ -1,13 +1,14 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import axios from 'axios';
 
 // MaboxGL Compostable
 import { emitter } from '@/composables/MapUtils';
 import { InitializeMap, SetFriends, ReloadMapMarkers, AddMarkerToMap, SetMarkers, HideCenterMarker, OnMapDblClick, ShowMarkerOnMapCenter } from "@/composables/MapUtils.js";
 import PopupCreateMarker from '../../components/PopupCreateMarker.vue';
 import PopupShowMarker from '../../components/PopupShowMarker.vue';
-import { showMarkerById, createNewMarker } from '../../composables/useMarkers.js';
+import useMarkers from '../../composables/useMarkers';
+import {useFriends} from '../../composables/useFriends';
+
 import { create } from 'lodash';
 import MapHintHelp from '@/components/MapHintHelp.vue';
 
@@ -15,14 +16,15 @@ const createMarkerPopupVisible = ref(false);
 const showMarkerDataPopupVisible = ref(true);
 
 const selectedMarkerData = ref(null);
+const marekrsApi = useMarkers();
+const { getMarkers, markers, showMarkerById } = useMarkers(); 
+
+const friendsApi = useFriends();
 
 async function handleMarkerClick(id) {
-    const data = await showMarkerById(id).then()
-    {
-        selectedMarkerData.value = data;
-        showMarkerDataPopupVisible.value = true;
-    }
-
+    const data = await showMarkerById(id);
+    selectedMarkerData.value = data;
+    showMarkerDataPopupVisible.value = true;
 }
 
 onMounted(async () => {
@@ -31,6 +33,8 @@ onMounted(async () => {
 
     const friendsConnected = await loadUsers();
     const allMarkers = await loadMarkers();
+
+    console.log(friendsConnected);
 
     if (friendsConnected && Array.isArray(friendsConnected)) {
         SetFriends(friendsConnected);
@@ -68,8 +72,8 @@ onMounted(async () => {
 
 async function loadUsers() {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/friends/showFriends');
-        return response.data;
+        const response = await friendsApi.getUsers();
+        return response;
     } catch (error) {
         console.error("[SearchView.vue] Error al cargar amigos:", error);
         return [];
@@ -78,8 +82,8 @@ async function loadUsers() {
 
 async function loadMarkers() {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/markers/');
-        return response.data;
+        await marekrsApi.getMarkers();
+        return marekrsApi.markers.value.data;
     } catch (error) {
         console.error("[SearchView.vue] Error al cargar marcadores:", error);
         return [];
@@ -99,7 +103,8 @@ function ToggleCreateMarker() {
         <PopupShowMarker v-if="selectedMarkerData != null" v-model:visible="showMarkerDataPopupVisible"
             :marker=selectedMarkerData />
 
-            <button class="button-primary d-block d-sm-none" @click="ToggleCreateMarker" style="position: fixed; bottom: 64px; right: 16px; width: 32px; height: 32px; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; border-radius: 50%; border: 0;">+</button>
+        <button class="button-primary d-block d-sm-none" @click="ToggleCreateMarker"
+            style="position: fixed; bottom: 64px; right: 16px; width: 32px; height: 32px; z-index: 999; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; border-radius: 50%; border: 0;">+</button>
 
         <div id="map"></div>
         <MapHintHelp />
@@ -107,8 +112,7 @@ function ToggleCreateMarker() {
 </template>
 
 <style scoped>
-.hint
-{
+.hint {
     position: fixed;
     bottom: 84px;
     right: 32px;
@@ -120,9 +124,7 @@ function ToggleCreateMarker() {
     border-radius: 50%;
 }
 
-.hint:hover
-{
+.hint:hover {
     background-color: rgb(225, 225, 225);
 }
-
 </style>

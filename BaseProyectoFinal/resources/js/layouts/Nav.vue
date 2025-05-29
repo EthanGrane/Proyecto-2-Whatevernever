@@ -14,7 +14,7 @@
         <transition name="floating-circle" appear>
           <div class="floating-circle" v-if="isActive('/')"></div>
         </transition>
-        <router-link to="/">
+        <router-link to="/feed">
           <img src="/images/feed.svg" alt="Feed image" class="icon" />
           <p>Feed</p>
         </router-link>

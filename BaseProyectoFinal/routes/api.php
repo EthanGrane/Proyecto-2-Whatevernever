@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Markers
     Route::get('/markers/getAllMarkersFromFriendId', [MarkerController::class, 'getAllMarkersFromUserId']);
-    Route::post('/markers/getLastMarkerFromFriends', [MarkerController::class, 'getLastMarkerFromFriends']);
+    Route::get('/markers/getLastMarkerFromFriends', [MarkerController::class, 'getLastMarkerFromFriends']);
     Route::apiResource('markers', MarkerController::class); // siempre ultimo ya que puede dar errores con el contenido posterior a markers/...
 
     // Markers lists
