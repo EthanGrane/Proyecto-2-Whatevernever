@@ -5,13 +5,14 @@ import { authStore } from '../../store/auth';
 import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover';
 import ConfirmButtonPopup from '../../components/ConfirmButtonPopup.vue';
-import { showAllMarkersFromUserId } from "../../composables/useMarkers.js";
+import useMarkers from "../../composables/useMarkers.js";
 import { getEmojiById, getMarkerListById } from "../../composables/useMarkerList.js";
 import { GetMapImageUrlFromCoordsAndZoom } from "../../composables/MapUtils.js";
 import { useFriends } from '../../composables/useFriends.js';
 
 const route = useRoute();
 const friendsApi = useFriends();
+const apiMarkers = useMarkers();
 
 const userPFP = ref("");
 const requestedUserData = ref({});
@@ -29,7 +30,7 @@ async function loadDataFromRequestUser() {
         checkFriendStatus();
         getFriendsFromRequestedUser();
 
-        requestMarkerData.value = await showAllMarkersFromUserId(requestedUserData.value.id);
+        requestMarkerData.value = await apiMarkers.showAllMarkersFromUserId(requestedUserData.value.id);
         console.log('requestMarkerData:', requestMarkerData.value);
         loadMarkers();
     } else {

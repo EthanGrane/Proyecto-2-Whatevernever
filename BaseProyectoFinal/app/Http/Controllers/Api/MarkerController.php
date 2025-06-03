@@ -137,7 +137,6 @@ class MarkerController extends Controller
                 "zoom" => "nullable|numeric",
                 "bearing" => "nullable|numeric",
                 "pitch" => "nullable|numeric",
-                "marker_list_id" => "nullable|integer",
                 "user_id" => "required|integer"
             ]);
 
@@ -160,7 +159,6 @@ class MarkerController extends Controller
                 "zoom" => "sometimes|numeric",
                 "bearing" => "sometimes|numeric",
                 "pitch" => "sometimes|numeric",
-                "marker_list_id" => "sometimes|integer",
                 "user_id" => "sometimes|integer"
             ]);
 

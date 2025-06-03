@@ -56,9 +56,12 @@ function showCreateMarkerListPopup() {
   currentPopupIndex.value = 100;
 }
 
-function createMarker() {
-  apiMarkers.createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
+async function createMarker() {
+  await apiMarkers.createNewMarker(markerData.value, () => visible.value = false, error => console.error(error));
   createMarkerList_name.value = null;
+  markerData.value.name = "";
+  markerData.value.description = "";
+  currentPopupIndex.value = 0;
 }
 
 async function createMarkerListAndReturn() {

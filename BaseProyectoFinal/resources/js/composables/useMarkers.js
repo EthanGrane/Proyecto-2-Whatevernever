@@ -11,7 +11,7 @@ export default function useMarkers() {
 
     const getMarkers = async () => {
         try {
-            const response = await axios.get('/api/markers', {  });
+            const response = await axios.get('/api/markers', {});
             markers.value = {
                 data: response.data.data ?? response.data
             };
@@ -31,7 +31,7 @@ export default function useMarkers() {
         }
     };
 
-    const createNewMarker = async (markerData, onSuccess = () => {}, onError = () => {}) => {
+    const createNewMarker = async (markerData, onSuccess = () => { }, onError = () => { }) => {
         const map = GetMap();
         markerData.user_id = authStore().user.id;
         markerData.lng = map.getCenter().lng;
@@ -49,12 +49,10 @@ export default function useMarkers() {
                 zoom: markerData.zoom,
                 pitch: markerData.pitch,
                 bearing: markerData.bearing,
-                marker_list_id: markerData.marker_list_id ?? null,
                 user_id: markerData.user_id
             });
 
             markerData.id = res.data.marker.id;
-
             HideCenterMarker();
             AddMarker(markerData);
             ReloadMapMarkers();
@@ -88,7 +86,7 @@ export default function useMarkers() {
 
     const getLastMarkersFromFriends = async () => {
         try {
-        const response = await axios.get('/api/markers/getLastMarkerFromFriends');
+            const response = await axios.get('/api/markers/getLastMarkerFromFriends');
             return response;
         } catch (error) {
             console.error("Error al obtener los últimos markers de amigos:", error);
