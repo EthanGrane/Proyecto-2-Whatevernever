@@ -1,3 +1,8 @@
+# WhatEverNever - Proyecto de Red Social
+![main](https://github.com/user-attachments/assets/488e3e09-f87e-4ff1-8dbf-e8d31fe4a317)
+![perfil_desbloqueado](https://github.com/user-attachments/assets/a3f6b0a7-71d3-4b91-b6b2-01e160cab0f3)
+![login](https://github.com/user-attachments/assets/fabac867-9687-4fbf-936a-3f5e5f3361b0)
+
 # Requisitos
 Se recomienda usar Laragon
 
