@@ -3,6 +3,10 @@
 ![perfil_desbloqueado](https://github.com/user-attachments/assets/a3f6b0a7-71d3-4b91-b6b2-01e160cab0f3)
 ![login](https://github.com/user-attachments/assets/fabac867-9687-4fbf-936a-3f5e5f3361b0)
 
+## MapboxGL
+Hemos usado MapboxGL para renderizar el globo y poder interactuar con el mapa.
+![dallas](https://github.com/user-attachments/assets/e15b33c5-f13c-4d8b-b7a3-0d35be52b6e6)
+
 # Requisitos
 Se recomienda usar Laragon
 
